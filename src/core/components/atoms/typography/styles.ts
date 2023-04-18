@@ -6,7 +6,8 @@ export interface typoGraphyProps {
     color?:string,
     skeleton?:boolean,
     size?:number,
-    lineHeight?:number
+    lineHeight?:number,
+    maxWidth?:number,
 }
 
 const skeletonStyles = css`
@@ -20,9 +21,13 @@ export const textBaseStyles = css<typoGraphyProps>`
     color: ${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};
     font-family: "Raleway", sans-serif;
     font-size: ${props => props.size && `${props.size}px !important`};
-
     line-height: ${props => props.lineHeight && `${props.lineHeight}px`};
-
+    &.no-margin-bottom{
+      margin-bottom:0;
+    }
+    &.no-margin-top{
+      margin-top:0;
+    }
     &.no-margin{
       margin:0;
     }
@@ -32,19 +37,19 @@ export const textBaseStyles = css<typoGraphyProps>`
     &.bold{
       font-weight: bold;
     }
-
     &.capitalize{
       text-transform: capitalize !important;
     }
-
+    &.fit{
+      width:fit-content;
+    }
     &.ellipsis{
       width: auto;
-      max-width: 250px;
+      max-width: ${props => props.maxWidth ? `${props.maxWidth}px` : '250px'};
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     ${props => props.skeleton && skeletonStyles}
 `
 

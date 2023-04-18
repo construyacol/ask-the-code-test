@@ -19,7 +19,7 @@ const SecurityCenter = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [_, globalState] = useCoinsendaServices();
   const actions = useActions();
-  const { security_center } = settings
+  const { security_center } = settings 
 
   const validate_state = () => {
     if (props.verification_state !== "accepted") {

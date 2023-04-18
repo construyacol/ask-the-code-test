@@ -418,11 +418,6 @@
   width: 450px;
 }
 
-.large {
-  width: 200px !important;
-  align-self: center !important;
-}
-
 .ItemSelectedButton {
   width: 430px;
   height: 45px;

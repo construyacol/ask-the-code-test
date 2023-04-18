@@ -211,6 +211,9 @@ export const AccountMetaData = styled.div`
 
 export const SubTitle = styled.h3`
     color:var(--paragraph_color);
+    &.no-margin-bottom{
+        margin-bottom:0;
+    }
 `
 
 
@@ -223,7 +226,7 @@ export const Content = styled.div`
     background: white;
     border-radius: 6px;
     border:1px solid #E7E7E7;
-    padding: 15px 45px;
+    padding: ${props => props.padding ? props.padding : "15px 45px"};
     display:flex;
     flex-direction: column;
     row-gap: 15px;

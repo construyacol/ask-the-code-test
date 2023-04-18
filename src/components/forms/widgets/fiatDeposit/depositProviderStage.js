@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { SelectListContainer, ItemListComponent } from '../selectListComponent'
+import { SelectListContainer, ItemListComponent, SelectListSkeleton } from '../selectListComponent'
 import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { AiFillBank } from "react-icons/ai";
@@ -13,6 +13,7 @@ import { TagNewComponent } from 'core/components/molecules'
 import styled from 'styled-components'
 import { P, SPAN } from 'core/components/atoms';
 import { FIAT_DEPOSIT_TYPES } from './api'
+
 
 function ProviderComponent({ 
     stageManager:{ 
@@ -29,8 +30,8 @@ function ProviderComponent({
     const { isMovilViewport } = useViewport();
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
     const depositProvidersByType = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider_type'));
-    // const actions = useActions() 
     const [ depositServiceList, setDepositServiceList ] = useState({})
+    const [ showPaymentRequest, setShowPaymentRequest ] = useState(false)
   
     const selectProvider = (provider) => {
       // console.log('selectProvider', provider)
@@ -53,14 +54,13 @@ function ProviderComponent({
         visible:true
       }
     }
-
     
     useEffect(() => {
-      (async() => {
+      (async() => { 
         if(isEmpty(depositAccounts) || isEmpty(depositProvidersByType))return;
         let servicesList = {...DEFAULT_SERVICE}
         for (const depositAccountName in depositAccounts) {
-          if(!depositProvidersByType[depositAccounts[depositAccountName]?.provider_type]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          if(!depositProvidersByType[depositAccounts[depositAccountName]?.provider_type] && depositAccounts[depositAccountName]?.provider_type !== 'internal_network') await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id);
           let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
           // if(depositAccounts[depositAccountName]?.currency_type === 'crypto')continue;
           servicesList = {
@@ -72,14 +72,10 @@ function ProviderComponent({
           }
         } 
         setDepositServiceList(getServiceListOrdered(servicesList))
+        if(servicesList?.internal_network) setShowPaymentRequest(true);
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depositAccounts, depositProvidersByType])
-
-    // console.log('depositServiceList', depositServiceList)
-    // console.log('state', state)
-    
-
 
 
     return(
@@ -88,15 +84,46 @@ function ProviderComponent({
           isEmpty(currentWallet?.dep_prov) ? 
             <P>Creando proveedor de depósito...</P>
           :
+          isEmpty(depositServiceList) ?
+            <SelectListSkeleton />
+          :
           <StageContainer className="_identityComponent">
             {children} 
+            {
+              showPaymentRequest &&
+                <OptionInputContainer>
+                  <P className="fuente _pLabel _inputLabelP">Genera un código QR para recibir pagos instantaneaos y grátuitos</P>
+                  <SelectListContainer>
+                    {
+                      Object.keys(depositServiceList).map((key, index) => {
+                        const isSelected = [depositServiceList[key]?.value].includes(state[stageData?.key]?.value)
+                        if(!depositServiceList[key]?.visible) return null;
+                        if(depositServiceList[key]?.provider_type !== 'internal_network') return null;
+                        const AuxComponent = depositServiceList[key]?.AuxComponent
+                        return <ItemListComponent 
+                          key={index} 
+                          className={`${depositServiceList[key]?.value}`}
+                          itemList={depositServiceList[key]}
+                          firstIndex={index === 0}
+                          // lastIndex={(Object.keys(depositServiceList)?.length - 1) === index}
+                          isSelectedItem={isSelected}
+                          isMovilViewport={isMovilViewport}
+                          handleAction={selectProvider}
+                          AuxComponent={[AuxComponent]}
+                        />
+                      })
+                    }
+                  </SelectListContainer>
+                </OptionInputContainer>
+            }
             <OptionInputContainer>
               <p className="fuente _pLabel _inputLabelP">{stageData?.uiName}</p>
               <SelectListContainer>
                 {
-                  depositServiceList && Object.keys(depositServiceList).map((key, index) => {
+                   Object.keys(depositServiceList).map((key, index) => {
                     const isSelected = [depositServiceList[key]?.value].includes(state[stageData?.key]?.value)
                     if(!depositServiceList[key]?.visible) return null;
+                    if(depositServiceList[key]?.provider_type === 'internal_network') return null;
                     const AuxComponent = depositServiceList[key]?.AuxComponent
 
                     return <ItemListComponent 
@@ -104,7 +131,7 @@ function ProviderComponent({
                       className={`${depositServiceList[key]?.value}`}
                       itemList={depositServiceList[key]}
                       firstIndex={index === 0}
-                      lastIndex={(Object.keys(depositServiceList)?.length - 1) === index}
+                      // lastIndex={(Object.keys(depositServiceList)?.length - 1) === index}
                       isSelectedItem={isSelected}
                       isMovilViewport={isMovilViewport}
                       handleAction={selectProvider}
@@ -112,7 +139,6 @@ function ProviderComponent({
                     />
                   })
                 }
-
               </SelectListContainer>
             </OptionInputContainer>
           </StageContainer>
@@ -161,21 +187,24 @@ function ProviderComponent({
     value:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO
   }
 
-
   const PSE_ACCOUNT ={ 
     uiName:"PSE",
     AuxComponent:TagNewComponent,
+  } 
+
+  const PAYMENT_REQUEST ={ 
+    uiName:() => <P>QR de pago</P>,
+    icon:'qr',
+    AuxComponent:TagNewComponent,
   }
-
-
 
   const DEPOSIT_ACCOUNT_LABELS = {
     pse:PSE_ACCOUNT,
     ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
     ethereum:CRYPTO_ACCOUNT_LABEL,
-    bsc:CRYPTO_ACCOUNT_LABEL
+    bsc:CRYPTO_ACCOUNT_LABEL,
+    internal_network:PAYMENT_REQUEST
   }
-
 
   const getServiceListOrdered = (serviceList) => {
     const order = ['bank', 'other_bank', 'pse'];

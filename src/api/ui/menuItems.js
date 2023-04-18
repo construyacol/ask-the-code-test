@@ -1,6 +1,7 @@
 
 export const MENU_LABELS = {
-  withdraw:"Enviar"
+  withdraw:"Enviar",
+  deposit:"Recibir",
 }
 
 
@@ -16,7 +17,7 @@ const menuItems = {
           "id": 1
         },
         {
-          "title": "Depositar",
+          "title": MENU_LABELS?.deposit,
           "func": "goTo",
           "link": "deposit",
           "available": true,

@@ -6,7 +6,7 @@ import localForage from "localforage";
 import actions from "../../../actions";
 import { withRouter } from "react-router";
 import usePrevious from "hooks/usePreviousValue";
-import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
+// import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import withHandleError from "../../withHandleError";
 import { doLogout } from "utils/handleSession";
 // import KeyActionsInfo from "../modal/render/keyActionsInfo";
@@ -42,15 +42,15 @@ const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
 // const OnBoardingComponent = loadable(() => import("../../forms/widgets/onBoardingComponent/init"));
 // const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
 
-function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoarding }) {
+function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoarding, coinsendaServices, globalState }) {
  
   const [country] = useState("international");
   // const [ countryImg, setCountryImg ] = useState("international")
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   // const [anim, setAnim] = useState("in");
-  const [coinsendaServices, reduxState] = useCoinsendaServices();
-  const { authData } = reduxState.modelData;
-  const { appLoadLabel } = reduxState.isLoading;
+  // const [coinsendaServices, reduxState] = useCoinsendaServices();
+  const { authData } = globalState.modelData;
+  const { appLoadLabel } = globalState.isLoading;
   const previousLoadLabel = usePrevious(appLoadLabel);
   // const [toastMessage] = useToastMessage();
   const { 
@@ -73,7 +73,6 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     // })
     //   return redirectURL(isSessionRestored);
     // } 
-     
     if (!userToken) return;
    
     let { error } = await coinsendaServices.fetchUserProfile();
@@ -152,8 +151,8 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     <div className={`LoaderAplication`}>
         <div className={`LoaderContainer loaderLayout`}>
           <div className="logotypes">
-            <Coinsenda size={45} color="white" />
-            <h1 className="fuente">Coinsenda</h1>
+            <Coinsenda size={55} color="white" />
+            <h1 className="fuente loader--h1__title">Coinsenda</h1>
           </div>
           <p className="fuente">{appLoadLabel}</p>
         </div>

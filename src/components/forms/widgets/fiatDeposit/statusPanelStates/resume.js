@@ -1,6 +1,3 @@
-import styled from 'styled-components'
-// import { useSelector } from "react-redux";
-// import { selectWithdrawProvider } from 'selectors'
 import { useEffect, useState } from 'react'
 import { getCost } from '../validations'
 import { formatToCurrency } from 'utils/convert_currency'
@@ -14,9 +11,12 @@ import {
 import { FIAT_DEPOSIT_TYPES } from '../api'
 import { calculateCost } from '../../sharedValidations'
 import { parseSymbolCurrency } from 'core/config/currencies'
-
+import { ContentRight, StatusContainer } from './styles'
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
+
+
+
 
 const ResumeComponent = ({
     handleState:{state},
@@ -57,6 +57,8 @@ const StatusContent = ({ state, stageManager, depositAccount, dataForm }) => {
     bank:BankResumeComponent
   }
 
+  const UiName = state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.uiName
+  
   return(
     <StatusContainer>
       <ItemContainer>
@@ -64,8 +66,8 @@ const StatusContent = ({ state, stageManager, depositAccount, dataForm }) => {
           <MiddleSection />
           <ContentRight>
             <RightText className={`${depositAccount ? 'fuente' : 'skeleton'}`}>
-                {state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.uiName?.toLowerCase() || 'skeleton --------'} 
-              </RightText>
+              {typeof UiName === 'string' ? UiName?.toLowerCase() : typeof UiName === 'function' ? <UiName/> : '--skeleton--'}  
+            </RightText>
             {
               (state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER] && !["other_bank"].includes(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER].value)) &&
                 <IconSwitch
@@ -140,7 +142,7 @@ const PseResumeComponent = ({
                       />
                   }
               </ContentRight>
-            </ItemContainer>
+            </ItemContainer> 
           }
           {
             state?.depositAmount &&
@@ -241,29 +243,3 @@ const BankResumeComponent = ({
 
 }
 
-const ContentRight = styled.div`
-  display:flex;
-  align-items: center;
-  column-gap: 6px;
-  ${RightText}{
-    text-transform:capitalize;
-  }
-`
-
-
-const StatusContainer = styled.div`
-  width:100%;
-  height:auto;
-  padding-top:15px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 25px;
-
-  p{
-    color:var(--paragraph_color);
-  }
-
-  ${LeftText}{
-    font-weight: normal;
-  }
-`

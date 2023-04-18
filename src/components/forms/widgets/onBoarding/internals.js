@@ -56,3 +56,27 @@ export const InternalOnBoarding = ({
         </>
     )
 }
+
+
+export const CopInternalOnBoarding = ({
+  children
+}) => {
+  // const actions = useActions()
+  // const showHowToWorks = () => {
+  //   actions.renderModal(() => <InternalsHowToWorks></InternalsHowToWorks>)
+  // }
+  return(
+      <>
+        <StatusHeaderContainer>
+          <TitleContainer>
+            <h1 className="fuente">Enlace <span style={{ color:"gray" }}>(QR)</span> de pago</h1>
+          </TitleContainer>
+          <div>
+          <P size={14} lineHeight={21}>Ahora puedes recibir DCOP de forma instantanea y gratuita compartiendo tu <strong>QR de pago</strong> a otros usuarios de Coinsenda </P>
+          {/* <HowToWorkCta onClick={showHowToWorks} /> */}
+          </div>
+        </StatusHeaderContainer>
+        {children}
+      </>
+  )
+}

@@ -123,7 +123,6 @@ export class DepositService extends WebService {
     if(depositAccountId){
       body.data.deposit_account_id = depositAccountId
     }
-    // body.data.deposit_account_id = "6386fe2ce9131f002aff297e"
     const finalUrl = `${DEPOSITS_URL}depositProviders/create-deposit-provider-by-account-id`;
     const deposit_prov = await this.Post(finalUrl, body);
     if (deposit_prov === 465 || !deposit_prov) {

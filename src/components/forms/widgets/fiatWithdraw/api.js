@@ -161,7 +161,7 @@ export const FIAT_WITHDRAW_DEFAULT_STATE = {
   // newWallet:{
   //   currency:{}
   // }
-}
+} 
 
 export const ApiGetTwoFactorIsEnabled = async() => {
   const txSecurity = await mainService.userHasTransactionSecurity();

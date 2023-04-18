@@ -9,6 +9,9 @@ import AvailableBalance from '../../../widgets/availableBalance'
 // import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { getMinAmount } from './validations'
 
+import { COP_MIN_AMOUNT } from 'core/config/currencies'
+
+
 export default function AmountComponent ({ 
     stageManager:{ 
       stageData,
@@ -23,14 +26,12 @@ export default function AmountComponent ({
   }) {
     
     const { min_amount, currency, costs } = depositAccount
-    const [ minAmount, setMinAmount] = useState(min_amount)
+    const [ minAmount, setMinAmount] = useState(min_amount || COP_MIN_AMOUNT)
     // const { depositCost } = state
     // const { isMovilViewport } = useViewport();
-
     const depositAmountOnChange = async(e) => {
       e.target.preventDefault && e.target.preventDefault();
       if(!validations[stageData?.key]) return;
-
       const [ _value, _status ] = await validations[stageData?.key](e?.target?.value, {
         ...stageData, 
         state,  
@@ -44,14 +45,14 @@ export default function AmountComponent ({
 
     const handleMinAmount = () => {
       if(!depositAccount) return;
-      let minAmount = getMinAmount(min_amount, { currency, costs });
-      depositAmountOnChange({target:{value:minAmount.toFormat()}});
+      let _minAmount = getMinAmount(minAmount, { currency, costs });
+      depositAmountOnChange({target:{value:_minAmount.toFormat()}});
     }
 
     useEffect(() => {
       if(depositAccount){
-        let minAmount = getMinAmount(min_amount, { currency, costs });
-        setMinAmount(minAmount)
+        let _minAmount = getMinAmount(minAmount, { currency, costs });
+        setMinAmount(_minAmount)
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

@@ -63,7 +63,6 @@ const inheritances = aggregation(
   DepositService,
   SwapService,
   AccountService,
-  // FreshChatService,
   PushNotificationService
 );
 
@@ -100,20 +99,6 @@ export class MainService extends inheritances {
     return (this.globalState = newValue);
   }
 
-  // async countryValidator() {
-  //     // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
-  //     const URL = `${Environment.IdentityApIUrl}countryvalidators/findOne?country=colombia`
-  //     const res = await this.Get(URL)
-  //     const countries = await addIndexToRootObject(res.levels.level_1.personal.natural.country)
-  //     const array = await objectToArray(countries)
-  //     const result = {
-  //         res: res[0],
-  //         countries,
-  //         country_list: array
-  //     }
-  //     return result
-  // }
-
   setIsAppLoading(value) {
     return this.dispatch(isAppLoading(value));
   }
@@ -130,21 +115,18 @@ export class MainService extends inheritances {
   
 
   async init(callback) {
-
     while (!this.user) {
       await sleep(2000); 
-    } 
-
+    }  
     const userWallets = await this.userHasWallets();
     const verificationStatus = this.getVerificationState();
-
     if((userWallets && isEmpty(userWallets)) && verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
     }else if((userWallets && !isEmpty(userWallets))){
       await this.addNewWallets(userWallets);
     }
-
     await this.getWalletsByUser()
+
     this.postLoader(callback, false);
     return;
   }
