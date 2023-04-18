@@ -7,7 +7,7 @@ import {
 import normalizeUser from "../schemas";
 import {
   ACCOUNT_URL,
-  DEPOSITS_URL,
+  // DEPOSITS_URL,
   CREATE_WALLET_URL,
   DELETE_WALLET_URL,
   loadLabels,

@@ -30,11 +30,10 @@ const CriptoSupervisor = (props) => {
     <>
       {
        isEmpty(withdrawProvidersByName) ? 
-        //<SkeletonWithdrawView />
-        <p>putmadre</p>
+        <SkeletonWithdrawView />
        : 
        <>
-          {/* <CriptoView {...props}/> */}
+          <CriptoView {...props}/>
        </>
       }
     </>

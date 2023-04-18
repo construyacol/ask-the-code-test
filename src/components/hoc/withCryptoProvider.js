@@ -17,18 +17,25 @@ const isEthValidator = name => {
   return (name === 'eth' || name === 'bnb') ? true : false;
 }
 
+const ETHERS_INITIAL_STATE = {
+  ethersProvider:undefined,
+  utils:undefined,
+  network_data:null, 
+  baseFee:0, 
+  networkDataExp:undefined, 
+  gas_limit:"0", 
+  calculateGasLimit:() => null,
+  getNetworkData:() => null
+}
+
 export default function withCryptoProvider(AsComponent) {
   return function (props) {
     
     const [ withdrawViewStateProps ] = WithdrawViewState();
-    const { current_wallet, withdrawProvidersByName, balance } = withdrawViewStateProps
+    const { current_wallet, balance } = withdrawViewStateProps
     const [ withdrawProviders, setNetworkProvider ] = useState({ current:{}, providers:{} })
-    const withdrawProvider = isEmpty(withdrawProviders.current) ? withdrawProviders.current : undefined 
-    // const [ withdrawProvider, setWithdrawProvider ] = useState() 
-    // const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency]) 
     const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID?.default)
-    // const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID[withdrawProvider?.provider_type] || DEFAULT_COST_ID?.default)
-    const [ priorityList, setPriorityList ] = useState(withdrawProvider?.provider?.costs || [])
+    const [ priorityList, setPriorityList ] = useState(withdrawProviders?.current?.provider?.costs || [])
     const [ coinsendaServices ] = useCoinsendaServices();   
 
     const withdraw_accounts = useSelector((state) => selectWAccountsByAddressProvType(state, withdrawProviders?.current));
@@ -42,23 +49,16 @@ export default function withCryptoProvider(AsComponent) {
       withdrawAmount:undefined,
       fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
       total:new BigNumber(0), 
-      minAmount:getMinAmount(withdrawProvider) || new BigNumber(0), 
-      isEthereum:!priorityList[currentPriority]?.fixed && isEthValidator(withdrawProvider?.address_validator_config?.name)
+      minAmount:getMinAmount(withdrawProviders.current) || new BigNumber(0), 
+      isEthereum:!priorityList[currentPriority]?.fixed && isEthValidator(withdrawProviders.current?.address_validator_config?.name)
     })
 
 
-    const [ ethers, setEthers ] = useState({
-      ethersProvider:undefined,
-      utils:undefined,
-      network_data:null, 
-      baseFee:0, 
-      networkDataExp:undefined, 
-      gas_limit:"0", 
-      calculateGasLimit:() => null,
-      getNetworkData:() => null
-    })
+    const [ ethers, setEthers ] = useState(ETHERS_INITIAL_STATE)
 
     const componentIsMount = useRef()   
+    const isEthereumRef = useRef()   
+    
  
     const calculateGasLimit = useCallback((gasLimit) => {
       let gas_limit = BigNumber.isBigNumber(gasLimit) ? gasLimit : BigNumber(gasLimit)
@@ -80,12 +80,12 @@ export default function withCryptoProvider(AsComponent) {
 
     const getEthFixedCost = useCallback(async(baseFee) => {
       if(!baseFee)return;
-      const fixedCost = getFixedCost(withdrawProvider?.address_validator_config?.name, baseFee)
+      const fixedCost = getFixedCost(withdrawProviders?.current?.address_validator_config?.name, baseFee)
       setWithdrawData(prevState => ({...prevState, fixedCost}))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [calculateGasLimit, currentPriority, priorityList, ethers.gas_limit])
+    }, [currentPriority, priorityList, ethers.gas_limit, withdrawProviders])
 
-    const fetchNetworkData = async() => coinsendaServices.fetchNetworkData(withdrawProvider?.id)  
+    const fetchNetworkData = async() => coinsendaServices.fetchNetworkData(withdrawProviders?.current?.id)  
 
     const getNetworkData = async() => {
       const currentTime = new Date().getTime()/1000    
@@ -109,7 +109,7 @@ export default function withCryptoProvider(AsComponent) {
       }))
     }
 
-    const initEthWithdraw = async() => {
+    const initEthWithdraw = async() => { 
       const { data, error } = await fetchNetworkData()    
       if(error)return alert(error?.message)
       const jwt = await import('jsonwebtoken')
@@ -117,13 +117,13 @@ export default function withCryptoProvider(AsComponent) {
       const { exp, base_fee, gas_price } = dataNetDecoded
       const baseFee = new BigNumber(base_fee || gas_price)
       const expired = exp - 10
-      console.log('expired', expired)
       setEthers(prevState => ({...prevState, baseFee, network_data:data, networkDataExp:expired}))
       validateExpTime(expired)
       return data
     }
 
     const validateExpTime = async(exp) => {
+      if(!isEthereumRef.current)return;
       const currentTime = new Date().getTime()/1000;        
       const timeLeft = (exp - parseInt(currentTime));
       setWithdrawData(prevState => ({...prevState, timeLeft}))
@@ -134,91 +134,66 @@ export default function withCryptoProvider(AsComponent) {
           return initEthWithdraw()
       }
     }
-
-    // useEffect(() => {
-    //   if(!isEmpty(withdrawProviders.current)){
-    //     setWithdrawProvider(withdrawProviders.current)
-    //     setPriorityList(withdrawProviders?.current?.provider?.costs)
-    //   }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [withdrawProviders])
-
-
-
-
-
-
-
-
-
-
  
-    // useEffect(() => {
-    //   if(!withdrawData?.isEthereum && priorityList[currentPriority]?.fixed)  
-    //   setWithdrawData(prevState => ({ ...prevState, fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0) }));
-    //   else getEthFixedCost(ethers?.baseFee);
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [ethers.baseFee, ethers.gas_limit, currentPriority, priorityList])
+    useEffect(() => { // Calculo o actualizo el costo fijo segun se cambia de proveedor(red)
+      if(!withdrawData?.isEthereum && priorityList[currentPriority]?.fixed){
+        setWithdrawData(prevState => ({ ...prevState, fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0) }));
+      }else{
+        getEthFixedCost(ethers?.baseFee);
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ethers.baseFee, ethers.gas_limit, currentPriority, priorityList])
 
-    // useEffect(() => {
-    //   if(withdrawData?.isEthereum){
-    //     initEthWithdraw()
-    //     createEthersProvider()
-    //   }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [withdrawData?.isEthereum])
+    useEffect(() => {//inicializo config de ethereum si es necesario
+      if(withdrawData?.isEthereum){
+        isEthereumRef.current = true
+        initEthWithdraw()
+        createEthersProvider()
+      }else{
+        isEthereumRef.current = false
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawData?.isEthereum])
 
-
-
-    // useEffect(() => {
-    //   let _withdrawProvider = (!isEmpty(withdrawProviders?.current) && !isEmpty(withdrawProvidersByName)) && withdrawProvidersByName[current_wallet?.currency][withdrawProviders?.current?.provider_type]
-    //     if(_withdrawProvider){
-    //     setWithdrawProvider(_withdrawProvider)
-    //     let _priorityList = _withdrawProvider?.provider?.costs
-    //     setPriorityList(_priorityList)
-    //     setWithdrawData(prevState => ({
-    //       ...prevState, 
-    //       minAmount:getMinAmount(_withdrawProvider), 
-    //       isEthereum:!_priorityList[currentPriority]?.fixed && isEthValidator(_withdrawProvider?.address_validator_config?.name)
-    //     }))
-    //   }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [withdrawProvidersByName, withdrawProviders])
-
-    // useEffect(() => {
-    //   if(withdrawProvider){
-    //     const { takeFeeFromAmount, fixedCost } = withdrawData
-    //     let minAmountProv = getMinAmount(withdrawProvider)
-    //     let _minAmount = current_wallet ? formatToCurrency(minAmountProv, current_wallet?.currency) : minAmountProv
-    //     let minAmountWithCost = fixedCost ? _minAmount.plus(fixedCost) : _minAmount
-    //     setWithdrawData(prevState => ({...prevState, minAmount:takeFeeFromAmount === true ? minAmountWithCost : _minAmount}))
-    //   }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [withdrawProvider, current_wallet, withdrawData.fixedCost, withdrawData.takeFeeFromAmount])
+    useEffect(() => {//inicializo o actualizo la configuración de la red si se cambia de proveedor(red)
+      if(!isEmpty(withdrawProviders?.current)){
+        let _priorityList = withdrawProviders?.current?.provider?.costs
+        setPriorityList(_priorityList)
+        setPriority(DEFAULT_COST_ID[withdrawProviders?.current?.provider_type] || DEFAULT_COST_ID?.default)
+        setWithdrawData(prevState => ({
+          ...prevState, 
+          timeLeft:undefined, 
+          minAmount:getMinAmount(withdrawProviders?.current), 
+          isEthereum:!_priorityList[currentPriority]?.fixed && isEthValidator(withdrawProviders?.current?.address_validator_config?.name)
+        }))
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawProviders.current])
 
     useEffect(() => {
-      if(withdrawProvider){
-        setPriority(DEFAULT_COST_ID[withdrawProvider?.provider_type] || DEFAULT_COST_ID?.default)
+      if(withdrawProviders.current){ //inicializo o actualizo el monto mínimo si se modifica el costo fijo, gas limit o takeFeeFromAmount
+        const { takeFeeFromAmount, fixedCost } = withdrawData
+        let minAmountProv = getMinAmount(withdrawProviders.current)
+        let _minAmount = current_wallet ? formatToCurrency(minAmountProv, current_wallet?.currency) : minAmountProv
+        let minAmountWithCost = fixedCost ? _minAmount.plus(fixedCost) : _minAmount
+        setWithdrawData(prevState => ({...prevState, minAmount:takeFeeFromAmount === true ? minAmountWithCost : _minAmount}))
       }
-    }, [withdrawProvider])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawProviders.current, withdrawData.fixedCost, withdrawData.takeFeeFromAmount])
 
-    // useEffect(() => {
-    //   const { totalBalance, fixedCost, minAmount } = withdrawData
-    //   let finalBalance = formatToCurrency(balance.available, balance?.currency)
-    //   if(!withdrawData.takeFeeFromAmount){
-    //       if(totalBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
-    //         finalBalance = finalBalance?.minus(fixedCost)
-    //       }else{
-    //         finalBalance = BigNumber(0)
-    //       }
-    //   }
-    //   setWithdrawData(prevState => ({...prevState, availableBalance:finalBalance}))
-    //   // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [withdrawData.minAmount, withdrawData.fixedCost])
-
-    console.log('currentPriority', currentPriority, withdrawProviders.current)
-    // console.log('withdrawData', withdrawData)
-    
+    useEffect(() => {//actualizo el monto disponible si se modifica el costo fijo, gas limit o takeFeeFromAmount
+      const { totalBalance, fixedCost, minAmount } = withdrawData
+      let finalBalance = formatToCurrency(balance.available, balance?.currency)
+      if(!withdrawData.takeFeeFromAmount){
+          if(totalBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
+            finalBalance = finalBalance?.minus(fixedCost)
+          }else{
+            finalBalance = BigNumber(0)
+          }
+      }
+      setWithdrawData(prevState => ({...prevState, availableBalance:finalBalance}))
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawData.minAmount, withdrawData.fixedCost])
  
     return ( 
       <>
@@ -231,7 +206,7 @@ export default function withCryptoProvider(AsComponent) {
           {...props}
           withdrawProviders={withdrawProviders}
           withdraw_accounts={withdraw_accounts}
-          withdrawProvider={withdrawProvider}
+          withdrawProvider={withdrawProviders.current}
         />
       </>
     )
