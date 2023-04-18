@@ -1,7 +1,7 @@
 
 export const MENU_LABELS = {
   withdraw:"Enviar",
-  deposit:"Recibir",
+  deposit:"Depositar",
 }
 
 

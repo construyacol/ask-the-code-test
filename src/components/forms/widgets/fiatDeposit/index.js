@@ -22,6 +22,7 @@ import useBreadCumb from 'hooks/useBreadCumb'
 import StatusPanelStates from './statusPanelStates'
 import { FIAT_DEPOSIT_TYPES, CTA_UI_NAME } from './api' 
 import { createPaymentRequestLink } from 'utils/paymentRequest'
+import { MENU_LABELS } from 'api/ui/menuItems'
 
 
 const ProviderComponent = loadable(() => import("./depositProviderStage"), {fallback:<StageSkeleton/>});
@@ -30,7 +31,6 @@ const PersonTypeComponent = loadable(() => import("./personType"), {fallback:<St
 const BankNameListComponent = loadable(() => import("./bankName"), {fallback:<StageSkeleton/>});
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
 const CriptoSupervisor = loadable(() => import("components/wallets/views/depositCripto"), {fallback:<StageSkeleton/>});
-
 
 const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
   const { isMobile } = useViewport();
@@ -64,7 +64,7 @@ const {
 
  
 const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
-  parentLabel:'Recibir',
+  parentLabel:MENU_LABELS.deposit,
   childLabel:stageData?.settings?.breadCumbConfig?.childLabel,
   titleSelector:".accountDetailTitle h1>span",
   ctaBackSelector:"#withdraw-menu-button",

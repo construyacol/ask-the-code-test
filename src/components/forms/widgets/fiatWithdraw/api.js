@@ -31,7 +31,7 @@ export const FIAT_WITHDRAW_TYPES = {
 
 const STAGES = {
   [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:{
-      uiName:"¿En que cuenta quieres recibir tu retiro?",
+      uiName:"¿En que cuenta quieres recibir tu dinero?",
       key:FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT,
       uiType:"select",
       "settings":{
@@ -42,7 +42,7 @@ const STAGES = {
 
 const BANK_WITHDRAW = {
   [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]:{
-    uiName:"¿Cuanto quieres retirar?",
+    uiName:"¿Cuanto quieres enviar?",
     key:FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT,
     uiType:"text",
     "settings":{
@@ -170,7 +170,7 @@ export const ApiGetTwoFactorIsEnabled = async() => {
 
 export const ApiPostWithdrawConfirm = async(_withdrawData) => {
   let withdrawData = await mainService.getWithdrawById(_withdrawData.id)
-  if(!['pending'].includes(withdrawData?.state))return { error:{ message: "El retiro no se puede confirmar porque no está pendiente" } };
+  if(!['pending'].includes(withdrawData?.state))return { error:{ message: "El envío no se puede confirmar porque no está pendiente" } };
   let { error, data } = await mainService.addUpdateWithdraw(withdrawData.id, "confirmed");
   if(error)return {error};
   mainService.manageBalance(data.account_id, "reduce", data.amount);

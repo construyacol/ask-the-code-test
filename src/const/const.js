@@ -45,7 +45,7 @@ export const ORDER_TYPE_UI_NAME = {
     value:"deposits"
   }, 
   withdraws: {
-    ui_name:"Retiro", 
+    ui_name:"Envío", 
     value:"withdraws"
   }, 
   swaps:{
@@ -85,7 +85,7 @@ export const WALLET_FILTER_LIST = {
     value:"deposits"
   }, 
   withdraws: {
-    name:"Retiros", 
+    name:"Envíos", 
     value:"withdraws"
   }, 
   swaps:{
@@ -96,7 +96,7 @@ export const WALLET_FILTER_LIST = {
 
 export const WITHDRAW_ACCOUNT_FILTER_LIST = {
   withdraws: {
-  name:"Retiros", 
+  name:"Envíos", 
   value:"withdraws"
   }
 }
@@ -130,7 +130,7 @@ export const loadLabels = {
     "Obteniendo tus registros de intercambios",
   OBTENIENDO_CUENTAS_DE_RETIRO: "Obteniendo cuentas de retiro",
   OBTENIENDO_PROVEEDORES_DE_RETIRO: "Obteniendo proveedores de retiro",
-  OBTENIENDO_TUS_REGISTROS_DE_RETIROS: "Obteniendo tus registros de retiros",
+  OBTENIENDO_TUS_REGISTROS_DE_RETIROS: "Obteniendo tus registros de envíos",
   OBTENIENDO_TODAS_LAS_DIVISAS: "Obteniendo todas las divisas",
   CARGANDO_TU_INFORMACION: "Cargando tu información",
   OBTENIENDO_PROVEEDORES_DE_DEPOSITO: "Obteniendo proveedores de deposito",

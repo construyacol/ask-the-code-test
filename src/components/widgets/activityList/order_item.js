@@ -466,7 +466,7 @@ const getTypeOrder = (tx_path) => {
   return tx_path === "deposits"
     ? "Depósito"
     : tx_path === "withdraws"
-    ? "Retiro"
+    ? "Envío"
     : tx_path === "swaps" && "Intercambio";
 };
 

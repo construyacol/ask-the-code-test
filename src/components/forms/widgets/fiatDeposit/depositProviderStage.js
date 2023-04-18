@@ -92,7 +92,7 @@ function ProviderComponent({
             {
               showPaymentRequest &&
                 <OptionInputContainer>
-                  <P className="fuente _pLabel _inputLabelP">Genera un código QR para recibir pagos instantaneaos y grátuitos</P>
+                  <P className="fuente _pLabel _inputLabelP">Genera un enlace de pago o código QR para recibir pagos instantaneaos y grátuitos</P>
                   <SelectListContainer>
                     {
                       Object.keys(depositServiceList).map((key, index) => {

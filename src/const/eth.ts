@@ -10,7 +10,7 @@ export const INFURA_URI = `https://mainnet.infura.io/v3/${INFURA_ID}`
 const HIGH_PROIORITY = {
   uiName:"Alta",
   color:COLOR_FEES?.high?.color,
-  description:"El retiro se procesará de inmediato"
+  description:"El envio se procesará de inmediato"
 }
 
 export const PRIORITY_CONFIG = {
@@ -18,12 +18,12 @@ export const PRIORITY_CONFIG = {
   medium:{
     uiName:"Media",
     color:COLOR_FEES?.medium?.color,
-    description:"El retiro tomará hasta 15 minutos en procesarse"
+    description:"El envio tomará hasta 15 minutos en procesarse"
   },
   low:{
     uiName:"Baja",
     color:COLOR_FEES?.low?.color,
-    description:"El retiro tomará hasta 30 minutos en procesarse"
+    description:"El envio tomará hasta 30 minutos en procesarse"
   },
   none:HIGH_PROIORITY,
 }

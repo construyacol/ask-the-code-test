@@ -169,7 +169,7 @@ const settings = {
           "id": 7,
           "name": "address_book",
           "label": "Agenda de direcciones",
-          "description": "Gestiona y administra tu agenda de direcciones para hacer depositos y retiros crypto.",
+          "description": "Gestiona y administra tu agenda de direcciones para hacer depositos y envíos crypto.",
           "verify": true,
           "cta_primary": "Inhabilitado",
           "cta_secondary": "Inhabilitado",
