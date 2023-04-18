@@ -30,7 +30,9 @@ export default function withdrawNetworksHoc(AsComponent) {
         // console.log('wProvsByNetwork', wProvsByNetwork)
         for (let providerId of networksProviders) {
           const networkProvider = wProvsByNetwork[providerId]
-            if(networkProvider?.currency_type !== 'crypto' || !networkProvider?.enabled) continue;
+            console.log('networkProvider', networkProvider)
+            const unAvailableCopCondition = networkProvider?.currency === 'cop' && networkProvider?.provider_type === 'internal_network'
+            if(networkProvider?.currency_type !== 'crypto' || !networkProvider?.enabled || unAvailableCopCondition) continue;
             _networks = {
                 ..._networks,
                 [networkProvider.provider_type]:{
@@ -57,6 +59,7 @@ export default function withdrawNetworksHoc(AsComponent) {
             // let secondsElapsed = timeDifference(new Date(suscriptionDate))
             // console.log('secondsElapsed', secondsElapsed)
             // if(secondsElapsed < 60) return toggleNetwork(network);
+
             // Si solo hay una red, se selecciona por defecto
             Object.keys(networks).length === 1 && toggleNetwork(Object.keys(networks)[0]);
           })()

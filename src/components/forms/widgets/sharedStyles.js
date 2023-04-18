@@ -268,14 +268,7 @@ export const MetaContainer = styled.div`
 
 // `
 
-export const OptionInputContainer = styled.div`
-  display:grid;
-  row-gap: 24px;
-  grid-template-rows:auto 1fr;
-  .pse p{
-    text-transform: uppercase;
-  }
-`
+
 
 export const Title = styled.h1`
     &.skeleton{
@@ -537,11 +530,21 @@ export const StageContainer = styled.div`
     &._bankNameList, 
     &._identityComponent{
       grid-template-rows:auto auto 1fr;
-    }
+    } 
   }
 
   input{
     font-family: "Tomorrow", sans-serif !important;
+  }
+`
+
+
+export const OptionInputContainer = styled.div`
+  display:grid;
+  row-gap: 24px;
+  grid-template-rows:auto 1fr;
+  .pse p{
+    text-transform: uppercase;
   }
 `
 

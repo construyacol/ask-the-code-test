@@ -176,42 +176,38 @@ const SelectListComponent = ({
 
 
 
-  export const SelectListSkeleton = props => {
-
-    const itemList = new Array(3).fill({
-      value:"createId",
-      icon:"add",
-      uiName:"Loading dataset..."
-    })
-
-    return(
-      <StageContainer className="_bankNameList skeleton">
-        <StageIndicator/>
-        <OptionInputContainer>
-          <p className="fuente _pLabel _inputLabelP">Loading skeleton awesome title for you my loba</p>
-          <SelectListContainer className="skeleton">
-            {
-              itemList.map((item, index) => {
-                  return <ItemListComponent 
-                    className="skeleton"
-                    key={index}
-                    itemList={item}
-                    firstIndex={index === 0}
-                    lastIndex={(Object.keys(itemList)?.length - 1) === index}
-                    isSelectedItem={Object.keys(itemList)?.length === 1}
-                    // isMovilViewport={isMovilViewport}
-                    // handleAction={() => null}
-                  />
-                })
-            }
-          </SelectListContainer>
-        </OptionInputContainer>
-      </StageContainer>
-    )
-
-  }
 
 
+export const SelectListSkeleton = ({skeletonItems = 1, stageIndicator = true}) => {
+  const itemList = new Array(skeletonItems).fill({
+    value:"createId",
+    icon:"add",
+    uiName:"Loading dataset..."
+  })
+  return(
+    <StageContainer className="_bankNameList skeleton">
+      {stageIndicator && <StageIndicator/>}
+      <OptionInputContainer>
+      <p className="fuente _pLabel _inputLabelP">Loading skeleton awesome title for you my loba</p>
+      <SelectListContainer className="skeleton">
+        {
+          itemList.map((item, index) => {
+              return <ItemListComponent 
+                className="skeleton"
+                key={index}
+                itemList={item}
+                firstIndex={index === 0}
+                lastIndex={(Object.keys(itemList)?.length - 1) === index}
+                isSelectedItem={Object.keys(itemList)?.length === 1}
+              />
+            })
+        }
+      </SelectListContainer>
+    </OptionInputContainer>
+    </StageContainer>
+  )
+
+}
 
 
 export const ItemProviderBankContainer = styled.div`
@@ -358,10 +354,20 @@ export const ItemProviderBankContainer = styled.div`
 
   &.disabled,
   &.skeleton{
+
+    &.isSelectedItem{
+      p{
+        color:var(--skeleton_color);
+      }
+    }
+
     opacity:0.7;
     border-left: 5px solid #E9E9E9;
     img{
       filter: grayscale(1);
+    }
+    .indicator{
+      visibility: hidden;
     }
     &:hover{
       .indicatorSon {
@@ -371,6 +377,7 @@ export const ItemProviderBankContainer = styled.div`
           transform: scale(0);
       }
     }
+
 
   }
 
