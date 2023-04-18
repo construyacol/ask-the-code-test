@@ -6,7 +6,7 @@ import useWindowDimensions from "../../hooks/useWindowDimensions";
 import useCurrencyPrices from "../../hooks/useCurrencyPrices";
 import { getCdnPath } from '../../environment'
 import { DEFAULT_CURRENCY, CURRENCY_INDEX_IMG } from 'core/config/currencies'
-
+ 
 // import { useSelector } from "react-redux";
 // import { selectWithConvertToObjectWithCustomIndex } from '../hooks/useTxState'
 
@@ -85,6 +85,7 @@ export default function PricesModalContent(props) {
             {isDesktop && <PairsSelect {...props} />}
             <CalculatorComponent currentPair={currentPair} />
           </div>
+
         </div> 
       </div>
       {!isDesktop && (
@@ -99,9 +100,10 @@ export default function PricesModalContent(props) {
 }
 
 const PairPrices = ({ currentPair }) => {
+  
   const [currencyLabel, buyPrice, sellPrice] = useCurrencyPrices(currentPair);
 
-  return (
+  return(
     <div className="pair-prices">
       <div className="price-container sell">
         <p className="fuente price">Te compramos {currencyLabel} a</p>

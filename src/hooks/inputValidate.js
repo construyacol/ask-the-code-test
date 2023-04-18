@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { formatToCurrency, _convertCurrencies } from "utils/convert_currency";
-import WithdrawViewState from "./withdrawStateHandle"; 
 import { useWalletInfo }  from "hooks/useWalletInfo";
 import BigNumber from "bignumber.js";
 import { checkIfFiat } from 'core/config/currencies';
@@ -10,12 +9,11 @@ export default (props) => {
 
   const [ inputState, setInputState ] = useState();
   const [ customError, setCustomError ] = useState();
-  const [{ withdrawProvidersByName }] = WithdrawViewState();
   const { currentPair, currentWallet, availableBalance } = useWalletInfo();
 
   let value
   let min_amount
-  let available
+  let available 
   let minAmountValidation
   let availableAmountValidation
 
@@ -51,21 +49,26 @@ export default (props) => {
           return;
         }
  
-        let AddressValidator;
-        AddressValidator = await import("multicoin-address-validator");
-
-        const { currency } = currentWallet;
-        let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
-        // currentNetwork
-        // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
-        const withdrawProvider = props?.currentNetwork || withdrawProvidersByName[currency]
+        // const { currency } = currentWallet;
+        const withdrawProvider = props?.currentNetwork
         if(!withdrawProvider)return;
-        const { address_validator_config:{ name, network } } = withdrawProvider
-        let addressVerify = await AddressValidator.validate(
-          finalValue,
-          name,
-          network || 'testnet'
-        );
+        const providerType = withdrawProvider?.provider_type
+        let finalValue = e.target.value;
+        let addressVerify
+        if(providerType === 'internal_network'){
+          const validations = await import("utils/validations");
+          addressVerify = validations?.emailValidation(finalValue)
+          // console.log('emailValidation', validations?.emailValidation(e.target.value))
+        }else{
+          let AddressValidator = await import("multicoin-address-validator");
+          // finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
+          const { address_validator_config:{ name, network } } = withdrawProvider
+          addressVerify = await AddressValidator.validate(
+            finalValue,
+            name,
+            network || 'testnet'
+          );
+        }
 
         if (addressVerify) {
           setInputState("good");
@@ -79,7 +82,6 @@ export default (props) => {
       case "amount": // Retiro cripto
       case "spend-amount": // Swap input spend
 
-      // console.log('||||||| inputName ', e.target.value.replace(/[^0-9.,]/g, ""))
         if(e.target.value.match(/[^0-9.,]/g)){return e.target.value = e.target.value.replace(/[^0-9.,]/g, "")}
         value = await formatToCurrency(e.target.value.toString().replace(/,/g, ""), currentWallet.currency);
         if (isNaN(value.toNumber()) || value.toNumber() === "NaN") {
@@ -178,12 +180,15 @@ export default (props) => {
       // const isSecondaryCurrency = currentWallet.currency === currentPair.secondary_currency
         // return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
-      case 'amount':
-        const { getMinAmount} = await import('utils/withdrawProvider')
-        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[props?.currentNetwork?.currency || currentWallet.currency])
-        return withdrawMinAmount
+      
+        // case 'amount':
+        // const { getMinAmount} = await import('utils/withdrawProvider')
+        // const withdrawMinAmount = await getMinAmount(currentWallet.currency])
+        // return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 
+      console.log('spend-amount')
+
         let minAmount = new BigNumber(0)
         const minOperationCurrency = currentPair.exchange.min_operation.currency
         if([minOperationCurrency].includes(currentWallet.currency)){

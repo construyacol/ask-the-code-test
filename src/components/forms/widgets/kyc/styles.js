@@ -272,9 +272,7 @@ export const InputContainer = styled.form`
   background: white;
   padding: 1px;
   transition:.01s;
-
   
-
   &._progress_bar{
     grid-template-rows:1fr auto;
   }

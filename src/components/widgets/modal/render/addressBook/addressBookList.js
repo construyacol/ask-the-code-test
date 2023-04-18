@@ -48,10 +48,7 @@ const AddressBookComponent = ({
 
     const result = withdrawAccounts.filter(
       (withdrawAccount) =>
-        withdrawAccount.info.label
-          .toLowerCase()
-          .includes(value.toLowerCase()) ||
-        withdrawAccount.info.address.includes(value)
+        withdrawAccount.info.label.toLowerCase().includes(value.toLowerCase()) || withdrawAccount?.info?.address?.includes(value) || withdrawAccount?.info?.identifier?.includes(value)
     );
     const condition =
       value.length > 1 && result.length < withdrawAccounts.length;
@@ -114,7 +111,7 @@ const AddressBookComponent = ({
                 );
               })
             : withdrawAccounts.map((item, index) => {
-                return (
+                return ( 
                   <ItemList
                     key={index}
                     item={item}

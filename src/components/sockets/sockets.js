@@ -11,6 +11,8 @@ import { funcDebounce, funcDebounces } from 'utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
 import { checkIfFiat } from 'core/config/currencies';
+import { serveModelsByCustomProps } from 'selectors'
+
 
 
 import { postLocalNotification } from 'utils'
@@ -197,211 +199,43 @@ class SocketsComponent extends Component {
 //     // }
 //   }
 
-
-
-
-
-  withdraw_account_mangagement = async(withdrawAccount) => {
-
-      // console.log('withdraw_account_mangagement', withdrawAccount)
-      if(!this.props.withdraw_accounts[withdrawAccount.id]){return}
-      if(withdrawAccount.state === 'in_progress' || withdrawAccount.state === 'complete' || withdrawAccount.state === 'rejected'){
-        this.props.action.update_item_state({
-          [withdrawAccount.id]: {
-            ...this.props.withdraw_accounts[withdrawAccount.id],
-            ...withdrawAccount
-          }
-        }, "withdraw_accounts");
-
-        if(withdrawAccount.state === 'complete'){
-          this.props.toastMessage("Nueva cuenta de retiro inscrita", "success");
-          this.props.action.success_sound();
+withdraw_account_mangagement = async(withdrawAccount) => {
+    // console.log('withdraw_account_mangagement', withdrawAccount)
+    if(!this.props.withdraw_accounts[withdrawAccount.id]){return}
+    if(withdrawAccount.state === 'in_progress' || withdrawAccount.state === 'complete' || withdrawAccount.state === 'rejected'){
+      this.props.action.update_item_state({
+        [withdrawAccount.id]: {
+          ...this.props.withdraw_accounts[withdrawAccount.id],
+          ...withdrawAccount
         }
+      }, "withdraw_accounts");
 
-      }
-
-  } 
-
-  withdraw_mangagement = async (withdraw) => {
-
-    if (withdraw.proof) {
-      if (
-        !this.props.withdraws ||
-        (this.props.withdraws && !this.props.withdraws[withdraw.id])
-      ) {
-        // Si no hay ordenes de retiro, ó si las hay, pero no está este retiro dentro de las ordenes disponibles en el estado
-        let cWithdraw = await this.props.coinsendaServices.getOrderById(
-          withdraw.id,
-          "withdraws"
-        );
-        await this.props.coinsendaServices.get_withdraws(cWithdraw.account_id);
-        // entonces consulte las ultimas ordenes de retiro de esta cuenta y actualiza el estado
-        await this.setState({ currentWithdraw: cWithdraw });
-      }
-      // Teniendo la orden de retiro en el estado, agrégue la prueba de pago y actualice el estado a: "aceptado" en el modelo de la orden de retiro
-      if (this.props.withdraws && this.props.withdraws[withdraw.id]) {
-
-
-        funcDebounces({
-          keyId:{[`withdraw_${withdraw?.state}`]:withdraw.id}, 
-          storageType:"sessionStorage",
-          timeExect:1500,
-          callback:() => {
-            postLocalNotification({
-              title:"Coinsenda",
-              summaryText:"Enhorabuena",
-              largeBody:"¡Tu retiro ha sido debitado!",
-              body:"¡Tu retiro ha sido debitado!"
-            })
-          }
-        })
-
-        await this.props.action.update_item_state(
-          {
-            [withdraw.id]: {
-              ...this.props.withdraws[withdraw.id],
-              proof: withdraw.proof,
-              sent: true,
-              state: "accepted",
-            },
-          },
-          "withdraws"
-        );
-        await this.props.coinsendaServices.updateActivityState(
-          this.props.withdraws[withdraw.id].account_id,
-          "withdraws"
-        );
-        this.props.action.addNotification(
-          "wallets",
-          {
-            account_id: this.props.withdraws[withdraw.id].account_id,
-            order_id: withdraw.id,
-          },
-          1
-        );
-        // this.props.coinsendaServices.showNotification('Retiro exitoso', 'Retiro enviado con éxito')
+      if(withdrawAccount.state === 'complete'){
+        this.props.toastMessage("Nueva cuenta de retiro inscrita", "success");
         this.props.action.success_sound();
-        if (!this.props.isModalActive && !this.props.isRenderModalActive) {
-          await this.props.action.socket_notify(
-            this.props.withdraws[withdraw.id],
-            "withdraws"
-          );
-          this.props.action.toggleOtherModal();
-        }
       }
     }
+} 
 
-    if (withdraw.state === "pending" && !checkIfFiat(withdraw.currency)) {
-      // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
-      sessionStorage.removeItem(`withdrawInProcessFrom${withdraw?.account_id}`)
-      funcDebounce( 
-        {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
-        async() => { 
-          let { error } = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, "confirmed");
-          this.props.action.isAppLoading(false);
-          if (error) return this.props.toastMessage(error?.message, "error");
-        },
-        false,
-        8000
-      );
-    } 
-
-    const { currentWithdraw } = this.state;
-    // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
-    // debugger
-    // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
-    if (withdraw.state === "confirmed" && !checkIfFiat(currentWithdraw.currency)) {
-      // Añade esta orden de retiro crypto confirmado al estado
-      // actualiza la actividad de la cuenta a la que corresponde este retiro y actualiza el balance
-      let new_withdraw_model = {
-        id: currentWithdraw.id,
-        account_id: currentWithdraw.account_id,
-        ...currentWithdraw,
-        state: "confirmed",
-      };
-      await this.props.coinsendaServices.addItemToState(
-        "withdraws",
-        new_withdraw_model
-      );
-      await this.props.coinsendaServices.updateActivityState(
-        new_withdraw_model.account_id,
+withdraw_mangagement = async (withdraw) => {
+  // console.log('SOCKETwithdraw_mangagement', withdraw)
+  if (withdraw.proof || (withdraw?.metadata?.withdraw_proof && withdraw?.metadata?.is_internal)) {
+    if (
+      !this.props.withdraws ||
+      (this.props.withdraws && !this.props.withdraws[withdraw.id])
+    ) {
+      // Si no hay ordenes de retiro, ó si las hay, pero no está este retiro dentro de las ordenes disponibles en el estado
+      let cWithdraw = await this.props.coinsendaServices.getOrderById(
+        withdraw.id,
         "withdraws"
       );
-      await this.props.coinsendaServices.manageBalance(
-        new_withdraw_model.account_id,
-        "reduce",
-        new_withdraw_model.amount
-      );
-      await this.props.action.isAppLoading(false);
-      this.props.action.add_new_transaction_animation();
-      // this.props.coinsendaServices.getWalletsByUser(true)
-      this.props.history.push(
-        `/wallets/activity/${new_withdraw_model.account_id}/withdraws`
-      );
+      await this.props.coinsendaServices.get_withdraws(cWithdraw.account_id);
+      // entonces consulte las ultimas ordenes de retiro de esta cuenta y actualiza el estado
+      await this.setState({ currentWithdraw: cWithdraw });
     }
+    // Teniendo la orden de retiro en el estado, agrégue la prueba de pago y actualice el estado a: "aceptado" en el modelo de la orden de retiro
+    if (this.props.withdraws && this.props.withdraws[withdraw.id]) {
 
-    if (withdraw.state === "accepted" && checkIfFiat(currentWithdraw.currency)) {
-  
-      let new_withdraw = {...this.state.currentWithdraw};
-      await this.props.coinsendaServices.addItemToState("withdraws", {
-        ...new_withdraw,
-        state: "confirmed",
-      }); 
-      await this.props.coinsendaServices.updateActivityState(
-        new_withdraw.account_id,
-        "withdraws"
-      );
-      this.props.action.add_new_transaction_animation();
-      // alert('withdraw accepted')
-      //update used_counter of withdraw account relation
-
-      if (this.props.withdraw_accounts[currentWithdraw.withdraw_account_id]) {
-        let withdraw_account = this.props.withdraw_accounts[
-          currentWithdraw.withdraw_account_id
-        ];
-        //actualiza el movimiento operacional de la cuenta de retiro
-        this.props.action.update_item_state(
-          {
-            [currentWithdraw.withdraw_account_id]: {
-              ...withdraw_account,
-              used_counter: ++withdraw_account.used_counter,
-              inscribed: true,
-            },
-          },
-          "withdraw_accounts"
-        );
-      }
-
-      this.props.history.push(`/wallets/activity/${new_withdraw.account_id}/withdraws`);
-    }
-
-
-    if (withdraw.state === "rejected" || withdraw.state === "canceled") {
-      
-      // await this.props.coinsendaServices.get_withdraws(this.props.withdraws[withdraw.id].account_id)
-      setTimeout(async () => {
-        await this.props.action.update_item_state(
-          { 
-            [withdraw.id]: {
-              ...this.props.withdraws[withdraw.id],
-              state: withdraw.state,
-            },
-          },
-          "withdraws"
-        );
-
-        await this.props.coinsendaServices.updateActivityState(
-          this.props.withdraws[withdraw.id].account_id,
-          "withdraws"
-        );
-
-        await this.props.coinsendaServices.getWalletsByUser(true)
-
-      }, 500);
-
-      // this.props.action.exit_sound();
-      let state = withdraw.state === "canceled" ? "cancelado" : "rechazado";
-      this.props.toastMessage(`Retiro ${state}`, "error");
 
       funcDebounces({
         keyId:{[`withdraw_${withdraw?.state}`]:withdraw.id}, 
@@ -410,14 +244,175 @@ class SocketsComponent extends Component {
         callback:() => {
           postLocalNotification({
             title:"Coinsenda",
-            summaryText:"Algo ha salido mal :(",
-            largeBody:`¡Tu retiro No se ha podido realizar!`,
-            body:`¡Tu retiro No se ha podido realizar!`
+            summaryText:"Enhorabuena",
+            largeBody:"¡Tu retiro ha sido debitado!",
+            body:"¡Tu retiro ha sido debitado!"
           })
         }
       })
+
+      await this.props.action.update_item_state(
+        {
+          [withdraw.id]: {
+            ...this.props.withdraws[withdraw.id],
+            proof: withdraw.proof,
+            sent: true,
+            state: "accepted",
+          },
+        },
+        "withdraws"
+      );
+      await this.props.coinsendaServices.updateActivityState(
+        this.props.withdraws[withdraw.id].account_id,
+        "withdraws"
+      );
+      this.props.action.addNotification(
+        "wallets",
+        {
+          account_id: this.props.withdraws[withdraw.id].account_id,
+          order_id: withdraw.id,
+        },
+        1
+      );
+      // this.props.coinsendaServices.showNotification('Retiro exitoso', 'Retiro enviado con éxito')
+      this.props.action.success_sound();
+      if (!this.props.isModalActive && !this.props.isRenderModalActive) {
+        await this.props.action.socket_notify(
+          this.props.withdraws[withdraw.id],
+          "withdraws"
+        );
+        this.props.action.toggleOtherModal();
+      }
     }
-  };
+  }
+
+  if (withdraw.state === "pending" && !checkIfFiat(withdraw.currency)) {
+    // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
+    sessionStorage.removeItem(`withdrawInProcessFrom${withdraw?.account_id}`)
+    funcDebounce( 
+      {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
+      async() => { 
+        let { error } = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, "confirmed");
+        this.props.action.isAppLoading(false);
+        if (error) return this.props.toastMessage(error?.message, "error");
+      },
+      false,
+      8000
+    );
+  } 
+
+  const { currentWithdraw } = this.state;
+  // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
+  // debugger
+  // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
+  if (withdraw.state === "confirmed" && !checkIfFiat(currentWithdraw.currency)) {
+    // Añade esta orden de retiro crypto confirmado al estado
+    // actualiza la actividad de la cuenta a la que corresponde este retiro y actualiza el balance
+    let new_withdraw_model = {
+      id: currentWithdraw.id,
+      account_id: currentWithdraw.account_id,
+      ...currentWithdraw,
+      state: "confirmed",
+    };
+    await this.props.coinsendaServices.addItemToState(
+      "withdraws",
+      new_withdraw_model
+    );
+    await this.props.coinsendaServices.updateActivityState(
+      new_withdraw_model.account_id,
+      "withdraws"
+    );
+    await this.props.coinsendaServices.manageBalance(
+      new_withdraw_model.account_id,
+      "reduce",
+      new_withdraw_model.amount
+    );
+    await this.props.action.isAppLoading(false);
+    this.props.action.add_new_transaction_animation();
+    // this.props.coinsendaServices.getWalletsByUser(true)
+    this.props.history.push(
+      `/wallets/activity/${new_withdraw_model.account_id}/withdraws`
+    );
+  }
+
+  if (withdraw.state === "accepted" && checkIfFiat(currentWithdraw.currency)) {
+
+    let new_withdraw = {...this.state.currentWithdraw};
+    await this.props.coinsendaServices.addItemToState("withdraws", {
+      ...new_withdraw,
+      state: "confirmed",
+    }); 
+    await this.props.coinsendaServices.updateActivityState(
+      new_withdraw.account_id,
+      "withdraws"
+    );
+    this.props.action.add_new_transaction_animation();
+    // alert('withdraw accepted')
+    //update used_counter of withdraw account relation
+
+    if (this.props.withdraw_accounts[currentWithdraw.withdraw_account_id]) {
+      let withdraw_account = this.props.withdraw_accounts[
+        currentWithdraw.withdraw_account_id
+      ];
+      //actualiza el movimiento operacional de la cuenta de retiro
+      this.props.action.update_item_state(
+        {
+          [currentWithdraw.withdraw_account_id]: {
+            ...withdraw_account,
+            used_counter: ++withdraw_account.used_counter,
+            inscribed: true,
+          },
+        },
+        "withdraw_accounts"
+      );
+    }
+
+    this.props.history.push(`/wallets/activity/${new_withdraw.account_id}/withdraws`);
+  }
+
+
+  if (withdraw.state === "rejected" || withdraw.state === "canceled") {
+    
+    // await this.props.coinsendaServices.get_withdraws(this.props.withdraws[withdraw.id].account_id)
+    setTimeout(async () => {
+      await this.props.action.update_item_state(
+        { 
+          [withdraw.id]: {
+            ...this.props.withdraws[withdraw.id],
+            state: withdraw.state,
+          },
+        },
+        "withdraws"
+      );
+
+      await this.props.coinsendaServices.updateActivityState(
+        this.props.withdraws[withdraw.id].account_id,
+        "withdraws"
+      );
+
+      await this.props.coinsendaServices.getWalletsByUser(true)
+
+    }, 500);
+
+    // this.props.action.exit_sound();
+    let state = withdraw.state === "canceled" ? "cancelado" : "rechazado";
+    this.props.toastMessage(`Retiro ${state}`, "error");
+
+    funcDebounces({
+      keyId:{[`withdraw_${withdraw?.state}`]:withdraw.id}, 
+      storageType:"sessionStorage",
+      timeExect:1500,
+      callback:() => {
+        postLocalNotification({
+          title:"Coinsenda",
+          summaryText:"Algo ha salido mal :(",
+          largeBody:`¡Tu retiro No se ha podido realizar!`,
+          body:`¡Tu retiro No se ha podido realizar!`
+        })
+      }
+    })
+  }
+};
 
   deposit_mangagement = async (deposit) => {
 
@@ -496,23 +491,16 @@ class SocketsComponent extends Component {
       }
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
-
-        // const walletAccount = this.props.wallets[this?.props?.deposits[deposit.id]?.account_id];
-        // const provKeys = Object.keys(this.props.deposit_providers)
-        const depositProviders = this.props.deposit_providers
-        // const provKey = await provKeys.find(depProvKey => [walletAccount?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
-        const currencyDepositProvider = depositProviders[this.props.deposits[deposit.id]?.deposit_provider_id]?.depositAccount
-        // console.log('currencyDepositProvider', currencyDepositProvider)
-        // console.log('deposit', deposit)
-
-        // console.log('confirmations ==> ', currencyDepositProvider?.confirmations, typeof currencyDepositProvider?.confirmations)
+        const depositProvider = this.props.deposit_providers[this.props.deposits[deposit.id]?.deposit_provider_id]
+        const depositAccountsByProvType = serveModelsByCustomProps(this.props.depositAccounts, 'provider_type')
+        const depositAccount = depositAccountsByProvType[depositProvider?.provider_type];
 
         await this.props.action.update_item_state(
           {
             [deposit.id]: {
               ...this.props.deposits[deposit.id],
               confirmations: deposit.confirmations,
-              state:deposit.confirmations > (currencyDepositProvider?.confirmations || 6) ? 'accepted' : 'confirmed'
+              state:deposit.confirmations > (depositAccount?.confirmations || 6) ? 'accepted' : 'confirmed'
             },
           },
           "deposits"
@@ -898,6 +886,7 @@ const mapStateToProps = (state, props) => {
   const { loggedIn } = state.auth;
   const {
     user,
+    depositAccounts,
     deposits,
     withdraws,
     wallets,
@@ -912,6 +901,7 @@ const mapStateToProps = (state, props) => {
     loggedIn,
     user: user,
     deposits,
+    depositAccounts,
     withdraws,
     activity_for_account: state.storage.activity_for_account,
     wallets,

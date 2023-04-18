@@ -28,7 +28,7 @@ export const getCdnPath = (target) => {
 //   // let BASE_URL = hostname.includes('localhost') ? `https://${_prefix}${getHostName()}.com` : `https://${_prefix}${hostname}`
 //   const BASE_URL = `https://${_prefix}${getHostName()}.com`
 //   console.log('|||||| BASE_URL', BASE_URL)
-//   return BASE_URL
+//   return BASE_URL 
 // }
 
 Environment = {

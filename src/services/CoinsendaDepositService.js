@@ -15,51 +15,30 @@ import actions from "../actions";
 import { normalized_list } from "../utils";
 import sleep from 'utils/sleep'
 import { isEmpty } from 'lodash'
-import { checkIfFiat } from 'core/config/currencies';
+// import { checkIfFiat } from 'core/config/currencies';
 
 
 const { update_item_state } = actions;
 
-export class DepositService extends WebService {
+export class DepositService extends WebService { 
 
   async fetchDepositProviders() {
 
     this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO)
     );
-    const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`;
+    const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}`;
     const response = await this.Get(finalUrl);
     if (!response) return;
-
     let updateState = true;
-    // if (await this.isCached("deposit_providers", response)) {
-    //   updateState = false;
-    // }
-
-    const result = response.reduce((result, item) => {
-      // TODO:// Reportar por sentry cuando un deposit provider no tenga deposit account
-      result.push({
-        ...item,
-        provider: {
-          ...item?.depositAccount,
-          account: {
-            ...item?.depositAccount?.account,
-          },
-        },
-      });
-      return result;
-    }
-    , []);
-
+    const result = response
     const finalData = {
       id: this.user.id,
       deposit_providers: [...result],
     };
-
     const normalizedData = await normalizeUser(finalData);
     updateState && this.dispatch(updateNormalizedDataAction(normalizedData));
     document.querySelector('#home-container')?.classList?.add('dP')
-
     return normalizedData.entities.deposit_providers;
   }
 
@@ -67,29 +46,6 @@ export class DepositService extends WebService {
 
   async createDeposit(body) {
     return await this._Post(NEW_DEPOSIT_URL, body);
-
-    // const user = this.user
-    // const { currency, amount, cost_id, deposit_provider_id, account_id } = payload
-    // const body = {
-    //   data: {
-    //     currency,
-    //     amount,
-    //     cost_id,
-    //     deposit_provider_id,
-    //     comment: "",
-    //     account_id,
-    //     country: user.country,
-    //   },
-    // };
-
-
-    // const result = await this.Post(NEW_DEPOSIT_URL, body);
-    // if (result === 465 || !result) {
-    //   return false;
-    // }
-    // const { data } = result;
-
-    // return data;
   }
 
   
@@ -204,28 +160,30 @@ export class DepositService extends WebService {
   async getDepositByAccountId(accountId, filter) {
     const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where":{"account_id":"${accountId}"${filter ? `, ${filter}` : ""}}}`;
     const deposit = await this.Get(finalUrl);
-    // console.log('|||||||||||||||||||||||||||||||||||||||||||| FINAL URL ::', finalUrl, deposit)
     return deposit;
   }
 
 
+   
   async subscribeToAllNewDeposits() {
     const { deposit_providers } = this.globalState?.modelData
+    const { INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST, EXCLUDED_NETWORK_COLLECTION } = await import('core/config/currencies')
     if(!deposit_providers)return ;
     for (const depProv in deposit_providers) {
-      if(!checkIfFiat(deposit_providers[depProv]?.currency)){
-        await sleep(2000)
+      if(INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST[deposit_providers[depProv]?.currency] && !EXCLUDED_NETWORK_COLLECTION[deposit_providers[depProv]?.provider_type]){
         await this.subscribeToNewDeposits(depProv)
+        await sleep(2000)
       }
     }
   }
 
-  async subscribeToNewDeposits(provider_id) {
+  async subscribeToNewDeposits(provider_id, account_id) {
     const user = this.user;
     const body = {
       data: {
         country: user.country,
         deposit_provider_id: provider_id,
+        account_id
       },
     };
     return await this._Post(SUBSCRIBE_TO_DEPOSITS_URL, body);

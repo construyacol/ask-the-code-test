@@ -26,7 +26,7 @@ export default function CookieMessage(props) {
   }
 
   const goToNew = () => {
-    history.push(`/wallets/deposit/${fiatWallet?.id}`)
+    history.push(`/wallets/withdraw/${fiatWallet?.id}`)
     clickHandler()
   }
 
@@ -52,13 +52,14 @@ export default function CookieMessage(props) {
     <Close onClick={clickHandler}>X</Close>
     <Content>
       <IconSwitch 
-        size={50}
-        icon="pse"
+        size={30}
+        icon="withdraw"
+        color="var(--primary)"
       />
       <br/>
-      <h4 className='fuente' style={{textAlign:"center"}}>¡No más preocupaciones por los horarios bancarios!</h4>
+      <h4 className='fuente' style={{textAlign:"center"}}>¡Transferencias totalmente gratuitas!</h4>
       <p className="fuente">
-      Ahora puedes realizar tus depósitos de manera fácil y segura a través de <strong>PSE</strong>. Aprovecha esta nueva forma de pago y disfruta de una experiencia bancaria sin complicaciones!
+        Ahora puedes enviar y recibir dinero de forma instantanea a cualquier persona vinculada o no a Coinsenda
       </p>
       <br/>
       <div className={` cookie-button-container ${styles["cookie-button-container"]}`}>

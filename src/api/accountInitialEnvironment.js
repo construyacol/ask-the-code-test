@@ -5,7 +5,7 @@ export const createAccounts = (currencies = DEFAULT_CURRENCIES) => {
   let environment = ["development", "staging"].includes(ENV) ? 'test' : 'prod';
   const initialAccounts = currencies.map(currency => {
     return{
-      name:`Mi billetera ${CURRENCIES[currency][`${environment}Name`]}`,
+      name:`Mi Billetera ${CURRENCIES[currency][`${environment}Name`]}`,
       currency: CURRENCIES[currency][environment]
     }
   })

@@ -32,43 +32,55 @@ import { BottomSection } from './'
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { checkCameraPermission } from 'utils'
-import { selectDepositProvsByCurrency } from 'selectors'
+// import { selectDepositProvsByCurrency } from 'selectors'
+import { selectDepositAccountsByNetwork } from 'selectors'
 import { PseCTA } from 'components/forms/widgets/fiatDeposit/success'
 import moment from "moment";
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
+
 import "moment/locale/es";
-import { checkIfFiat } from 'core/config/currencies';
-moment.locale("es");
+moment.locale("es"); 
 
 const InProcessOrder = ({ onErrorCatch }) => {
+
   const { currentOrder } = UseTxState();
+  const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
+  const depositAccountsByProvType = useSelector((state) => selectDepositAccountsByNetwork(state, currentOrder?.currency));
+
+  const depositProvider = depositProviders[currentOrder?.deposit_provider_id]
+  const depositAccount = depositProvider ? depositAccountsByProvType[depositProvider?.provider_type] : {};
+
   if (!currentOrder || !currentOrder.currency) return onErrorCatch();
+
+  let props = {
+    depositAccountsByProvType,
+    order:currentOrder,
+    depositAccount,
+    depositProvider
+    // depositProviders,
+  }
+  console.log('currentOrder', currentOrder)
+
   return (
     <>
-      {checkIfFiat(currentOrder?.currency) ? (
-        <FiatOrder order={currentOrder} />
+      {depositProviders[currentOrder?.deposit_provider_id]?.currency_type === 'fiat' || (checkIfFiat(currentOrder.currency) && currentOrder?.info?.is_internal) ? (
+        <FiatOrder {...props} />
       ) : (
-        <CryptoOrder order={currentOrder} />
+        <CryptoOrder {...props} />
       )}
-    </>
+    </> 
   );
 };
 
 export default InProcessOrder;
 
-const CryptoOrder = ({ order }) => {
+const CryptoOrder = ({ order, depositProvider, depositAccount }) => {
 
   const { tx_path } = UseTxState();
-  const depositProviders = useSelector((state) => selectDepositProvsByCurrency(state));
-
-  let totalConfirmations
-  let confirmations
-
-  if((order?.currency && depositProviders) && Object.keys(depositProviders).length) {
-    totalConfirmations = depositProviders[order.currency]?.depositAccount?.confirmations && Number(depositProviders[order.currency]?.depositAccount?.confirmations)
-    confirmations = Number(order.confirmations)
-  }
-
   const { isTabletOrMovilViewport } = useViewport();
+  let confirmations = Number(order?.confirmations || 0)
+  let totalConfirmations = 0
+  if(depositAccount) totalConfirmations = Number(depositAccount?.confirmations)
 
   return (
     <InProcessOrderContainer className="_inProcessOrderContainer">
@@ -82,7 +94,7 @@ const CryptoOrder = ({ order }) => {
           />
           <TitleContainer>
             <Text className="fuente">{getTitle(tx_path)}</Text>
-            <Currency className="fuente">{order.currency}</Currency>
+            <Currency className="fuente">{parseSymbolCurrency(order.currency)}</Currency>
           </TitleContainer>
           <DateIdContainter>
             <Text className="fuente2">#{order.id}</Text>
@@ -91,8 +103,8 @@ const CryptoOrder = ({ order }) => {
             </DateText>
           </DateIdContainter>
         </TopSection>
-
-        {isTabletOrMovilViewport && <OrderStatus order={order} movil />}
+ 
+        {isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} movil />}
 
         <MiddleSection state={order.state}>
           <DetailGenerator
@@ -101,11 +113,15 @@ const CryptoOrder = ({ order }) => {
             TitleSuffix={() => <GetIcon order={order} />}
           />
         </MiddleSection>
- 
+  
         {
-          tx_path === "deposits" ? (
+          (tx_path === "deposits" && !order?.info?.is_internal) ? (
             <BottomSectionContainer className={`crypto`}>
-              <UploadComponent title="TX ID - Confirmaciones" />
+              <UploadComponent 
+                title="TX ID - Confirmaciones" 
+                depositAccount={depositAccount}
+                order={order}
+              />
               <ConfirmationCounter
                 confirmations={confirmations}
                 total_confirmations={totalConfirmations}
@@ -116,21 +132,21 @@ const CryptoOrder = ({ order }) => {
         }
       </OrderContainer>
 
-      {!isTabletOrMovilViewport && <OrderStatus order={order} />}
+      {!isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} />}
     </InProcessOrderContainer>
   );
 };
 
-const FiatOrder = ({ order }) => {
+const FiatOrder = (props) => {
+
+  const { order, depositProvider, depositAccount } = props
+  
   const [onDrag, setOnDrag] = useState(false);
   const [imgSrc, setImgSrc] = useState(false);
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
   const [ , , toBigNumber ] = useFormatCurrency()
   const { osDevice } = useSelector((state) => state?.ui);
-  
-
-  // const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {
     event.preventDefault();
@@ -145,7 +161,6 @@ const FiatOrder = ({ order }) => {
       setOnDrag(!onDrag);
     } 
   };
-
 
   const goFileLoader = async (e) => {
       setOnDrag(false);
@@ -208,18 +223,22 @@ const FiatOrder = ({ order }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+ 
+  console.log('||||||||||||||||| order', order)
+  // const currencyType = (depositProvider?.currency_type === 'fiat' || (checkIfFiat(order?.currency) && order?.info?.is_internal)) ? 'fiat' : 'crypto'
+
   return (
     <InProcessOrderContainer>
       <IconClose theme="dark" size={20} />
-
       <OrderContainer onDragOver={dragOver} className={`${osDevice}`}>
         {onDrag && !imgSrc && order.state === "pending" && (
           <DropZoneComponent
             dragLeave={dragLeave}
             goFileLoader={goFileLoader}
-          />
+            depositAccount={depositAccount}
+            order={order}
+          /> 
         )} 
-
         <TopSection>
           <IconSwitch
             className="TitleIconOrder"
@@ -228,7 +247,7 @@ const FiatOrder = ({ order }) => {
           />
           <TitleContainer>
             <Text className="fuente">{getTitle(tx_path)}</Text>
-            <Currency className="fuente">{order.currency}</Currency>
+            <Currency className="fuente">{parseSymbolCurrency(order.currency)}</Currency>
           </TitleContainer>
           <DateIdContainter>
             <Text className="fuente2">#{order.id}</Text>
@@ -238,7 +257,7 @@ const FiatOrder = ({ order }) => {
           </DateIdContainter>
         </TopSection>
 
-        {isTabletOrMovilViewport && <OrderStatus order={order} movil />}
+        {isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} movil />}
 
         <MiddleSection state={order.state}>
           <DetailGenerator
@@ -249,26 +268,28 @@ const FiatOrder = ({ order }) => {
         </MiddleSection>
 
         {
-          tx_path === "deposits" ? (
+          (tx_path === "deposits" && !order?.info?.is_internal) ? (
           <BottomSectionContainer>
             <UploadComponent
               imgSrc={imgSrc}
               goFileLoader={goFileLoader}
               setImgSrc={setImgSrc}
+              depositAccount={depositAccount}
+              order={order}
             />
           </BottomSectionContainer>)
-          :
+          :  
           <BottomSection colorState={"var(--paragraph_color)"} currentOrder={order} tx_path={tx_path} />
         }
 
       </OrderContainer>
 
-      {!isTabletOrMovilViewport && <OrderStatus order={order} />}
+      {!isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} />}
     </InProcessOrderContainer>
   );
 };
 
-const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
+const DropZoneComponent = ({ dragLeave, order, goFileLoader, depositAccount }) => {
   return (
     <DropZoneContainer>
       <input
@@ -283,13 +304,15 @@ const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
       <UploadComponent
         unButtom
         title="Suelta aquí el archivo que quieres subir..."
+        depositAccount={depositAccount}
+        order={order}
       />
     </DropZoneContainer>
   );
 };
 
-const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => {
-  const { currentOrder } = UseTxState();
+const UploadComponent = ({ order, unButtom, title, goFileLoader, imgSrc, depositAccount, ...props}) => {
+  // const { currentOrder } = UseTxState();
   const idForFileUpload = useKeyActionAsClick(
     true,
     "TFileUpload",
@@ -299,10 +322,8 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
     true
   );
 
-
-  const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
-  const isPseDeposit = depositProviders[currentOrder?.deposit_provider_id]?.depositAccount?.name === 'pse'
-
+  const isPseDeposit = depositAccount?.name === 'pse'
+  
   const INPUT_FILE_PROPS = {
     type:"file",
     accept:"image/png,image/jpeg",
@@ -317,13 +338,12 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
 
   const inputProps = CAPACITOR_PLATFORM !== 'web' ? INPUT_BUTTON_PROPS : INPUT_FILE_PROPS
 
-
   return ( 
     <UploadContainer
-      className={`${imgSrc || currentOrder.state === "confirmed" ? "loaded" : "unload"}`}
+      className={`${imgSrc || order.state === "confirmed" ? "loaded" : "unload"}`}
     >
       {
-        !imgSrc && currentOrder.state !== "confirmed" ? (
+        !imgSrc && order.state !== "confirmed" ? (
         <Fragment>
           <AiOutlineUpload size={45} color="var(--paragraph_color)" />
           <UploadText className="fuente">
@@ -353,7 +373,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
         <Fragment>
           <UploadMiddle className="titleSection payment fuente">
             <UploadTextMiddle className="titleSection">
-               {title || isPseDeposit ? 'Depósito realizado por PSE' :'Comprobante de pago'}
+               {title ? title : isPseDeposit ? 'Depósito realizado por PSE' :'Comprobante de pago'}
             </UploadTextMiddle>
             <hr />
           </UploadMiddle>
@@ -361,7 +381,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
             isPseDeposit ?
             <PseCTA 
               depositAccount={{provider_type:"pse"}}
-              depositOrder={currentOrder}
+              depositOrder={order}
             >
               <PaymentProof/>
             </PseCTA>

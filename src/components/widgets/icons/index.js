@@ -1,7 +1,21 @@
 import React from "react";
 import Icon from "./iconLayout";
+import loadable from "@loadable/component"
 import "./icons.css";
+import { getExportByName } from 'utils'
 
+
+
+export function BankAccount(props) {
+  const CiBank = loadable(() => import("react-icons/ci").then(getExportByName("CiBank")));
+  return <CiBank {...props}/>
+}
+
+
+export function Internals(props) {
+  const BsPerson = loadable(() => import("react-icons/bs").then(getExportByName("BsPerson")));
+  return <BsPerson {...props}/>
+}
 
 
 
@@ -28,6 +42,10 @@ export function CreditCard(props) {
     />
   );
 }
+
+
+
+
 
 
 export function Contact(props) {
@@ -63,7 +81,8 @@ export function PSE(props) {
     <img
       width={props.size}
       height={props.size}
-      src={`data:image/png;base64, ${PSEbase64}`}
+      // src={`data:image/png;base64, ${PSEbase64}`}
+      src={`https://s3.amazonaws.com/coinsenda.cdn/assets/userPanel/pse.png`}
       alt=""
     />
   );

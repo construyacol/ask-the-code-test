@@ -21,7 +21,8 @@ export const FIAT_DEPOSIT_TYPES = {
     BANK_NAME:"bank_name",
     AMOUNT:"depositAmount", 
     PROVIDER:"depositAccount",
-    PERSON_TYPE:"person_type"
+    PERSON_TYPE:"person_type",
+    CRYPTO:"depositCripto"
   }
 }
 
@@ -48,11 +49,11 @@ const PSE_STAGES = {
     "settings":{
       defaultMessage:"",
       placeholder:"Escribe el nombre de tu banco"
-  }
+    }
   },
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
-
 }
+
 
 const BANK_DEFAULT_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
@@ -76,10 +77,7 @@ const BANK_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 }
 
-const DEPOSIT_TYPE_STAGES = {
-  pse:PSE_STAGES,
-  bank:BANK_STAGES
-}
+
 
 const STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
@@ -92,18 +90,68 @@ const STAGES = {
   }  
 } 
 
-const despositAccountInfoNeeded = (depositAccount) => {
-  const infoNeeded = ungapStructuredClone(depositAccount?.info_needed)
+const CRYPTO_STAGE = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:{
+    // uiName:"",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO,
+    uiType:"text",
+    value:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO,
+    "settings":{
+      defaultMessage:"",
+      breadCumbConfig:{
+        childLabel:"A billetera DCOP",
+        active:true
+      },
+      config:{
+        hideStatusPanel:true
+      },
+      queryParams:{
+        form:'deposit_crypto'
+      }
+    }
+  }
+}
+
+const CRYPTO_API_STAGE = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:{
+    ui_type:"text"
+  }
+}
+
+const CRYPTO_API_STAGES = {
+  ethereum_testnet:CRYPTO_API_STAGE,
+  ethereum:CRYPTO_API_STAGE,
+  bsc:CRYPTO_API_STAGE,
+}
+
+const CRYPTO_STAGES = {
+  ethereum_testnet:CRYPTO_STAGE,
+  ethereum:CRYPTO_STAGE,
+  bsc:CRYPTO_STAGE,
+}
+
+
+const DEPOSIT_TYPE_STAGES = {
+  pse:PSE_STAGES,
+  bank:BANK_STAGES,
+  ...CRYPTO_STAGES
+}
+
+
+const depositApiStages = (_depositAccount) => {  
+  const depositAccount = _depositAccount?.info_needed ? ungapStructuredClone(_depositAccount?.info_needed) : _depositAccount
   const providerTypes = {
     pse:{
-      ...infoNeeded,
+      ...depositAccount,
       [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
         ui_type:"text"
       }
     },
-    bank:BANK_DEFAULT_STAGES
+    bank:BANK_DEFAULT_STAGES,
+    ...CRYPTO_API_STAGES
   }
-  return providerTypes[depositAccount.provider_type] || BANK_DEFAULT_STAGES
+
+  return providerTypes[_depositAccount?.provider_type] || BANK_DEFAULT_STAGES
 }
 
 export const createNextStages = async({ 
@@ -114,7 +162,8 @@ export const createNextStages = async({
  
   if(!state[stageData?.key])return;
   const providerType = state[stageData?.key]?.provider_type || 'bank'
-  const apiStages = despositAccountInfoNeeded(state[stageData?.key])
+  const apiStages = depositApiStages(state[stageData?.key])
+
   let stages = {} 
   for (const stage of Object.keys(apiStages)) { 
     stages = {
@@ -122,9 +171,8 @@ export const createNextStages = async({
       [stage]:await createStage(apiStages[stage], DEPOSIT_TYPE_STAGES[providerType][stage], stage)
     }
   } 
- 
   stages = await recursiveAddList(stages, apiStages)
-  
+
   setDataForm(prevState => {
     return { 
       ...prevState,
@@ -160,9 +208,9 @@ export const ApiPostCreateBankDeposit = async({
   state:{
     depositAmount,
     depositCost
-  }, 
+  },  
   currentWallet, 
-  depositProvider 
+  depositProvider  
 }) => { 
   let body = {
     data:{
@@ -171,7 +219,7 @@ export const ApiPostCreateBankDeposit = async({
       comment:"",
       cost_id:depositCost?.value,
       country:currentWallet?.country,
-      currency:depositProvider?.currency,
+      currency:currentWallet?.currency,
       deposit_provider_id:depositProvider?.id
     }
   }
@@ -198,7 +246,8 @@ export const ApiPostCreatePseDeposit = async({
       // cost_id:depositCost?.value,
       country:currentWallet?.country,
       currency:currentWallet?.currency,
-      deposit_provider_id:depositProvider?.id
+      deposit_provider_id:depositProvider?.id,
+      callback_url:"https://app.coinsenda.com/wallets"
     }
   }
   return await mainService.createDeposit(body);
@@ -232,8 +281,6 @@ export const DEPOSIT_COSTS = {
 export const selectProviderData = createSelector(
   (depositAccount) => depositAccount,
   (depositAccount) => {
-    // console.log('selectProviderData', depositAccount)
-    // debugger
     if(!depositAccount)return [ null, null ];
     const _depositAccount = ["other_bank"].includes(depositAccount?.value) ? depositAccount?.defaultProv : depositAccount;
     if(!_depositAccount)return [ null, null ];

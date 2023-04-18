@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import { useActions } from "../../../../hooks/useActions";
 import useToastMessage from "../../../../hooks/useToastMessage";
-import WithOutProvider from "./withOutProvider";
+// import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import { history } from "../../../../const/const";
 import { useSelector } from "react-redux";
@@ -17,22 +17,25 @@ import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
 import loadable from "@loadable/component";
 import OtherModalLayout from "components/widgets/modal/otherModalLayout";
+import { createProviderInfoNeeded } from 'utils/withdrawProvider'
 
-const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")));
-const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")));
  
-const CriptoSupervisor = (props) => { 
-  const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
+const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")), {fallback:<div></div>});
+const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")), {fallback:<div></div>});
 
+
+const CriptoSupervisor = (props) => { 
+  const { withdrawProvidersByName } = props;
   return (
     <>
-      {isEmpty(withdrawProvidersByName) ? (
+      {
+       isEmpty(withdrawProvidersByName) ? 
         <SkeletonWithdrawView />
-      ) : !withdrawProvider ? (
-        <WithOutProvider current_wallet={current_wallet} />
-      ) : (
-        <CriptoView {...props}/>
-      )}
+       : 
+       <>
+          <CriptoView {...props}/>
+       </>
+      }
     </>
   );
 };
@@ -44,7 +47,7 @@ export default withCryptoProvider(CriptoSupervisor)
 export const CriptoView = (props) => {
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
-
+ 
   const {
     current_wallet,
     withdrawProvider,
@@ -102,6 +105,9 @@ export const CriptoView = (props) => {
     actions.renderModal(null);
   };
  
+
+
+
   const finish_withdraw = async (fnProps) => {
     const { twoFaToken = null, cost_information, gas_limit } = fnProps
     actions.isAppLoading(true);
@@ -114,18 +120,17 @@ export const CriptoView = (props) => {
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} {...fnProps} />
       ));
     } 
+
     let withdraw_account = withdraw_accounts[addressValue];
-    if (!withdraw_account) {  
+
+    if (!withdraw_account) { 
       const body = {
         data:{
           country:current_wallet?.country,
           currency: current_wallet.currency,
           provider_type: withdrawProvider?.provider_type,
-          internal:withdrawProvider?.internal,
-          info_needed:{
-            label:current_wallet.currency,
-            address:addressValue.trim(),
-          }
+          internal:withdrawProvider?.internal || false,
+          info_needed:createProviderInfoNeeded({ accountLabel:current_wallet.currency, accountAddress:addressValue, provider_type:withdrawProvider?.provider_type })
         }
       }
       const { data } = await coinsendaServices.createWithdrawAccount(body);
@@ -194,24 +199,28 @@ export const CriptoView = (props) => {
   };
 
   const handleChangeAddress = (_, value) => {
-    // console.log('handleChangeAddress', value)
+    // console.log('handleChangeAddress', value, value.replace(/[^@a-zA-Z0-9.]/g, ""))
     // debugger
-    setAddressValue(value.replace(/[^@a-zA-Z0-9]/g, ""));
+    // setAddressValue(value.replace(/[^@a-zA-Z0-9.]/g, ""));
+    setAddressValue(value);
   };
+
+
 
   const deleteTag = () => {
     setTagWithdrawAccount(null);
     setAddressValue("");
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     const condition = !active_trade_operation && amountState === "good" && addressState === "good";
     if (isValidForm.current !== condition) {
       isValidForm.current = condition;
     }
-    if (addressState === "good") {
+    if (addressState === "good" && withdrawProviders?.current?.provider_type !== 'internal_network') {
       document.getElementsByName("amount")[0].focus();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active_trade_operation, amountState, addressState]);
 
 
@@ -270,7 +279,8 @@ export const CriptoView = (props) => {
     setIsOpenPanel,
     isMobile,
     provider,
-    withdrawProviders
+    withdrawProviders,
+    // withdrawProvider:withdrawProviders.current
   }
 
   const panelHProps = {
@@ -282,26 +292,26 @@ export const CriptoView = (props) => {
     setIsOpenPanel,
     addressValue,
     withdrawConfirmed,
-    isMobile
+    isMobile,
+    // withdrawProvider:withdrawProviders.current
   } 
 
-
   if(isEmpty(withdrawProviders.current)){
-    return<SelectWithdrawNetwork uiName={`Selecciona la red en la que deseas realizar tu retiro ${current_wallet?.currency?.toUpperCase()}`} callback={setNetworkProvider}/>
+    return<SelectWithdrawNetwork uiName={`Selecciona la red por la que deseas enviar ${current_wallet?.currency?.toUpperCase()}`} callback={setNetworkProvider}/>
   }
 
-  
   return ( 
-    <>
+    <> 
+      {props?.children}
       <AvailableWithdrawNetwork currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/>
       <CriptoWithdrawForm>  
         <WithdrawFormComponent
           {...formProps}
         />
-        <PanelHelper
-          {...props}
-          {...panelHProps}
-        />
+          <PanelHelper
+            {...props} 
+            {...panelHProps}
+          />
       </CriptoWithdrawForm>
     </>
   ); 

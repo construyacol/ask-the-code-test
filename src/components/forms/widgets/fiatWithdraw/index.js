@@ -1,59 +1,49 @@
 import { useEffect, useState } from 'react'
 import useStage from '../../hooks/useStage'
-import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import StageManagerComponent from '../stageManager'
-import StatusPanelComponent from '../statusPanel'
-// import { createInfoNeededStages } from './api'
-// import BankNameListComponent from './bankNameStage'
 import useViewport from '../../../../hooks/useWindowSize'
-// import { useSelector } from "react-redux";
-// import { createSelector } from "reselect";
-import { FIAT_WITHDRAW_TYPES } from './api'
+import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages, createNextStages } from './api'
 import { UI_ERRORS } from '../../../../const/uiErrors'
 import useToastMessage from "../../../../hooks/useToastMessage"; 
-// import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
-import styled from 'styled-components'
 import WithdrawAccountsComponent from './withdrawAccountStage' 
 import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
 import { useWalletInfo } from '../../../../hooks/useWalletInfo'
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
-import { getCost } from './validations'
-import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
-// import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
-// import StatusDisclaimer from './statusDisclaimer'
-import { selectWithdrawProvider } from './amountComponent'
 import { useSelector } from "react-redux";
-import { formatToCurrency } from '../../../../utils/convert_currency'
+import RenderSwitchComponent from 'components/renderSwitchComponent' 
+import StatusPanelStates from './statusPanelStates'
+import { selectFiatWithdrawAccounts, selectFiatWithdrawProviders } from 'selectors'
 import { selectWithdrawProvidersByName } from 'selectors'
+import useBreadCumb from 'hooks/useBreadCumb'
 
-// import { 
-//   LabelContainer,
-//   AccountLabel,
-//   IconAccount
-// } from '../../../widgets/headerAccount/styles'
 
+const DEFAULT_PROVIDER_TYPE = 'bank'
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
+const TargetPersonStage = loadable(() => import("./internals/targetPersonStage"), {fallback:<StageSkeleton/>});
+const CriptoSupervisor = loadable(() => import("components/wallets/views/withdrawCripto"), {fallback:<StageSkeleton/>});
 
 
-
-const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
+const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
 
   const { isMovilViewport } = useViewport();
-  const { dataForm } = handleDataForm
+  const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
-  const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
-  const [ toastMessage ] = useToastMessage();
+  const [ toastMessage ] = useToastMessage();    
+  const [ withdrawAccounts ] = useSelector((state) => selectFiatWithdrawAccounts(state));
+  const wProvidersByProvType = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
+  const [ withdrawProvidersByName ] = useSelector((state) => selectWithdrawProvidersByName(state));
   const actions = useActions()
-
   const walletInfo = useWalletInfo()
-  
+  const { state } = handleState
   const { currentWallet } = walletInfo
+  const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.provider_type || state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value 
+  const withdrawProvider = wProvidersByProvType[providerType] || wProvidersByProvType[DEFAULT_PROVIDER_TYPE]
   
   const stageManager = useStage(
     // create the form stages
@@ -61,17 +51,33 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
     dataForm.stages
   )
 
-const {
-  nextStage,
-  stageData,
-  currentStage,
-  stageStatus,
-  setStageStatus,
-  stageController,
-  lastStage
-} = stageManager
+  const {
+    nextStage,
+    stageData, 
+    currentStage,
+    stageStatus,
+    setStageStatus,
+    stageController,
+    lastStage,
+    goToStage
+  } = stageManager
 
-// setCreateAccount
+
+  const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
+    parentLabel:'Enviar',
+    childLabel:stageData?.settings?.breadCumbConfig?.childLabel,
+    titleSelector:".accountDetailTitle h1>span",
+    ctaBackSelector:"#withdraw-menu-button",
+    unMountCondition:currentStage === 0,
+    callback:() => goToStage(0)
+  }) 
+
+  useEffect(() => {
+    if(stageData?.settings?.breadCumbConfig?.active){
+      !isActiveBreadCumb && insertBreadCumb()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stageData])
 
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}
@@ -80,6 +86,8 @@ const {
       setLoading(true)
       setLoading(false)
     }
+    const initialStages = await ApiGetFiatWithdrawStages()
+    if(currentStage <= (Object.keys(initialStages).length - 1)) await createNextStages({stageData, state, setDataForm, ...props});
     nextStage()
   }
 
@@ -92,12 +100,8 @@ const {
   }
 
   const createFiatWithdraw = async({ twoFaToken }) => {
-    const { state } = handleState
     setLoading(true)
-
     const twoFactorIsEnabled = await ApiGetTwoFactorIsEnabled()
-    // console.log('twoFactorIsEnabled', twoFactorIsEnabled)
-    // debugger
     if(twoFactorIsEnabled && !twoFaToken){
       setLoading(false);
       return actions.renderModal(() => (
@@ -108,214 +112,86 @@ const {
         />
       ));
     }
-
-    if(twoFaToken) actions.renderModal(null);
-
-    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFaToken}) 
+    if(twoFaToken) actions.renderModal(null); 
+    const { error, data } = await ApiPostCreateFiatWithdraw({
+      ...state, 
+      currentWallet, 
+      withdrawProvider,
+      twoFaToken 
+    }) 
     if(error){
-      console.log('||||||||||  ApiPostCreateWAccount ===> ERROR', error)
-    setLoading(false)
-    return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
+      setLoading(false)
+      return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
     }
-
     await renderSuccessComponent(data)
     return setLoading(false)
   }
 
-  // if(finalStage){
-  //   return <p>finalStage</p>
-  // }
-  
-  const stageComponents = {
-    [FIAT_WITHDRAW_TYPES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
-    [FIAT_WITHDRAW_TYPES?.AMOUNT]:AmountComponent
+  const STAGE_COMPONENTS = { 
+    [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
+    [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]:AmountComponent,
+    [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:TargetPersonStage,
+    [FIAT_WITHDRAW_TYPES?.STAGES?.CRYPTO]:CriptoSupervisor,
   }
- 
-  const RenderStageComponent = stageComponents[stageData?.key] || ProofComponent 
-  
+
   const ButtonComponent = () => (
     <ButtonContainers>
       <ControlButton
         loader={loading}
         formValidate={(currentStage <= stageController.length) && stageStatus === 'success'}
-        label={`${lastStage ? "Crear retiro" : "Siguiente"}`}
+        label={`${lastStage ? "Envíar" : "Siguiente"}`}
         handleAction={lastStage ? createFiatWithdraw : nextStep}
       />
     </ButtonContainers>
   )
 
+  // console.log('withdrawAccounts', withdrawAccounts)
+  // console.log('handleState', handleState)
+
   return(
     <>
-        <RenderStageComponent
+        <RenderSwitchComponent
+          STAGE_COMPONENTS={STAGE_COMPONENTS}
+          component={stageData?.key}
           stageManager={stageManager}
           handleState={handleState}
           handleDataForm={handleDataForm}
-          withdrawProviders={withdrawProviders}
+          withdrawProviders={withdrawProvidersByName}
+          withdrawAccounts={withdrawAccounts}
+          wProvidersByProvType={wProvidersByProvType}
+          providerType={providerType}
+          withdrawProvider={withdrawProvider}
+          currentWallet={currentWallet}
+          actions={actions}
           {...props}
           {...walletInfo}
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
-        </RenderStageComponent>
-        
-        <StatusPanelComponent>
-          <StatusHeaderContainer>
-            <TitleContainer>
-              <h1 className="fuente">Resumen del retiro</h1>
-            </TitleContainer>
-            <StatusContent
-              state={handleState?.state}
-              stageManager={stageManager}
-            />
-          </StatusHeaderContainer>
-          
-          {
-            !isMovilViewport &&
-              <ButtonComponent/>
-          }
-        </StatusPanelComponent>
-
+        </RenderSwitchComponent>
         {
-          isMovilViewport &&
-            <ButtonComponent/>
+          !stageData?.settings?.config?.hideStatusPanel &&
+          <>
+            <StatusPanelStates
+              handleState={handleState}
+              stageManager={stageManager}
+              withdrawAccounts={withdrawAccounts}
+              withdrawProvider={withdrawProvider}
+            >
+              <>
+                {
+                  !isMovilViewport &&
+                    <ButtonComponent/>
+                }
+              </>
+            </StatusPanelStates>
+            {
+              isMovilViewport &&
+                <ButtonComponent/>
+            }
+          </>
         }
     </>                 
   )
 }
- 
 
-
-export default NewWAccountComponent
-
-
-
-const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
-
-const StatusContent = ({ state, stageManager }) => {
-
-  const { withdrawAccount, withdrawAmount } = state
-  const bankName = withdrawAccount?.bank_name
-  const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
-  const [ cost, setCost ] = useState()
-
-  useEffect(() => {
-    if(withdrawProvider && withdrawAccount){
-      let cost = getCost({withdrawProvider, withdrawAccount})
-      let parsed = formatToCurrency(cost, withdrawProvider?.currency)
-      setCost(parsed.toFormat())
-    }
-  }, [withdrawProvider, withdrawAccount])
-
-  // console.log('StatusContent stageManager', cost)
-  // getCost
-
-  return(
-    <StatusContainer>
-      <ItemContainer>
-          <LeftText className="fuente">Cuenta destino:</LeftText>
-          <MiddleSection />
-
-          <ContentRight>
-            <RightText className={`${bankName ? 'fuente' : 'skeleton'}`}>
-                {bankName?.ui_name?.toLowerCase() || 'skeleton --------'} 
-              </RightText>
-            {
-              bankName &&
-                <IconSwitch
-                    icon={bankName?.value}
-                    size={20}
-                  />
-            }
-          </ContentRight>
-      </ItemContainer>
-      {
-        stageManager?.currentStage === 1 &&
-        <>
-          <ItemContainer>
-              <LeftText className="fuente">Cantidad:</LeftText>
-              <MiddleSection />
-              <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                {`$ ${withdrawAmount} COP` || 'skeleton --------'} 
-              </RightText>
-          </ItemContainer>
-          {
-            (bankName?.value !== 'efecty' && withdrawAmount) &&
-            <ItemContainer>
-                <LeftText className="fuente">Costo:</LeftText>
-                <MiddleSection />
-                <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${cost} COP` || 'skeleton --------'} 
-                </RightText>
-            </ItemContainer>
-          }
-        </>
-      }
-      
-      {/* <TotalAmount color="var(--paragraph_color)">
-          <p className="fuente saldo">Cantidad a recibir</p>
-          <p className="fuente2 amount">
-                  $ {amount} <span className="fuente">{currencySimbol?.toUpperCase()}</span>
-          </p>
-      </TotalAmount> */}
-
-    </StatusContainer>
-  )
-}
-
-
-const ContentRight = styled.div`
-  display:flex;
-  align-items: center;
-  column-gap: 6px;
-  ${RightText}{
-    text-transform:capitalize;
-  }
-`
-
-
-const StatusContainer = styled.div`
-  width:100%;
-  height:auto;
-  padding-top:15px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 25px;
-
-  ${LeftText}{
-    font-weight: normal;
-  }
-`
-
-
-const TitleContainer = styled.div`
-  h1{
-    font-size: 22px;
-    font-size: 20px;
-    color: var(--paragraph_color);
-  }
-  border-bottom: 1px solid var(--skeleton_color);
-`
-
-const StatusHeaderContainer = styled.div`
-    position: sticky;
-    top: 190px;
-    display: grid;
-    grid-template-columns: 1fr;
-    row-gap: 15px;
-    grid-template-rows: auto 1fr;
-    height: auto;
-    max-height: 300px;
-`
-
-
-const ProofComponent = ({ children, nextStage }) => {
-  return(
-    <StageContainer>
-      {children}
-    </StageContainer>
-  )
-}
-
-
-
-
-
+export default FiatWithdraw

@@ -18,12 +18,11 @@ import {
 
 // third party 
 import styled from 'styled-components'
-
 import { OptionInput } from 'components/molecules'
 import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
-
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 // const warningMessage = {
 //     usdt_trc20:'Los retiros > a 5K TRC20 pueden tardar hasta 48 horas'
@@ -66,15 +65,18 @@ const WithdrawFormComponent = ({
 
     useEffect(() => {
         // Handle amount state
-        let avBalance = takeFeeFromAmount ? totalBalance : totalBalance?.minus(fixedCost)
-        let _amount = formatToCurrency(amount, current_wallet.currency)
-        if(_amount.isGreaterThan(avBalance)) setAmountState('bad')
-        if(!takeFeeFromAmount && _amount.isLessThanOrEqualTo(avBalance) && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
-        if(takeFeeFromAmount && _amount.isLessThan(minAmount)) setAmountState('bad')
-        if(takeFeeFromAmount && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
+        if(minAmount){
+            let avBalance = takeFeeFromAmount ? totalBalance : totalBalance?.minus(fixedCost)
+            let _amount = formatToCurrency(amount, current_wallet.currency)
+            if(_amount.isGreaterThan(avBalance)) setAmountState('bad')
+            if(!takeFeeFromAmount && _amount.isLessThanOrEqualTo(avBalance) && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
+            if(takeFeeFromAmount && _amount.isLessThan(minAmount)) setAmountState('bad')
+            if(takeFeeFromAmount && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
+            if(minAmount.isLessThanOrEqualTo(0)) setAmountState('bad')
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
-    const user_friendly = withdrawProviders?.current?.user_friendly
+
 
     return(
         <WithdrawForm
@@ -82,15 +84,15 @@ const WithdrawFormComponent = ({
         className={`${isMobile ? "movil" : ""}`}
         onSubmit={(e) => e.preventDefault()}
         >
-        <InputForm 
+        <InputForm  
             type="text" 
             placeholder={"Escribe @ para ver tu lista de direcciones..."}
-            name="address"
+            name="address" 
             handleStatus={setAddressState}
             isControlled 
             handleChange={handleChangeAddress}
             value={addressValue}
-            label={() => <p className="fuente">{`Ingresa la dirección de destino ${currencySymbol}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>}
+            label={() => <LabelAddress currencySymbol={currencySymbol} withdrawProvider={withdrawProviders?.current}   />}
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
             currentNetwork={withdrawProviders?.current}
@@ -158,7 +160,7 @@ const WithdrawFormComponent = ({
                         ) 
                     }
                     AuxComponent={[
-                        () => (<TakeCostFromWithdrawAmount checked={takeFeeFromAmount} onChange={switchFixedCost}/>)
+                        withdrawProviders?.current?.provider_type !== 'internal_network' ?  () => (<TakeCostFromWithdrawAmount checked={takeFeeFromAmount} onChange={switchFixedCost}/>) : () => null
                     ]} 
                 />
                 {
@@ -179,6 +181,15 @@ const WithdrawFormComponent = ({
 
 export default WithdrawFormComponent
 
+const LabelAddress = ({ currencySymbol, withdrawProvider  }) => {
+    const user_friendly = withdrawProvider?.user_friendly
+    const LABELS = {
+        default:() => <p className="fuente">{`Ingresa la dirección de destino ${parseSymbolCurrency(currencySymbol)}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>,
+        internal_network:() => <p className="fuente">Ingresa la dirección <strong>(correo electónico)</strong> de destino {parseSymbolCurrency(currencySymbol)} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>            
+    }
+    const RenderComponent = LABELS[withdrawProvider?.provider_type] || LABELS.default
+    return <RenderComponent/>
+}
 
 export const TakeCostFromWithdrawAmount = (props) => {
     return(
@@ -193,13 +204,11 @@ export const TakeCostFromWithdrawAmount = (props) => {
         </CheckWrapper>
     )
 }
-
 export const CheckWrapper = styled.div`
     position:absolute;
     bottom: -60px;
     left: 0;
 `
-
 export const BarSpeed = styled.div`
     width: 100%;
     height: 3px;
@@ -217,7 +226,6 @@ export const BarSpeed = styled.div`
         width: 0%;
     }
 `
-
 export const SpeedPriorityContainer = styled.div`
     display: flex;
     padding: 0 5px;
@@ -265,13 +273,10 @@ export const SpeedPriorityContainer = styled.div`
         left: -10px;
     }
 `
-
-
 export const BalanceContainer = styled.div`
     position: relative;
     background:red;
 `
-
 export const SuffixContainer = styled.div`
     display:flex;
     width:auto;

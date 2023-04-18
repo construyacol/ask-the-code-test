@@ -17,15 +17,13 @@ import useViewport from 'hooks/useWindowSize'
 
 
 const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
-
+ 
   // const mainContainerRef = useRef()
-  const actions = useActions(); 
-  const [{ current_wallet, path, withdrawProvidersByName }] = WithdrawViewState();
-  // const provider_type = current_wallet && withdrawProvidersByName[current_wallet.currency]?.provider_type;
+  const actions = useActions();  
+  const [{ current_wallet, path }] = WithdrawViewState();
   const provider_type = currentNetwork?.provider_type
   const withdrawAccounts = useSelector((state) => selectWithdrawAccounts(state, { provider_type, currency:current_wallet.currency }));
-   
-
+  
   const [view, setView] = useState("addressList");
   const { isMovilViewport } = useViewport()
 
@@ -85,7 +83,7 @@ const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
           size={20}
         />
         <HeaderComponent
-          uiName={currentNetwork?.provider?.ui_name || withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
+          uiName={currentNetwork?.provider?.ui_name}
           view={view}
           switchView={switchView}
         />
@@ -102,7 +100,7 @@ const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
                 provider_type={provider_type}
                 currentNetwork={currentNetwork}
                 currency={current_wallet.currency}
-                providerName={currentNetwork?.provider?.ui_name || withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
+                providerName={currentNetwork?.provider?.ui_name}
                 switchView={switchView}
                 addressToAdd={addressToAdd}
                 provider={currentNetwork}

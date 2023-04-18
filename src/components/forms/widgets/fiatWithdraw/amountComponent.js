@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
-import { useSelector } from "react-redux";
 import validations from './validations'
 import { createSelector } from "reselect";
 import AvailableBalance from '../../../widgets/availableBalance'
 import { formatToCurrency } from "../../../../utils/convert_currency";
 import StatusDisclaimer from './statusDisclaimer'
+import { FIAT_WITHDRAW_TYPES } from './api'
 
 export default function AmountComponent ({ 
     stageManager:{ 
@@ -20,17 +20,15 @@ export default function AmountComponent ({
     children,
     currentWallet,
     availableBalance,
-    withdrawProviders
+    withdrawProviders,
+    withdrawProvider
   }) {
 
-    const { withdrawAccount } = state
-    const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
     const [availableAmount, setAvailableAmount] = useState(availableBalance)
   
     const withdrawAmountOnChange = async(e) => {
       e.target.preventDefault && e.target.preventDefault();
       if(!validations[stageData?.key]) return;
-
       const [ _value, _status ] = await validations[stageData?.key](e?.target?.value, {
         ...stageData, 
         state,  
@@ -39,7 +37,6 @@ export default function AmountComponent ({
         availableBalance,
         currentWallet
       });
-
       e.target.value = _value
       setState(prevState => {
         return { ...prevState, [stageData?.key]: _value }
@@ -55,8 +52,7 @@ export default function AmountComponent ({
       setAvailableAmount(formatToCurrency(availableAmount, currentWallet?.currency))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-
+ 
       // load state  by default
       useEffect(() => {
         let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
@@ -66,6 +62,7 @@ export default function AmountComponent ({
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [state[stageData?.key]])
+
   
     return( 
       <StageContainer className="_withdrawAmount">
@@ -86,11 +83,14 @@ export default function AmountComponent ({
             amount={availableAmount}
           />)]}
         />
-        <StatusDisclaimer
-              withdrawAccount={state?.withdrawAccount}
-              className="fullDisclaimer"
-              withdrawProviders={withdrawProviders}
-          />
+        {
+          withdrawProvider?.provider_type !== FIAT_WITHDRAW_TYPES.TYPES.INTERNAL &&
+          <StatusDisclaimer 
+                withdrawAccount={state?.withdrawAccount}
+                className="fullDisclaimer"
+                withdrawProviders={withdrawProviders}
+            />
+        }
       </StageContainer>
     )
   

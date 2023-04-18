@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 import "./loader.css";
 
-export const SimpleLoader = (props) => {
+const SimpleLoader = (props) => {
   const { label, color, grid, loader, justify } = props;
   return (
-    <Fragment>
+    <>
       {!loader ? (
         <div
           className={`SimpleLoader ${
@@ -74,7 +74,7 @@ export const SimpleLoader = (props) => {
           </RollerLoader>
         )
       )}
-    </Fragment>
+    </>
   );
 };
 

@@ -2,10 +2,12 @@ import React, { useRef, useEffect, useState } from 'react'
 // import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
 import styled from 'styled-components'
-// import { getHostName } from 'environment'
+import { getHostName } from 'environment'
 
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
+
+
 
 export default function CookieMessage(props) {
 
@@ -25,7 +27,6 @@ export default function CookieMessage(props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainRef.current])
-
 
  
   return shouldRender ? (

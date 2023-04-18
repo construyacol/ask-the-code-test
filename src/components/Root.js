@@ -127,8 +127,6 @@ function RootContainer(props) {
         <LoaderAplication 
           history={history} 
           tryRestoreSession={tryRestoreSession}
-          // globalState={globalState}
-          // coinsendaServices={coinsendaServices}
           setShowOnBoarding={setShowOnBoarding} />
       ) : (
         <>

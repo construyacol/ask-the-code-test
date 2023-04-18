@@ -39,6 +39,13 @@ export const ALFilterSect = styled.section`
     z-index: 3;
   }
 
+  &.withIconDisable{
+    .currentFilter{
+      grid-template-columns: 1fr 25px;
+      margin-left: 15px;
+    }
+  }
+
 
 
   @media ${device.mobile} {

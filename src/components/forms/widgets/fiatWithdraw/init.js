@@ -4,12 +4,12 @@ import { initStages } from '../../utils'
 import { FIAT_WITHDRAW_TYPES } from './api'
 import { SelectListSkeleton } from '../selectListComponent'
 import { FormContainer } from '../sharedStyles'
+import { parseQueryString } from 'utils' 
 
 const NewFiatWithdrawAccountComponent = props => {
 
     const [ dataForm, setDataForm ] = useState()
     // const actions = useActions();
-
     
     const init = async() => {
       const _dataForm = await initStages(
@@ -23,9 +23,9 @@ const NewFiatWithdrawAccountComponent = props => {
     useEffect(()=> { 
       init()
     }, []) 
-   
+    
     return(
-      <FormContainer className="fiatWithdrawContainer">
+      <FormContainer className={`fiatWithdrawContainer ${parseQueryString()}`}>
           {
               dataForm ?
                 <FormComponent

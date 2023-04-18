@@ -184,14 +184,21 @@ const FingerPrint = loadable(() => import("./").then(getExportByName("FingerPrin
 const Location = loadable(() => import("./").then(getExportByName("Location")));
 
 const AddIcon = loadable(() => import("./").then(getExportByName("AddIcon")));
+const Internals = loadable(() => import("./").then(getExportByName("Internals")));
+const BankAccount = loadable(() => import("./").then(getExportByName("BankAccount")));
 
 
 
 class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
-    // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      
+      case "bankAccount":
+        return <BankAccount {...props} />; 
+      case "internal_network":
+      case "person":
+        return <Internals {...props} />; 
       case "pse":
       case "PSE":
         return <Pse {...props} />; 
@@ -410,6 +417,8 @@ class IconSwitch extends Component {
         return <Bitcoin2 {...props} />;
       case "cop":
       case "COP":
+      case "DCOP":
+      case "dcop":
       case "colombia":
         return <Cop {...props} />;
       case "peru":

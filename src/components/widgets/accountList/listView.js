@@ -8,7 +8,7 @@ import useCurrencies from '../../../hooks/useCurrencies'
 import BalanceComponent from "../balance/balance";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { useSelector } from "react-redux";
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, replaceTo, REPLACE_TO_CURRENCY_CONFIG } from 'core/config/currencies';
 import {
     // HeaderContainer,
     HeaderMainContainer,
@@ -25,16 +25,25 @@ import { OnlySkeletonAnimation } from '../loaders/skeleton'
 import TitleSection from '../titleSectionComponent'
 import { AccountListWrapper } from '../layoutStyles'
 import { BiRightArrowAlt } from 'react-icons/bi';
+import { parseSymbolCurrency, CURRENCY_LIST_DEFAULT_ORDER } from 'core/config/currencies'
+import { orderedList } from 'utils/orderedList'
+
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 export default function ListViewComponent(props) {
+
     const {
         items = []
     } = props
+
     const currencies = useCurrencies()
     const [ loading, setLoading ] = useState(false)
-    const accounts = items
+    const [ accounts, setAccounts ] = useState([])    
+
+    useEffect(() => { 
+        if(items)setAccounts(orderedList(items, CURRENCY_LIST_DEFAULT_ORDER, 'currency'))
+    }, [items])
     
     return(
         <ListViewContainer className={`listViewContainer ${loading ? 'loading' : ''}`}>
@@ -123,9 +132,8 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
         return history.push(`/wallets/activity/${account.id}/${currentFilter ? currentFilter : "deposits"}`);
     }
 
-    // const accountName = isMovilViewport ? `Billetera ${currency?.symbol || "-"}` : account?.name
-    const accountName = account?.name
-
+    const accountName = REPLACE_TO_CURRENCY_CONFIG[account?.currency] ? replaceTo(account?.name, REPLACE_TO_CURRENCY_CONFIG[account?.currency]) : account?.name
+ 
     return(
         <ItemAccountContainer onClick={loading ? null : toDetail} className={`${(loading && currentAccount) ? 'loading' : ''}`}>
             <IndicatorHover>
@@ -148,7 +156,7 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
                                 account={account}
                             />
                         :
-                        <CurrencyLabel>{currency?.symbol || '-'}</CurrencyLabel>
+                        <CurrencyLabel>{parseSymbolCurrency(currency?.symbol) || '-'}</CurrencyLabel>
                     }
                 </LabelContainer> 
             </HeaderMainContainer>

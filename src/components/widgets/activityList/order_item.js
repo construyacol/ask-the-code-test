@@ -16,6 +16,8 @@ import useToastMessage from "../../../hooks/useToastMessage";
 // import { selectDepositProvsByCurrency } from 'selectors'
 // import { useSelector } from "react-redux";
 import { checkIfFiat } from 'core/config/currencies';
+import { useSelector } from "react-redux";
+import { selectDepositAccountsByNetwork } from 'selectors'
 
 import {
   gotoTx,
@@ -36,7 +38,6 @@ const OrderItem = ({ order }) => {
   const txState = UseTxState(order.id);
   const [orderState, setOrderState] = useState();
   const { tx_path, new_order_style, actions, history } = txState;
-  // const [ show,  element ] = ObserverHook()
 
   const orderDetail = async (e) => {
     e.preventDefault();
@@ -61,7 +62,6 @@ const OrderItem = ({ order }) => {
   };
 
   const isLocked = order.locked
-  // console.log('||||||||||||||||||||||  ORDER DETAIL ===> ', order)
 
   return (
     <OrderContainer
@@ -82,7 +82,8 @@ const OrderItem = ({ order }) => {
   );
 };
 
-export default OrderItem;
+
+export default React.memo(OrderItem);
 
 const getIcon = (state) => {
   return state === "pending"
@@ -119,6 +120,10 @@ const getState = ({ state, currency }, tx_path) => {
 export const DepositOrder = ({ order }) => {
 
   const { new_order_style, tx_path = 'deposits', lastPendingOrderId } = UseTxState(order.id);
+  const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
+  const depositAccountsByProvType = useSelector((state) => selectDepositAccountsByNetwork(state, order?.currency));
+  const depositProvider = depositProviders[order?.deposit_provider_id]
+  const depositAccount = depositProvider ? depositAccountsByProvType[depositProvider?.provider_type] : {};
   
   const {
     state,
@@ -128,8 +133,6 @@ export const DepositOrder = ({ order }) => {
     orderState,
     currency,
   } = order;
-
-  
 
   useLayoutEffect(()=>{
     if(!checkIfFiat(currency) && state === 'pending' && document.getElementById(id)){
@@ -158,7 +161,7 @@ export const DepositOrder = ({ order }) => {
             <DeleteButton {...order} setOrderState={setOrderState} deleteAction="addUpdateDeposit" />
         }
 
-        <PanelLeft {...order} />
+        <PanelLeft {...order} depositAccount={depositAccount} />
         <OrderIcon className="fas fa-arrow-down" />
         <TypeOrderText className="fuente">
           {getTypeOrder(tx_path)}
@@ -424,19 +427,22 @@ const WithdrawOrder = ({ order }) => {
   
 const PanelLeft = (order) => {  
 
-  const { tx_path, deposit_providers } = UseTxState(order.id);
+  const { tx_path } = UseTxState(order.id);
   let totalConfirmations
   let confirmations
-  
-  if((order?.currency && deposit_providers) && Object.keys(deposit_providers).length) {
-    totalConfirmations = deposit_providers[order.deposit_provider_id]?.depositAccount?.confirmations && Number(deposit_providers[order.deposit_provider_id]?.depositAccount?.confirmations)
+
+  // console.log('depositAccount', order)
+
+  if(order?.depositAccount && order?.confirmations){
+    totalConfirmations = Number(order?.depositAccount?.confirmations)
     confirmations = Number(order.confirmations)
   }
 
   return (
     <>
       {!checkIfFiat(order?.currency) &&
-      order.state === "confirmed" &&
+      order?.state === "confirmed" &&
+      order?.confirmations &&
       tx_path === "deposits" ? (
         <Confrimations className="fuente2">
           <p className="withConfirmations">

@@ -8,13 +8,15 @@ import InputForm from "../../../inputs/inputForm";
 import { ControlButtonContainer } from "../../../shared-styles";
 import ControlButton from "../../../buttons/controlButton";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+import { createProviderInfoNeeded } from 'utils/withdrawProvider'
+
 
 const NewAccount = ({ currency, provider_type, provider, providerName, switchView, addressToAdd, currentNetwork }) => {
+
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState(addressToAdd);
   const [nameState, setNameState] = useState();
   const [loader, setLoader] = useState();
-
   const [coinsendaServices, , actions, dispatch] = useCoinsendaServices();
   const [{ withdraw_accounts, current_wallet }] = WithdrawViewState();
   const [toastMessage] = useToastMessage();
@@ -27,6 +29,38 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
     true
   );
 
+  // const createCriptoWithdrawAccount = async({ accountName, address }) => {
+  //   const body = {
+  //     data:{
+  //       country:current_wallet?.country,
+  //       currency: current_wallet.currency,
+  //       provider_type: provider_type,
+  //       internal:provider?.internal || false,
+  //       info_needed:{
+  //         label,
+  //         address:address.trim(),
+  //       }
+  //     }
+  //   }
+  //   return await coinsendaServices.createWithdrawAccount(body);
+  // }
+  // const createInternalWithdrawAccount = async({ accountName, address }) => {
+  //   const body = {
+  //     data:{
+  //       country:current_wallet?.country,
+  //       currency: current_wallet?.currency,
+  //       provider_type:provider?.provider_type,
+  //       internal:provider?.internal,
+  //       info_needed:{
+  //         identifier:address,
+  //         type:"email",
+  //         label:accountName
+  //       }
+  //     }
+  //   }
+  //   return await coinsendaServices.createWithdrawAccount(body);
+  // }
+
   const handleSubmit = async (e) => {
     e && e.preventDefault();
     setLoader(true);
@@ -34,38 +68,32 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
     const accountName = form.get("name-account");
     const address = form.get("address-account");
 
-    let label = accountName === currency ? `${accountName}${Math.floor(Math.random() * 100)}` : accountName
+
+
     const thisAccountExist = withdraw_accounts[address];
     const unlabeledAccount = thisAccountExist && thisAccountExist.info.label === currency
-
     if (unlabeledAccount) {
       // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
-      const hideAccount = await coinsendaServices.deleteAccount(
-        thisAccountExist.id
-      );
+      const hideAccount = await coinsendaServices.deleteAccount(thisAccountExist.id);
       if (!hideAccount) { 
         toastMessage("No se pudo ocultar la cuenta anónima", "error");
         return setLoader(false);
       }
-    } else if (thisAccountExist && thisAccountExist.info.label !== currency
-    ) {
+    } else if (thisAccountExist && address !== currency) {
       toastMessage("Esta cuenta de retiro ya existe", "error");
       return setLoader(false);
     } 
 
+    let label = accountName === currency ? `${accountName}${Math.floor(Math.random() * 100)}` : accountName
     const body = {
       data:{
         country:current_wallet?.country,
         currency: current_wallet.currency,
         provider_type: provider_type,
-        internal:provider?.internal,
-        info_needed:{
-          label,
-          address:address.trim(),
-        }
+        internal:provider?.internal || false,
+        info_needed:createProviderInfoNeeded({ accountLabel:label, accountAddress:address, provider_type })
       }
     }
-
     const { data, error } = await coinsendaServices.createWithdrawAccount(body);
 
     if (error) {
@@ -79,10 +107,12 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
     let idNewAccount = document.getElementById(data.id);
     idNewAccount && idNewAccount?.classList?.add("shower");
     setAddressValue();
+    
   };
 
   const handleChange = (_, value) => {
-    setAddressValue(value.replace(/[^a-zA-Z0-9]/g, ""));
+    let pattern = provider_type === 'internal_network' ? /[^@a-zA-Z0-9.]/g : /[^a-zA-Z0-9]/g
+    setAddressValue(value.replace(pattern, ""));
   }
 
   return (
@@ -101,7 +131,7 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
           autoComplete="off"
           handleStatus={setNameState}
         />
- 
+  
         <InputForm
           classes="fuente2"
           type="text"

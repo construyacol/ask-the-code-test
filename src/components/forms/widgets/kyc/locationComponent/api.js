@@ -78,8 +78,34 @@ export const ApiGetLocationStages = async(config) => {
 }
 
 
-export const ApiPostLocation = async(payload) => {
-  const res = await mainService.createLocation({data:payload})
+export const ApiPostLocation = async(payload) => { 
+
+  const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+  let body = {data:{}}
+  body.data = payload
+
+  if(env !== 'production'){
+    body.data = {
+      type:"residence",
+      aditional_info:"", //optional
+      country:"international",
+      info_needed:{
+        location_country:payload.location_country,
+        province:payload.province,
+        city:payload.city,
+        district:"alamos", //optional
+        street_name:"cra 4",
+        street_number:"23 - 44",
+        floor:"", //optional
+        apartment:"", //optional
+        zip_code:"66660001"
+      }
+    }
+  }
+
+  console.log('payload', payload)
+  
+  const res = await mainService.createLocation(body)
   if(!res)return ;
   await mainService.fetchCompleteUserData()
   const reqData = await mainService.getLevelRequirement()

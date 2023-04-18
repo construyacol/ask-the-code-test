@@ -12,7 +12,6 @@ import {
 } from 'utils/date'
 
 
-
 const birthday = (value, data) => {
 
     const isMaskInput = data.state?.birthday?.includes('/') 
@@ -66,8 +65,7 @@ const birthday = (value, data) => {
     // console.log('||||||||||| metadata phone ==> ', value, data)
     return [ _value, status ]
   }
-  
-  
+    
   
   const textInputValidator = (value, data) => {
     validateLabelMsg(value, data)
@@ -92,8 +90,8 @@ const birthday = (value, data) => {
 export const selectListValidator = (value, data) => {
     if(!data?.selectList) return generalValidator(value, data);
     validateLabelMsg(value, data)
-    //accepts only letters, spaces and underscore
-    let _value = value.replace(/[^a-zA-Z _' ']/g, '')
+    //accepts only letters, spaces and underscore by default
+    let _value = !data.regex ? value.replace(/[^a-zA-Z _' ']/g, '') : value
   
     let result = []
     Object.keys(data?.selectList).forEach(itemList => {

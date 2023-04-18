@@ -26,7 +26,6 @@ const SmallStyles = css`
 
 export const ButtonStyle = styled.button<buttonStyleProps>`
     justify-content: center;
-    font-family: 'Roboto', sans-serif;
     border: none;
     font-weight: normal;
     cursor: pointer;
@@ -36,9 +35,20 @@ export const ButtonStyle = styled.button<buttonStyleProps>`
     display: flex;
     align-items: center;
     column-gap: 7px;
+    font-family: "Raleway",sans-serif;
 
     &.bold{
         font-weight: bold;
+    }
+    &.fit{
+        height: max-content;
+        width: fit-content;
+    }
+    &.justify-end{
+        justify-self: end;
+    }
+    &.align-center{
+        align-self: center;
     }
 
     &.displayNone{
@@ -97,6 +107,12 @@ export const ButtonStyle = styled.button<buttonStyleProps>`
         color: ${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};;
         &:hover{
             opacity: 0.6;
+        }
+        &.hoverFilled:hover{
+            transition: .2s;
+            background-color: ${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};;
+            color:white;
+            opacity: 1;
         }
         &.disabled{
             opacity: 1;

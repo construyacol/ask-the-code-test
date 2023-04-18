@@ -14,11 +14,12 @@ export const ItemList = (props) => {
   const {
     item: {
       id,
-      info : { address, label }
+      info : { address, label, identifier }
     },
     setAddressValue,
   } = props;
 
+  const accountValue = address || identifier
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
@@ -36,7 +37,7 @@ export const ItemList = (props) => {
     false
   );
 
-  if(!address || !label){return null}
+  if(!accountValue || !label){return null}
 
   
   const setDeletingState = (payload) => {
@@ -95,7 +96,7 @@ export const ItemList = (props) => {
     if (e && e.target && e.target.dataset && e.target.dataset.delete) {
       return;
     }
-    setAddressValue(address);
+    setAddressValue(accountValue);
     actions.renderModal(null);
   };
 
@@ -121,11 +122,16 @@ export const ItemList = (props) => {
                 Nuevo
               </NewElement>
             </div>
-            <AddressContainer
-              data-final-address={address.match(/..........$/g).toString()}
-            > 
-              <Address className="fuente2 withdrawAddress">{address}</Address>
-            </AddressContainer>
+            {
+              address ?
+                <AddressContainer
+                  data-final-address={accountValue.match(/..........$/g).toString()}
+                > 
+                  <Address className="fuente2 withdrawAddress">{accountValue}</Address>
+                </AddressContainer>
+              :
+              <p className="fuente2 withdrawAddress">{accountValue}</p>
+            }
           </ItemTextContainer>
           <DeleteButton>
             <Icon

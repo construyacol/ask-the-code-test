@@ -15,6 +15,17 @@ const {
 } = Enviroment;
 
 
+export const NETWORK_LABELS = {
+  internal_network:{
+    user_friendly:{
+      network:"mainnet"
+    },
+    uiName:"Coinsenda",
+    auxUiName:"Transfiere de forma instantánea y gratuita",
+    icon:"coinsenda"
+  }
+} 
+
 export const CAPACITOR_PLATFORM = Capacitor.getPlatform();
 export const CAPACITOR_PLATFORMS = {
   WEB: 'web',
@@ -140,9 +151,10 @@ export const ADD_RESTORE_ID_URL = `${ApiUrl}profiles/add-restoreid`;
 export const CURRENCIES_URL_ALT = `${ApiUrl}currencies`;
 export const GET_PROFILE_URL = `${ApiUrl}users`;
 export const ADD_PROFILE_URL = `${ApiUrl}profiles/add-new-profile`;
+export const ADD_NEW_DELETE_REQUEST_URL = `${ApiUrl}deleteRequests/add-new-delete-request`;
 export const TWO_FACTOR_URL = `${ApiUrl}transactionSecuritys`;
 export const TWO_FACTOR_BASE_URL = `${ApiUrl}`;
-
+export const USER_DNS_URL = `${ApiUrl}userDns/resolve-identifier`;
 
 export const DELETE_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/update-visibility`;
 export const GET_WITHDRAW_BY_USER_URL = `${WithdrawApiUrl}users`;
@@ -158,14 +170,12 @@ export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`;
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit`;
 export const SUBSCRIBE_TO_DEPOSITS_URL = `${DepositApiUrl}depositProviders/subscribe-to-new-deposits`;
 
-
 export const SWAP_CONVERT_CURRENCIES = `${SwapApiUrl}swaps/convert-currencies`; 
 export const SWAP_URL = `${SwapApiUrl}`;
 export const POST_PAIRS_URL = `${SwapApiUrl}pairs/get-all-pairs-for-public`;
 // export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`;
 export const ADD_NEW_SWAP = `${SwapApiUrl}swaps/add-new-swap`;
 export const GET_SWAPS_BY_USERS_URL = `${SwapApiUrl}users`;
- 
 export const INDETITY_URL = `${IdentityApIUrl}countryvalidators/findOne`;
 export const INDENTITY_USERS_URL = `${IdentityApIUrl}users`;
 export const INDENTITY_ADD_BIOMETRIC_DATA_URL = `${IdentityApIUrl}biometricDatas/add-new-biometric-data`;
@@ -174,7 +184,6 @@ export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-pr
 
 export const REFERRALS_URL = `${ApiUrl}referrals`;
 export const GET_REFERRAL_URL = `${ApiUrl}users`;
-
 
 export const GET_CHART_DATA_URL = `${CountryUrl}api/cryptoCompares/get-daily-historical-data`;
 
@@ -222,26 +231,19 @@ export const fontSize = {
     desktop:"0.9 rem"
   }
 }
-
 // Para poder convertir una medida de pixeles a rem solo tienes que multiplicar el tamaño que quieres obtener por el número 0.0625
-
-
 // export const size = {
 //   mobile: 768,
 //   laptop: 1025,
 //   desktop: 1281
 // };
-
 // export const device = {
 //   mobile: `(max-width: ${size.mobile}px)`,
 //   tablet: `(min-width: ${size.mobile}px) and (max-width:${size.laptop}`,
 //   laptop: `(min-width: ${size.laptop}px) and (max-width:${size.desktop}`,
 //   desktop: `(min-width: ${size.desktop}px)`,
 // };
-
 // https://gist.github.com/gokulkrishh/242e68d1ee94ad05f488
- 
-
 
 export const currencyLabels = {
   usd: {symbol:"USD"},
@@ -249,9 +251,6 @@ export const currencyLabels = {
   cop: {cop:"USD"}, 
   bitcoin_testnet: {bitcoin_testnet:"USD"}
 };
-
-
-
 
 export const orderStateColors = {
   accepted: "linear-gradient(to bottom right, #11998e, #48c778);",
@@ -306,10 +305,7 @@ export const chartOptions = {
 };
 
 export const ACCEPT_FILE_TYPE = ["image/jpeg", "image/png", ".pdf"];
-
 export const ACCEPT_FILE_TYPE_ADVANCE_KYC = ["image/jpeg", "image/png"];
-
-
 
 export const CDN_PATH_ASSETS = {
   highstock:'cdn/libs/highstock.js',
@@ -319,7 +315,6 @@ export const CDN_PATH_ASSETS = {
   tensor:'cdn/tensor/models',
   appVersion:'version.js'
 }
-
 
 export const COLOR_FEES = {
   low:{
@@ -333,6 +328,18 @@ export const COLOR_FEES = {
   }
 }
 
+const HIGH_PROIORITY = {
+  ui_name:"Alta",
+  ui_color:COLOR_FEES?.high?.color,
+  value:"high"
+}
+
+const NONE_PROIORITY = {
+  ui_name:"Alta",
+  ui_color:COLOR_FEES?.high?.color,
+  value:"none"
+}
+
 export const WITHDRAW_PRIORITY_FEE = {
   low:{
       ui_name:"Baja",
@@ -344,13 +351,14 @@ export const WITHDRAW_PRIORITY_FEE = {
       ui_color:COLOR_FEES?.medium?.color,
       value:"medium"
   },
-  high:{
-      ui_name:"Alta",
-      ui_color:COLOR_FEES?.high?.color,
-      value:"high"
-  }
+  high:HIGH_PROIORITY,
+  none:NONE_PROIORITY
 }
 
-export const DEFAULT_COST_ID = WITHDRAW_PRIORITY_FEE.medium.value
 
+export const DEFAULT_COST_ID = {
+  default:WITHDRAW_PRIORITY_FEE.medium.value,
+  internal_network:WITHDRAW_PRIORITY_FEE.none.value,
+}
+// export const DEFAULT_COST_ID = WITHDRAW_PRIORITY_FEE.medium.value
 export const SUPPORT_EMAIL = "soporte@coinsenda.com"

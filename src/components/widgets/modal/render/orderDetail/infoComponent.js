@@ -1,48 +1,59 @@
 import { useEffect } from "react";
 import { PaymentProof } from "./paymentProof";
 import loadable from "@loadable/component";
-import { Icon, IconContainer } from '../../../../referrals/shareStyles'
+import { Icon, IconContainer, Data } from '../../../../referrals/shareStyles'
 import { MAIN_COLOR } from '../../../../../const/const'
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { get } from 'lodash'
 import styled from 'styled-components'
 import { checkIfFiat } from 'core/config/currencies';
+import { SPAN, P } from 'core/components/atoms'
 
 
-const ReferralInfo = () => {
+const InfoCard = ({ icon, className, children }) => {
     const IconSwitch = loadable(() => import("../../../icons/iconSwitch"));
     return(
-      <IconContainer>
+      <IconContainer className={className}>
         <Icon>
-          <IconSwitch color={MAIN_COLOR}  size={40} icon="referral" />
+          <IconSwitch color={MAIN_COLOR}  size={40} icon={icon}/>
         </Icon>
+        {children}
       </IconContainer>
     )
 }
-  
   
   const WithdrawFiatInfo = () => {
 
     const IconSwitch = loadable(() => import("../../../icons/iconSwitch"));
     const { tx_path, order_id } = useParams();
     const modelData = useSelector(({ modelData }) => modelData);
+    const { withdrawProviders } = modelData
     const { withdraw_account_id } = modelData[tx_path][order_id]
     const withdrawAccount = modelData?.withdraw_accounts && modelData?.withdraw_accounts[withdraw_account_id]
+    const withdrawProvider = withdrawProviders[withdrawAccount?.withdraw_provider]
+    console.log('withdrawAccount', withdrawProvider)
 
     return(
-        <WithdrawAccountCont className={`${!withdrawAccount ? 'unAvalaible' : ''}`}>
-          <IconCont>
-            {
-                withdrawAccount && <IconSwitch size={45} icon={withdrawAccount?.bank_name?.value} />
-            }
-          </IconCont>
-          <DataContainer>
-            <p className="fuente">{!withdrawAccount ? 'Cuenta no disponible' : withdrawAccount?.bank_name?.ui_name?.toLowerCase()}</p>
-            <p className="fuente accountType">{!withdrawAccount ? '' : withdrawAccount?.account_type?.ui_name}</p>
-            <p className="fuente2">{!withdrawAccount ? '' : `No. ${withdrawAccount?.account_number?.value}`}</p>
-          </DataContainer>
-        </WithdrawAccountCont>
+      <>
+        {
+          withdrawProvider?.currency_type === 'crypto' ?
+            <PaymentProof/>
+          :
+            <WithdrawAccountCont className={`${!withdrawAccount ? 'unAvalaible' : ''}`}>
+              <IconCont>
+                {
+                    withdrawAccount && <IconSwitch size={45} icon={withdrawAccount?.bank_name?.value} />
+                }
+              </IconCont>
+              <DataContainer>
+                <p className="fuente">{!withdrawAccount ? 'Cuenta no disponible' : withdrawAccount?.bank_name?.ui_name?.toLowerCase()}</p>
+                <p className="fuente accountType">{!withdrawAccount ? '' : withdrawAccount?.account_type?.ui_name}</p>
+                <p className="fuente2">{!withdrawAccount ? '' : `No. ${withdrawAccount?.account_number?.value}`}</p>
+              </DataContainer>
+            </WithdrawAccountCont>
+        }
+      </>
     )
   }
 
@@ -99,13 +110,37 @@ const ReferralInfo = () => {
   `
 
 
+  const InternalWithdrawInfoComponent = ({ order }) => {
+    const withdraw_accounts = useSelector(({ modelData:{ withdraw_accounts } }) => withdraw_accounts);
+    const { identifier, label } = withdraw_accounts[order?.withdraw_account_id]?.info
+    const isASaveAccount = label !== identifier
+    const IconSwitch = loadable(() => import("../../../icons/iconSwitch"));
+    
+    return(
+      <div className="internal">
+            <P className="bold ellipsis">Destino</P>
+          <Data>
+            <IconSwitch color={MAIN_COLOR}  size={30} icon="person"/>
+            <div>
+              <SPAN className="no-margin ellipsis" size={12}>{isASaveAccount ? identifier : 'Destino'}</SPAN>
+              <P className="no-margin ellipsis">{label}</P>
+            </div>
+          </Data>
+      </div>
+    )
+  }
+
 
   export const toRender = {
     "deposits":{
       "is_referral":{
           "title":"Depósito por referido",
-          "component":ReferralInfo
+        "component":() => <InfoCard icon="referral" />
       },
+      "is_internal":{
+        "title":"Transferencia interna",
+        "component":() => <InfoCard icon="coinsenda" />
+     },
       "crypto":{
         "title":"TX ID Información"
       },
@@ -118,12 +153,18 @@ const ReferralInfo = () => {
       }        
     },
     "withdraws":{
+      "is_internal":{
+        "title":"Transferencia interna",
+        "component":InternalWithdrawInfoComponent
+      },
       "fiat":{
-          "title":"Información cuenta de retiro",
-          "component":WithdrawFiatInfo
+        "title":"Información cuenta de retiro",
+        "component":WithdrawFiatInfo
+        // "component":PaymentProof
       },
       "crypto":{
         "title":"TX ID Información"
+        // "component":PaymentProof
       }
     },
     "swaps":{
@@ -135,10 +176,15 @@ const ReferralInfo = () => {
    
   
   const GetInfoComponentToRender = (order) => {
-  
-    const { tx_path, info } = order
+    const { tx_path, info, metadata } = order
+    // console.log('order', order)
+    // debugger 
     const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
-    const targetKey = info?.is_referral ? 'is_referral' : (checkIfFiat(order?.currency) && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : currencyType
+    const targetKey = info?.is_referral ? 'is_referral' : 
+    (info?.is_internal || metadata?.is_internal) ? 'is_internal' : 
+    (checkIfFiat(order?.currency) && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : 
+    currencyType
+    console.log('targetKey', order)
     
     useEffect(()=> {
        const title = tx_path === 'swaps' ? '' : get(toRender, `${tx_path}.${targetKey}`)?.title || 'Comprobante de pago'
@@ -150,7 +196,7 @@ const ReferralInfo = () => {
     if(tx_path === 'swaps'){
       return toRender[tx_path]?.component
     } 
-  
+   
     return toRender[tx_path][targetKey]?.component ||  PaymentProof
   }
 

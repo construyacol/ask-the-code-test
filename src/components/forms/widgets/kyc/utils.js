@@ -16,7 +16,6 @@ import {
 
 
 export const removeItemTag = (e, itemKey, callback) => {
-
     if(!e?.target?.className?.includes){return}
     if(e.target?.className?.includes("selectedItemTag__closeButton")){
       e.stopPropagation()

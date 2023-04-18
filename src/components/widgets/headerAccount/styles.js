@@ -109,7 +109,7 @@ export const AccountLabel = styled(P)`
   column-gap: 5px;
 
   &._aux{
-    font-size: 13px;
+    font-size: 13px !important;
     color: var(--placeholder);
     font-weight: normal;
   }

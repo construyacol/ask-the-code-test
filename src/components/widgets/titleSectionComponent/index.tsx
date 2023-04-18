@@ -1,4 +1,5 @@
-import { useParams  } from "react-router-dom";
+import { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom";
 import {
     TitleContainer,
     SubContainer,
@@ -9,7 +10,7 @@ import { titleSection, params } from 'interfaces/tittleSection'
 import { UI_NAME_TITLE } from 'const/uiNames'
 
 
-
+ 
 export default function TitleSection({ 
     titleKey, 
     skeleton, 
@@ -21,7 +22,11 @@ export default function TitleSection({
 
     const params:params = useParams()
     const key = titleKey || params.primary_path
-    const title = UI_NAME_TITLE[key as keyof typeof UI_NAME_TITLE] || key
+    const [ title, setTitle ] = useState(UI_NAME_TITLE[key as keyof typeof UI_NAME_TITLE] || key)
+
+    useEffect(() => {
+        setTitle(UI_NAME_TITLE[key as keyof typeof UI_NAME_TITLE] || key)
+    }, [key])
    
     return(
         <TitleContainer 

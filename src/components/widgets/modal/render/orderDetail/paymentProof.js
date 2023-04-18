@@ -165,10 +165,12 @@ export const PaymentProof = ({ payload }) => {
   const [txId, setTxId] = useState();
   const [urlExplorer, setUrlExplorer] = useState();
   const [ provider ] = useState(providers[tx_path][currentOrder[providerId]])
+  const currencyType = provider?.currency_type
 
-  
+   
   const getPaymentProof = async (currentOrder) => {
-    let blockchainUri = (provider && !checkIfFiat(currentOrder?.currency)) && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
+
+    let blockchainUri = (provider && !checkIfFiat(currencyType)) && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
     if (currentOrder.paymentProof) {
       const { proof_of_payment } = currentOrder.paymentProof;
 
@@ -183,11 +185,11 @@ export const PaymentProof = ({ payload }) => {
       let imgFiat = proof_of_payment?.raw ? `data:image/png;base64, ${proof_of_payment.raw}` : altImg
 
       setImgProof(
-        checkIfFiat(currentOrder?.currency)
+        checkIfFiat(currencyType)
           ? imgFiat
           : await QRCode.toDataURL(`${blockchainUri}${proof_of_payment.proof}`)
       );
-      if(!checkIfFiat(currentOrder?.currency)){ 
+      if(!checkIfFiat(currencyType)){ 
         setTxId(proof_of_payment.proof); 
         setUrlExplorer(`${blockchainUri}${proof_of_payment.proof}`);
       }
@@ -232,8 +234,6 @@ export const PaymentProof = ({ payload }) => {
   };
 
  
-  const currencyType = checkIfFiat(currentOrder?.currency) ? 'fiat' : 'crypto'
-
   return (
     <>
       <PaymentProofContainer
@@ -263,7 +263,7 @@ export const PaymentProof = ({ payload }) => {
                   <span className="tooltiptext fuente">Copiar</span>
                 </IconContainer>
                 {
-                  !checkIfFiat(currentOrder?.currency) &&
+                  !checkIfFiat(currencyType) &&
                   <IconContainer className="tooltip" onClick={openBlockchain}>
                     <BsUpload size={20} />
                     <span className="tooltiptext fuente">Ver en Blockchain</span>

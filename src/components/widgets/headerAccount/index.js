@@ -1,4 +1,4 @@
-// import { useLayoutEffect, useRef } from 'react'
+import { memo } from 'react'
 import {
     HeaderContainer,
     HeaderMainContainer,
@@ -14,9 +14,10 @@ import BalanceComponent from "../balance/balance";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import IconSwitch from '../icons/iconSwitch'
 import useViewport from '../../../hooks/useWindowSize'
+import { parseSymbolCurrency, replaceTo, REPLACE_TO_CURRENCY_CONFIG } from 'core/config/currencies'
 
 
-export default function HeaderAccount (props) {
+function HeaderAccount (props) {
     return(
       <HeaderContainer>
         {props.children}
@@ -25,15 +26,13 @@ export default function HeaderAccount (props) {
     )
 }
 
-
+export default memo(HeaderAccount);
 
 export const MainComponent = () => {
-
     const { currentWallet } = useWalletInfo()
-    // const { available } = currentWallet
     const { isMovilViewport } = useViewport()
-    // const balanceTextWidth = useRef(currentWallet?.available?.length > 1 ? '150px' : '60px')
 
+    const accountName = REPLACE_TO_CURRENCY_CONFIG[currentWallet?.currency] ? replaceTo(currentWallet?.name, REPLACE_TO_CURRENCY_CONFIG[currentWallet?.currency]) : currentWallet?.name
     return(
       <HeaderMainContainer className="_accountHeaderMainContainer">
           <IconAccount>
@@ -43,8 +42,8 @@ export const MainComponent = () => {
             />
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
-            <AccountLabel>{currentWallet?.name || 'Mi billetera'}</AccountLabel>
-            <CurrencyLabel>{currentWallet?.currency || '-'}</CurrencyLabel>
+            <AccountLabel>{accountName || 'Mi Billetera'}</AccountLabel>
+            <CurrencyLabel>{parseSymbolCurrency(currentWallet?.currency) || '-'}</CurrencyLabel>
           </LabelContainer>
           <BalanceContainer  
             className="_accountBalanceContainer"

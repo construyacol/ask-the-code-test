@@ -27,7 +27,8 @@ const InputComponent = props => {
     placeholder,
     className,
     label,
-    inputMode = 'text'
+    inputMode = 'text',
+    refEl
   } = props
 
   //For metadata omit on main component and assign the property: "name", to the aux component.
@@ -63,6 +64,7 @@ const InputComponent = props => {
     onChange,
     defaultValue,
     name:inputName,
+    ref:refEl,
     // disabled,
     autoFocus:isMovilViewport ? false : true,
     // onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
@@ -111,6 +113,12 @@ export default InputComponent
 export const InputWrapper = styled.div`
   display:grid;
   grid-template-rows:auto 40px;
+
+  &.input__fit .inputContainer__{
+    height: 45px;
+    max-width: 700px;
+  }
+
   &.withLabel{
     grid-template-rows:auto auto;
     row-gap: 10px;

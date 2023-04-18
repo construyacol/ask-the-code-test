@@ -119,7 +119,7 @@ const clearSourceData = async(data) => {
   return clearSource
 }
 
-export const createStage = async(source, modelated, index) => {
+export const createStage = async(source, modelated = {}, index) => {
   let _source = typeof source === 'object' ? ungapStructuredClone(source) : {...source};
   if(_source?.ui_type === 'select')_source = await clearSourceData(_source)
   let stage = {}

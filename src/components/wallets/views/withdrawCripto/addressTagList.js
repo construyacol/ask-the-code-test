@@ -11,31 +11,23 @@ const AddressTagList = ({ show, addressValue, setAddressValue, addressState, cur
 
   const [{ current_wallet }] = WithdrawViewState()
   const withdrawAccounts = useSelector((state) => selectWithdrawAccounts(state, { provider_type:currentNetwork?.provider_type, currency:current_wallet.currency } ));
-  // console.log('withdrawAccounts', withdrawAccounts)
-  // console.log('currentNetwork', currentNetwork)
   const [searchList, setSearchList] = useState([]);
 
-  // const [setCurrentSelection] = useNavigationKeyActions({
-  //     items:withdrawAccounts,
-  //     loader: false, // si queremos que los items se sincronicen con el loader del app, pasamos el loader como parametro
-  //     uniqueIdForElement: 'account-item-', // el uniqueIdForElement tiene que ser unico para ca instancia de useNavigationKeyActions
-  //     modalRestriction: false, // como usaremos useNavigationKeyActions en un modal no es necesario restringir
-  //     next: 40, //arrows right and left, si no funcion entonces verificar que no este en uso el keyEvent
-  //     prev: 38
-  // })
-
   useEffect(() => {
-    if(!withdrawAccounts || !addressValue)return ;
-    const value = addressValue.replace(/@/g, "");
-    const result = withdrawAccounts.filter((withdrawAccount) => withdrawAccount.info.label && withdrawAccount.info.label.toLowerCase().includes(value.toLowerCase()) );
-    if (result.length < withdrawAccounts.length) {
-      setSearchList(result);
-    }
+    (() => {
+      if(!withdrawAccounts || !addressValue || !show)return;
+      const value = addressValue.replace(/^@/g, "");
+      // const value = addressValue
+      const result = withdrawAccounts.filter((withdrawAccount) => withdrawAccount?.info?.label?.toLowerCase()?.includes(value.toLowerCase()) );
+      console.log('addressValue', result.length < withdrawAccounts.length, value, result)
+      // console.log('withdrawAccounts', withdrawAccounts)
+      if (result.length < withdrawAccounts.length) setSearchList(result);
+    })()
   }, [addressValue]);
 
   useEffect(() => {
     if (searchList.length === 1) {
-      setAddressValue(searchList[0].info.address);
+      setAddressValue(searchList[0]?.info?.address || searchList[0]?.info?.identifier);
       console.log(searchList, searchList.length)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

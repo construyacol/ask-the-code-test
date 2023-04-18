@@ -90,7 +90,7 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
 
   useEffect(() => {
       if(availableCurrencies && !loader){
-          console.log(availableCurrencies)
+        //   console.log(availableCurrencies)
           setSearchList(availableCurrencies)
       }
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -45,9 +45,11 @@ export class WithdrawService extends WebService {
     if (!result || result === 465 || !this.withdrawProviders) {
       return false;
     }
+
     const providersServed = await this.withdrawProvidersByType;
     const withdrawAccounts = await result.map((account) => {
-    const aux = providersServed[account.provider_type];
+    
+    const aux = providersServed[account?.currency][account?.provider_type];
     let providerData = {}
     const currencyType = checkIfFiat(aux?.currency) ? 'fiat' : 'crypto'
       if (checkIfFiat(aux?.currency)) {
@@ -83,6 +85,8 @@ export class WithdrawService extends WebService {
             }
           }
         }
+
+
         return {
           id: account.id,
           provider_name: account.info.bank_name || aux?.name,
@@ -102,16 +106,20 @@ export class WithdrawService extends WebService {
           ...account,
         };
       } else {
+
+        // console.log('providersServed', providersServed)
+        // console.log('data', account)
+        // debugger
+        //crypto case
         return {
-          //crypto case
           id: account.id,
           account_name: {
-            ui_name: aux.info_needed.label.ui_name,
-            value: account.info.label,
+            ui_name: aux?.info_needed?.label?.ui_name,
+            value: account?.info?.label,
           },
           account_address: {
-            ui_name: aux.info_needed.address.ui_name,
-            value: account.info.address,
+            ui_name: aux?.info_needed?.address?.ui_name || aux?.info_needed?.identifier?.ui_name,
+            value: account?.info?.address || account?.info?.identifier,
           },
           used_counter: account.used_counter,
           inscribed: account.used_counter > 0 ? true : false,
@@ -133,6 +141,8 @@ export class WithdrawService extends WebService {
     // if (await this.isCached("withdraw_accounts", result)) {
     //   return withdrawAccounts;
     // }
+
+    // console.log('selectFiatWithdrawAccounts', withdrawAccounts)
     const normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
     document.querySelector('#home-container')?.classList?.add('wA')
@@ -160,18 +170,19 @@ export class WithdrawService extends WebService {
   }
 
   get withdrawProvidersByType() {
-    return (
-      this.withdrawProviders &&
-      this.withdrawProviders.reduce((result, provider) => {
-        return {
-          ...result,
-          [provider.provider_type]: provider,
-        };
-      }, {})
-    );
+    let res = {}
+    for (const [, withdrawProvider] of Object.entries(this.withdrawProviders)) {
+      let itemsByCurrency = res[withdrawProvider?.currency] || {};
+      res = {
+        ...res,
+        [withdrawProvider?.currency]:{
+          ...itemsByCurrency,
+          [withdrawProvider?.provider_type]:withdrawProvider
+        }
+      }
+    }
+    return res
   }
-
-
  
 
   async fetchNetworkData(withdraw_provider_id) {
@@ -187,8 +198,8 @@ export class WithdrawService extends WebService {
   }
 
 
-
-
+  // let filter = `{"where":{"withdraw_account_id":"${account_id}", "state":{"inq":["confirmed", "accepted", "rejected"]}}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+  // const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`;
 
   async fetchWithdrawProviders() {
     await this.dispatch(
@@ -196,8 +207,9 @@ export class WithdrawService extends WebService {
     );
     const user = this.user;
     if(user.level === 'level_0') return ;
- 
+    
     const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`;
+    // const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}&filter={"where": {"enabled": true}`;
 
     const withdrawProviders = await this.Get(finalUrl);
     if (!withdrawProviders) return;
@@ -334,14 +346,12 @@ export class WithdrawService extends WebService {
       let state;
       
       if (checkIfFiat(withdraw?.currency)) {
-        state =
-          withdraw.state === "accepted" && !withdraw.sent
+        state = withdraw.state === "accepted" && !withdraw.sent
             ? "confirmed"
             : withdraw.state;
       }
       if (withdraw.currency_type === "crypto") {
-        state =
-          withdraw.state === "accepted" && !withdraw.proof
+        state = withdraw.state === "accepted" && (!withdraw.proof && !withdraw?.metadata?.is_internal)
             ? "confirmed"
             : withdraw.state;
       }

@@ -59,7 +59,7 @@ const WithdrawCreatedSuccess = ({
     const actions = useActions()
     const { withdraw_accounts } = useSelector(({ modelData }) => modelData)
     const withdrawAccount = withdraw_accounts[withdrawData?.withdraw_account_id]
-    const accountName = withdrawAccount?.bank_name?.ui_name || UI_NAMES.provider[withdrawAccount.provider_type]
+    const accountName = withdrawAccount?.bank_name?.ui_name || withdrawAccount?.info?.label || UI_NAMES.provider[withdrawAccount.provider_type]
     const [ toastMessage ] = useToastMessage();
 
     const { data, formatCurrency, currencySimbol } = useDetailParseData(withdrawData, 'shortWithdraw')
@@ -88,6 +88,8 @@ const WithdrawCreatedSuccess = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    console.log('withdrawAccount', withdrawAccount)
+
     return(
         <OtherModalLayout
         id="close-button-with-OtherModalLayout"
@@ -113,12 +115,12 @@ const WithdrawCreatedSuccess = ({
                             </g>
                             </svg>
                         </div>
-                        <Title className="fuente">Estás a un paso de recibir tu dinero</Title>
+                        <Title className="fuente">Estás a un paso de enviar tu dinero</Title>
                     </Header>
 
                     <Content>
 
-                        <SubTitle style={{marginBottom:"0"}} className="fuente ">Resumen del retiro</SubTitle>
+                        <SubTitle style={{marginBottom:"0"}} className="fuente ">Resumen del envío</SubTitle>
 
                         <li className="fuente _fromTo">Desde</li>
                         <ItemAccountContainer className={`_itemAccountContainer`}>
@@ -149,12 +151,13 @@ const WithdrawCreatedSuccess = ({
                                             <IconSwitch
                                                 icon={withdrawAccount?.info?.bank_name || withdrawAccount?.provider_type}
                                                 size={35}
+                                                color={"var(--primary)"}
                                             />
                                     }
                                 </IconAccount>
                                 <LabelContainer className="_header__labelContainer">
                                     <AccountLabel>{capitalizeWord(accountName) || 'is awesome bank name'}</AccountLabel>
-                                    <CurrencyLabel>{(UI_NAMES.account_type[withdrawAccount?.info?.account_type] || withdrawAccount?.info?.id_number) || 'awsom account type'}</CurrencyLabel>
+                                    <CurrencyLabel>{(UI_NAMES.account_type[withdrawAccount?.info?.account_type] || withdrawAccount?.info?.id_number || withdrawAccount?.info?.identifier) || 'awsom account type'}</CurrencyLabel>
                                 </LabelContainer>
                             </HeaderMainContainer>
                             {
@@ -167,7 +170,7 @@ const WithdrawCreatedSuccess = ({
                             }
                         </ItemAccountContainer>
 
-                        <SubTitle className="fuente">Datos de tu retiro</SubTitle>
+                        <SubTitle className="fuente">Datos del envío</SubTitle>
                         <ContentDetail className="onBottom">
                             <DetailTemplateComponent
                                 items={data}
@@ -196,7 +199,7 @@ const WithdrawCreatedSuccess = ({
                             loader={loading}
                             inputProps={{"data-close_modal":true}}
                             formValidate
-                            label="Confirmar retiro" 
+                            label="Confirmar envío" 
                             handleAction={withdrawConfirm}
                         />
                     </ButtonContainer>

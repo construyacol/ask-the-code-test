@@ -30,7 +30,8 @@ const SelectListComponent = ({
     stageData, 
     selectList = stageData?.selectList,
     state, 
-    onChange
+    onChange,
+    callback
   }) => {
   
     const [ searchList, setSearchList ] = useState()
@@ -40,6 +41,7 @@ const SelectListComponent = ({
       if(selectList){
         const itemList = filterElement(selectList, state[stageData?.key])
         setSearchList(itemList)
+        callback && callback(itemList)
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key], selectList])
@@ -57,8 +59,8 @@ const SelectListComponent = ({
               key={index}
               itemList={selectList[key]}
               firstIndex={index === 0}
-              lastIndex={(Object.keys(searchList)?.length - 1) === index}
-              isSelectedItem={Object.keys(searchList)?.length === 1}
+              // lastIndex={(Object.keys(searchList)?.length - 1) === index}
+              isSelectedItem={Object.keys(searchList)?.length === 1 && searchList[state[stageData?.key]]}
               isMovilViewport={isMovilViewport}
               handleAction={handleAction}
             />
@@ -84,6 +86,10 @@ const SelectListComponent = ({
 
     // const uiName = itemList?.uiName?.toLowerCase()
     let UiName = itemList?.uiName
+    let _auxUiName = itemList?.auxUiName || auxUiName
+
+    // console.log('UiName', UiName, itemList)
+
 
     return(
       <ItemProviderBankContainer 
@@ -107,21 +113,18 @@ const SelectListComponent = ({
                 <IconSwitch
                     icon={itemList?.icon || itemList?.value}
                     size={isMovilViewport ? 22 : 25}
+                    color={"var(--primary)"}
                 />  
               }
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
               <AccountLabel>
-
                 {
                   typeof UiName === "function" ?
                     <UiName/>
                     :
                     capitalizeWord(UiName)
                 }
-
-                
-
                 {
                   auxUiState &&
                     <UiStateCont className={`${auxUiState}`}>{UI_STATE_NAME[auxUiState] || auxUiState}</UiStateCont>
@@ -130,8 +133,8 @@ const SelectListComponent = ({
               </AccountLabel> 
 
               {
-                auxUiName &&
-                <AccountLabel className="_aux">{auxUiName}</AccountLabel>
+                _auxUiName &&
+                <AccountLabel className="_aux">{_auxUiName}</AccountLabel>
               }
           </LabelContainer> 
         </HeaderMainContainer>
@@ -153,6 +156,12 @@ const SelectListComponent = ({
     max-width: 700px;
     perspective: 2000px;
     perspective-origin: center top;
+ 
+    :last-child{
+      border-bottom: 1px solid #E7E7E7;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
     
     &.skeleton{
       width: 100%;
@@ -216,6 +225,13 @@ export const ItemProviderBankContainer = styled.div`
   cursor:pointer;
   column-gap: 14px;
   position:relative;
+
+  &:last-child{
+    border-bottom: 1px solid #E7E7E7;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
 
   .button_item--nextCta{
     fill: var(--paragraph_color);

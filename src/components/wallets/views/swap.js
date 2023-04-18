@@ -21,7 +21,7 @@ import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
 import { CURRENCY_INDEX_IMG } from 'core/config/currencies' 
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 
 function SwapView(props) {
 
@@ -80,7 +80,7 @@ function SwapView(props) {
 
   async function getValueForOnePrimaryCurrency() {
     const { buy_price, secondary_currency, primary_currency } = currentPair;
-    const finalString = `1 ${currencies[primary_currency]?.symbol || primary_currency} = ${await formatCurrency(buy_price, secondary_currency)} ${secondary_currency.toUpperCase()}`;
+    const finalString = `1 ${currencies[primary_currency]?.symbol || primary_currency} = ${await formatCurrency(buy_price, secondary_currency)} ${parseSymbolCurrency(secondary_currency)?.toUpperCase()}`;
     setValueForOnePrimaryCurrency(finalString);
   }
 
@@ -136,7 +136,7 @@ function SwapView(props) {
   // }
 
   const handleChangeSpendAmount = async (name, newValue) => {
-    console.log('handleChangeSpendAmount', newValue)
+    // console.log('handleChangeSpendAmount', newValue)
     setValue(newValue.toString().replace(/,/g, ""))
   }; 
 
@@ -152,9 +152,9 @@ function SwapView(props) {
     const { id } = currentPair;
     const boughtCurrency = props.pairsForAccount[currentWallet.id] && props.pairsForAccount[currentWallet.id].current_pair.currency //Localizamos la moneda comprada
     const thisAccountToExist = await getAccountToExist(boughtCurrency) //verificamos que haya una cuenta para la moneda comprada existente
-    if(!thisAccountToExist){
+    if(!thisAccountToExist){ 
       await createAccount(boughtCurrency);
-    } 
+    }  
     const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, id, formatToCurrency(value, currentWallet.currency));
     if (!newSwap) {
       actions.isAppLoading(false);
@@ -163,25 +163,14 @@ function SwapView(props) {
   };
 
   const createAccount = async(boughtCurrency) => {
-    const res = await coinsendaServices.createAccountAndInsertDepositProvider({
-      data: {
-        currency:currencies[boughtCurrency].currency,
-        enabled: true,
-        short_currency:{
-          currency:currencies[boughtCurrency].currency,
-          // is_token:currencies[boughtCurrency].is_token
-          is_token:false
-        },
-      }
-    });
+    const res = await coinsendaServices.createAccountAndInsertDepositProvider({ currency:boughtCurrency });
     return res
   }
 
   const getAccountToExist = async(boughtCurrency) => {
     for (let [ , wallet] of Object.entries(props.wallets)) {
-      if(wallet.currency === boughtCurrency){
-        return wallet
-      }
+      console.log('walletxist', boughtCurrency, wallet.currency)
+      if(wallet.currency === boughtCurrency)return wallet;
     }
   }
 
@@ -199,13 +188,11 @@ function SwapView(props) {
 
     const { id } = currentPair;
     const spent_currency_amount = formatToCurrency(value, currentWallet.currency);
-    // let query = `{"where":{"id":"${id}"}}`;
-    // await coinsendaServices.updateCurrentPair(query);
     await coinsendaServices.updateCurrentPair({id});
 
     const secureTotalValue = await getReceiveValue(value);
-    const from = currencies ? currencies[currentWallet.currency]?.symbol.toUpperCase() : currentWallet.currency.toUpperCase()
-    const to = currencies ? currencies[boughtCurrency]?.symbol.toUpperCase() : boughtCurrency.toUpperCase()
+    const from = currencies ? parseSymbolCurrency(currencies[currentWallet.currency]?.symbol).toUpperCase() : parseSymbolCurrency(currentWallet.currency)?.toUpperCase()
+    const to = currencies ? parseSymbolCurrency(currencies[boughtCurrency]?.symbol).toUpperCase() : parseSymbolCurrency(boughtCurrency)?.toUpperCase()
     const isFiat = checkIfFiat(currentWallet?.currency)
     
     actions.confirmationModalPayload({
@@ -264,8 +251,8 @@ function SwapView(props) {
         value={value}
         handleChange={handleChangeSpendAmount}
         handleStatus={handleStatus}
-        setMaxWithActionKey={true}
-        label={`Pago con ${spentCurrencySymbol}`}
+        setMaxWithActionKey={true} 
+        label={`Pago con ${parseSymbolCurrency(spentCurrencySymbol)}`}
         disabled={loader}
         autoFocus={true}
         autoComplete="off"
@@ -342,7 +329,7 @@ const PairSelect = ({ selectPair = () => null, secondaryCoin, id, currencies }) 
       >
         <div>
           <i className="fas fa-angle-down"></i>
-          <p>{boughtCurrencySymbol || '...'}</p>
+          <p>{parseSymbolCurrency(boughtCurrencySymbol) || '...'}</p>
           {(showSubfix && keyActions) && <span className="subfix-pairs-button">[P]</span>}
           { boughtCurrencySymbol  && (
             <img

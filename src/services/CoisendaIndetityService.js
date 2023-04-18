@@ -623,14 +623,6 @@ export class IndetityService extends WebService {
   getVerificationState() {
     const user = this.user;
     let state = 'pending'
-    // if(!user?.identity)return state;
-    // const { file_state, info_state } = user?.identity
-    // if([info_state, file_state].includes("rejected")){
-    //     return "rejected"
-    // }else if(info_state === file_state){
-    //     state = info_state
-    // }
-    // return state
     if(
       !user ||
       !user?.contact || 
@@ -651,13 +643,6 @@ export class IndetityService extends WebService {
     }
     this.dispatch(verificationStateAction(state));
     return state
-    // const { advanced, basic } = user.security_center.kyc;
-    // let status = "pending";
-    // if (advanced === basic) {
-    //   status = !advanced ? null : advanced;
-    // }
-    // await this.dispatch(verificationStateAction(status));
-    // return status;
   }
 
 

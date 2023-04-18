@@ -126,7 +126,7 @@ export default function WithdrawConfirmation({
                         loader={loader}
                         handleAction={handleSubmit}
                         formValidate={controlValidation}
-                        label="Confirmar retiro"
+                        label="Confirmar envío"
                     />
                 </ControlsContainer>
             </LayoutContainer>

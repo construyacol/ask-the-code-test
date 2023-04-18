@@ -8,7 +8,9 @@ import {
   ADD_RESTORE_ID_URL,
   GET_PROFILE_URL,
   ADD_PROFILE_URL,
+  ADD_NEW_DELETE_REQUEST_URL,
   TWO_FACTOR_URL,
+  USER_DNS_URL,
   TWO_FACTOR_BASE_URL,
   // TRANSACTION_SECURITY
 } from "../const/const";
@@ -18,7 +20,24 @@ import { checkIfFiat } from 'core/config/currencies';
 
 
 export class TransactionService extends WebService {
-  async fetchAllCurrencies() {
+
+  async resolveIdentifier(email) {
+
+    // identifier:state[stageData?.key],
+              // type:"email",
+              
+    const body = { 
+      data: { 
+        country:this.user.country, 
+        identifier:email, 
+        type:"email"
+      } 
+    };
+
+    return await this._Post(USER_DNS_URL, body);
+  }
+
+  async fetchAllCurrencies() { 
     await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS));
     const response = await this.Get(`${CURRENCIES_URL}{"where": {"enabled": true, "visible": true}}`);
     let new_currencies = [];
@@ -74,6 +93,7 @@ export class TransactionService extends WebService {
     return transactionSecurity
 
   }
+
 
   async getNew2faSecretCode() {
     const body = {
@@ -233,5 +253,16 @@ export class TransactionService extends WebService {
     };
 
     return await this._Post(ADD_PROFILE_URL, body);
+  }
+
+  async addNewDeleteRequet(type) {
+    // @params type:deactivate | delete
+    const body = {
+      data: {
+        type,
+        country:this?.user?.country
+      }
+    };
+    return await this._Post(ADD_NEW_DELETE_REQUEST_URL, body);
   }
 }

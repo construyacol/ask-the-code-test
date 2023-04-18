@@ -1,17 +1,94 @@
 import BigNumber from "bignumber.js";
+import { isEmpty } from 'lodash'
 
 const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+
+type replaceToProps = {
+    match?:string,
+    replaceTo?:string,
+    explicitReplace?:boolean
+}
+
+export const replaceTo = (text:string, config:replaceToProps):string => {
+    if(!config || !text)return text
+    if(typeof config === 'object' && !Array.isArray(config)){
+        // if ([text, match, replaceTo].some(param => typeof param !== 'string')) return text;
+        const match = config?.match || "cop"
+        const replaceTo = config?.replaceTo ||"dcop"
+        const explicitReplace = config?.explicitReplace || false
+        const regex = new RegExp(`\\b${match}\\b`, 'gi');
+        const sourceWord:any = text.match(regex)
+        let finalReplaceTo:string = replaceTo
+        if(!isEmpty(sourceWord) && !explicitReplace) finalReplaceTo = sourceWord[0] === sourceWord[0]?.toUpperCase() ? replaceTo?.toUpperCase() : replaceTo;
+        return text.replace(regex, finalReplaceTo)
+    }else if(Array.isArray(config)){
+        return text
+    }
+    return text
+}
+
+
+export const INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST = {
+    bitcoin:true,
+    usdt:true,
+    // litecoin:true,
+}
+
+export const EXCLUDED_NETWORK_COLLECTION = {
+    referral_network:true,
+    bsc:true
+}
+
+export const REPLACE_TO_CURRENCY_CONFIG = {
+    cop:{ match:'cop', replaceTo:"DCOP", explicitReplace:true},
+    usdt:{ match:'usdt', replaceTo:"USDT", explicitReplace:true},
+    usdc:{ match:'usdc', replaceTo:"USDC", explicitReplace:true},
+    bnb:{ match:'bnb', replaceTo:"BNB", explicitReplace:true}
+}
+
+export const CURRENCY_LIST_DEFAULT_ORDER = ['cop', 'bitcoin', 'usdt', 'usdc', 'litecoin', 'ethereum' ];
+
+const SYMBOL_CURRENCIES = {
+    cop:{
+        regex:/\bCOP\b|\bcop\b/,
+        replaceFor:"DCOP"
+    },
+    bsc:{
+        regex:/\bBSC\b|\bbsc\b/,
+        replaceFor:"BSC"
+    }
+}
+
+export const parseSymbolCurrency = (symbolCurrency:string):string => {
+   const symbolCurrencyData = SYMBOL_CURRENCIES[symbolCurrency?.toLowerCase() as keyof typeof SYMBOL_CURRENCIES]
+   if(!symbolCurrencyData)return symbolCurrency
+   const { regex, replaceFor } = symbolCurrencyData;
+   return symbolCurrency.replace(regex, replaceFor);
+}
 
 export const DEFAULT_CURRENCY = {
     currency: env !== 'production' ? 'bitcoin_testnet' : 'bitcoin',
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
-const FIAT_CURRENCIES = {
-    cop:true
+// export const DEFAULT_CURRENCY = {
+//     currency: 'bitcoin',
+//     symbol:'btc'
+// }
+
+
+export const FIAT_PROVIDER_TYPES = {
+    bank:true,
+    efecty_network:true,
+    internal_network:true
 }
 
-export const checkIfFiat = (currency:string) => FIAT_CURRENCIES[currency?.toLocaleLowerCase() as keyof typeof FIAT_CURRENCIES];
+const FIAT_CRITERIALS = {
+    cop:true,
+    fiat:true
+}
+
+export const checkIfFiat = (currency:string) => FIAT_CRITERIALS[currency?.toLocaleLowerCase() as keyof typeof FIAT_CRITERIALS];
 
 // export const DEFAULT_CURRENCY = {
 //     currency: 'bitcoin',
@@ -20,7 +97,7 @@ export const checkIfFiat = (currency:string) => FIAT_CURRENCIES[currency?.toLoca
 
 export const BLOCKCHAIN_EXPLORER_URL = {
     bitcoin:{
-        bitcoin:"https://blockstream.info/tx/"
+        bitcoin:"https://mempool.space/es/tx/"
     },
     bitcoin_testnet:{
         bitcoin_testnet:"https://blockstream.info/tx/"
@@ -36,6 +113,10 @@ export const BLOCKCHAIN_EXPLORER_URL = {
     },
     tron:{
         tron:"https://tronscan.org/#/transaction/",
+    },
+    cop:{
+        ethereum_testnet:"https://goerli.etherscan.io/tx/",
+        ethereum:"https://etherscan.io/tx/"
     },
     ethereum_testnet:{
         ethereum_testnet:"https://goerli.etherscan.io/tx/"
@@ -227,12 +308,27 @@ export const CURRENCIES = {
         testName:'COP',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-            DECIMAL_PLACES: 0,
+            DECIMAL_PLACES: 2,
         }),
         prod_fee:'cop_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_UP,
-            DECIMAL_PLACES: 0,
+            DECIMAL_PLACES: 2,
+        })
+    },
+    dcop:{
+        prod:'dcop',
+        test:'dcop',
+        prodName:'DCOP',
+        testName:'DCOP',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+            DECIMAL_PLACES: 2,
+        }),
+        prod_fee:'cop_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_UP,
+            DECIMAL_PLACES: 2,
         })
     },
     referred:{

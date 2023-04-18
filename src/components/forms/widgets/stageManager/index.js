@@ -10,7 +10,7 @@ import {
 import { InputWrapper } from '../kyc/InputComponent'
 import { InputContainer } from '../kyc/styles'
 
-const StageManagerComponent = ({ stageManager, backToWithdraw, closeStage = false, ...props }) => {
+const StageManagerComponent = ({ stageManager, callback, closeStage = false, ...props }) => {
 
     const {
       currentStage,
@@ -22,7 +22,7 @@ const StageManagerComponent = ({ stageManager, backToWithdraw, closeStage = fals
       <StageIndicator className={`fuente2 _stageIndicator`} >
         {
           (currentStage <= stageController?.length && (currentStage > 0 || closeStage) ) &&
-            <BackButtom onClick={currentStage < 1 ? backToWithdraw : () => prevStage()}>
+            <BackButtom onClick={currentStage < 1 ? callback : () => prevStage()}>
               <MdArrowBackIosNew size={15} color="var(--paragraph_color)"/>
             </BackButtom>
         }

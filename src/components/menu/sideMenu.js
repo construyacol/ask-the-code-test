@@ -86,7 +86,6 @@ function SideMenuComponent(props) {
   };
 
   const SideIcon = isExpanded ? IoIosArrowBack : IoIosArrowForward 
-  console.log('isExpanded', isExpanded)
  
     return(
         <>
