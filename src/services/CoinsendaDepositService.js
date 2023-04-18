@@ -136,25 +136,25 @@ export class DepositService extends WebService {
  
   async createAndInsertDepositProvider(account, depositAccountId) {
     if (!account) return;
-    const dep_prov = await this.createDepositProvider(
+    const depProvider = await this.createDepositProvider(
       account.id,
       account.country,
       depositAccountId
     );
     const deposit_providers = await this.fetchDepositProviders();
-    if (!dep_prov) {
+    if (!depProvider) {
       return;
     }
 
     const update_wallet = {
       [account.id]: {
         ...account,
-        dep_prov: [...account.dep_prov, dep_prov?.id],
-        deposit_provider: deposit_providers[dep_prov?.id],
+        dep_prov:Array.from(new Set([...account.dep_prov, depProvider?.id])),
+        deposit_provider: deposit_providers[depProvider?.id],
       },
     };
     await this.dispatch(update_item_state(update_wallet, "wallets"));
-    return dep_prov;
+    return depProvider;
   }
 
   async getDepositByAccountId(accountId, filter) {
