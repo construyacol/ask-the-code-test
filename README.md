@@ -11,8 +11,8 @@ Open [http://localhost:2998](http://localhost:2998) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
-
-### `yarn build`
+ 
+### `yarn build:mobile`
 Build the production bundle
 
 ## Mobile local setup using Capacitor
