@@ -19,10 +19,17 @@ import { useCoinsendaServices } from "services/useCoinsendaServices";
 import { QR_CONFIG } from 'const/qr'
 import { useWalletInfo } from 'hooks/useWalletInfo'
 
+// import { AlertDisclaimer } from 'components/widgets/shared-styles'
+// import { P } from 'core/components/atoms'
+// import CookieMessage from 'components/widgets/cookieMessage'
+import UsdtErcDisclaimer, { EthCostDisclaimer } from "./usdtErcDisclaimer"
+
+
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")), {fallback:<div></div>});
 const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")), {fallback:<div></div>});
+
 
 
 const CriptoView = (props) => {
@@ -80,20 +87,32 @@ const CriptoView = (props) => {
     
     const truncatedAddres = useTruncatedAddress(address || '')
     const addressValue = isMobile ? truncatedAddres : address
+    
+    console.log("||||||||| depositProviders ==> ", depositProviders.current)
   
     if(isEmpty(depositProviders.current)){
       return<SelectDepositNetwork uiName={`Selecciona la red por la que deseas depositar ${currentWallet?.currency?.toUpperCase()}`} callback={setProvider}/>
     }
+
+    
+
    
     return (  
       <> 
+      {
+        // Mostrar si es USDT de la red ETH 
+        currentWallet?.currency === 'usdt' && depositProviders?.current?.provider_type === 'ethereum' && (
+          <UsdtErcDisclaimer callback={setProvider} accountId={currentWallet?.id}/>
+        )
+      }
       {props?.children}
       { 
          !isEmpty(depositProviders.current) ?
             <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
-         :
+         : 
             <div></div>
       }
+     
       <DepositForm className="depositForm">
             { 
               currentWallet.currency.includes("eth") &&
@@ -102,6 +121,7 @@ const CriptoView = (props) => {
                 </EtherDisclaimer>
             }
         <ContAddress className={`contAddress ${osDevice}`}>
+        {currentWallet?.currency === 'usdt' && depositProviders?.current?.provider_type === 'ethereum' && <EthCostDisclaimer/>}
 
           <DisclaimerMessage
             current_wallet={currentWallet}
@@ -121,6 +141,7 @@ const CriptoView = (props) => {
               <img id="qrDesposit" className="itemFuera" src={qrState} alt="" />
             )}
           </div>
+
           
           <div className="div_deposit--address">
             <p className="fuente dirDep">Dirección de depósito:</p>

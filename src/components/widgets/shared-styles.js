@@ -12,6 +12,16 @@ export const DisclaimerContainer = styled.div`
    border-bottom-left-radius: 1px;
 `
 
+export const AlertDisclaimer = styled(DisclaimerContainer)`
+  background-color: #ff8c0024;
+  border-left: 2px solid var(--orange_color);
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 100% ;
+  padding: 10px 20px;
+`
+
 export const TotalAmount = styled.div`
   width: auto;
   height: 70px; 

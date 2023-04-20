@@ -10,6 +10,7 @@ export interface buttonTypes extends ChildrenReactNode {
   disabled?: boolean;
   loading?: boolean;
   href?: string | String | LocationDescriptor<unknown>;
+  fontSize?: number | string;
 }
 
 export interface textTypes extends ChildrenReactNode {

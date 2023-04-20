@@ -23,7 +23,7 @@ import {
   // validateExpTime,
   saveUserToken,
   getUserToken,
-  openLoginMobile
+  openLoginMobile 
 } from "utils/handleSession";
 import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 import { getAllUrlParams } from "utils/urlUtils";
