@@ -55,9 +55,9 @@ const BANK_WITHDRAW = {
       placeholder:"Escribe la cantidad",
     }
   }  
-}
+} 
 
-const INTERNAL_NETWORK = {
+export const INTERNAL_NETWORK = {
   [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:{
     uiName:"Escribe el correo electrónico de la persona que le enviarás DCOP",
     key:FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON,

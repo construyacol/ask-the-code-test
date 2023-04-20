@@ -86,6 +86,7 @@ export const selectWithdrawAccounts = createSelector(
     if(!withdraw_accounts) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     for (const [, withdraw_account] of Object.entries(withdraw_accounts)) {
+        // if(withdraw_account.provider_type === provider_type) return res.push(withdraw_account)
         (withdraw_account.provider_type === provider_type && withdraw_account.currency === currency && withdraw_account?.info?.label !== currency) && res.push(withdraw_account);
     }
     return res;

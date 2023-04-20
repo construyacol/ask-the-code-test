@@ -50,8 +50,7 @@ const AddressBookComponent = ({
       (withdrawAccount) =>
         withdrawAccount.info.label.toLowerCase().includes(value.toLowerCase()) || withdrawAccount?.info?.address?.includes(value) || withdrawAccount?.info?.identifier?.includes(value)
     );
-    const condition =
-      value.length > 1 && result.length < withdrawAccounts.length;
+    const condition = value.length > 1 && result.length < withdrawAccounts.length;
     if (condition) {
       setSearchValue(value);
       setSearchList(result);

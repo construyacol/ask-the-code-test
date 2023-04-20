@@ -21,7 +21,7 @@ const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
   // const mainContainerRef = useRef()
   const actions = useActions();  
   const [{ current_wallet, path }] = WithdrawViewState();
-  const provider_type = currentNetwork?.provider_type
+  const provider_type = currentNetwork?.provider_type 
   const withdrawAccounts = useSelector((state) => selectWithdrawAccounts(state, { provider_type, currency:current_wallet.currency }));
   
   const [view, setView] = useState("addressList");
