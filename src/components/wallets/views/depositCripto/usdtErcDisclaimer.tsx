@@ -6,6 +6,8 @@ import { P, H2, Button } from 'core/components/atoms'
 import { device } from 'const/const'
 
 
+const DEPOSIT_COST = "15 USDT"
+
 const UsdtErcDisclaimer = ({ children, callback, accountId }:any) => {
 
 
@@ -26,7 +28,7 @@ const UsdtErcDisclaimer = ({ children, callback, accountId }:any) => {
          <ContentDisclaimer className={`${!show ? '__hide' : ''}`}>
             <img src={`${getCdnPath('assets')}error_animation.gif`}  alt="" width={75} height={75} /> 
                <H2 size={18} className="fuente">¡Espera un momento!</H2>
-               <P size={14} className="fuente"> Los depósitos de <strong className="fuente2">USDT(ERC20)</strong> en la red Ethereum en este momento tienen un costo fijo de <strong className="fuente2">12 USDT</strong> debido a las altas tarifas de operación de la red. Pero no te preocupes, ¡tenemos la solución! Te invitamos a depositar <strong className="fuente2">USDT(TRC20)</strong> en la red TRON o <strong className="fuente2">USDT(BSC)</strong> en la red de Binance, <strong >¡que no tienen ningún costo asociado!</strong></P>
+               <P size={14} className="fuente"> Los depósitos de <strong className="fuente2">USDT(ERC20)</strong> en la red Ethereum en este momento tienen un costo fijo de <strong className="fuente2" style={{color:"red"}}>{DEPOSIT_COST}</strong> debido a las altas tarifas de operación de la red. Pero no te preocupes, ¡tenemos la solución! Te invitamos a depositar <strong className="fuente2">USDT(TRC20)</strong> en la red TRON o <strong className="fuente2">USDT(BSC)</strong> en la red de Binance, <strong >¡que no tienen ningún costo asociado!</strong></P>
                <ButtonCont>
                   <Button fontSize={15} variant="outlined" color="primary" onClick={secondaryAction}>Continuar a <span className="fuente2">ERC20</span></Button>
                   <Button fontSize={15} variant="contained" color="primary" onClick={mainAction}>Seleccionar otra red</Button>
@@ -43,7 +45,7 @@ export const EthCostDisclaimer = () => {
 
    return(
       <AlertDisclaimer>
-         <P size={14} variant='number' color='red'>Costo: <strong>12 USDT</strong></P>
+         <P size={14} variant='number' color='red'>Costo: <strong style={{color:"red"}}>{DEPOSIT_COST}</strong></P>
       </AlertDisclaimer>
    )
 }
