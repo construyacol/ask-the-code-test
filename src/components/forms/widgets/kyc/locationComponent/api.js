@@ -188,7 +188,7 @@ export const ApiPostLocation = async(payload) => {
         street_number:streetNumber,
         // floor:"", //optional
         // apartment:"", //optional
-        zip_code:"66660001"
+        // zip_code:"66660001"
       }
     }
   }

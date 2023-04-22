@@ -10,7 +10,7 @@ import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 // import { ApiGetPersonalStages } from './widgets/personalKycComponent/oldApi'
 import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
-import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
+import { ApiGetContactStages, getDefaultContactState } from './widgets/kyc/contactComponent/api'
 import { 
   ApiGetIdentityStages, 
   ApiGetIdentityErrors,
@@ -215,17 +215,17 @@ const getErrors = (config) => {
   }
   return ERRORS[config.formName] && ERRORS[config.formName](config)
 }
- 
 
+ 
 const getDefaultState = (config) => {
   const STATES = {
-    identity:ApiGetIdentityState
+    identity:ApiGetIdentityState,
+    contact:getDefaultContactState
   }
   return STATES[config.formName] && STATES[config.formName](config)
 }
-
+ 
 export const initStages = async(_config, API_STAGES) => {
-
   let config = {..._config}
   config.handleError = getErrors(config)
   config.defaultState = getDefaultState(config)

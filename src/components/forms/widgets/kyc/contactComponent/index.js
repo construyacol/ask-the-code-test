@@ -4,6 +4,7 @@ import useStage from '../../../hooks/useStage'
 import { ApiPostContact } from './api'
 import { initStages } from '../../../utils'
 import KycFormComponent from '../../kycForm'
+import { getSelectList } from 'components/forms/utils'
 
 const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
 
@@ -59,11 +60,14 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[stageData?.key]])
 
+
+
   useEffect(() => {
     if(currentStage >= stageController.length){
       const execPost = async() => {
         setLoading(true)
-        let res = await ApiPostContact(state)
+        let prefixCountryList = await getSelectList('country')
+        let res = await ApiPostContact({...state, prefixCountryList})
         setLoading(false)
         if(!res)return prevStage();
         const _dataForm = await initStages({
