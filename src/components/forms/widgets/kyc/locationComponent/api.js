@@ -1,4 +1,20 @@
 import { mainService } from "../../../../../services/MainService";
+import { ONLY_TEXT, IS_NOT_TEXT, ONLY_NUMBERS, IS_NOT_NUMBER } from 'core/const/regex'
+
+
+
+export const LOCATION_TYPES = {
+  FORM:"location",
+  STAGES:{
+    ADDRESS:{
+      STREET_NAME:"streetName",
+      STREET_NUMBER:"streetNumber",
+      DISTRICT:"district",
+      // ZIP_CODE:"zipCode",
+    },
+  }
+}
+
 
 const LOCATION_INFO_NEEDED = {
   "location_country":{
@@ -14,10 +30,10 @@ const LOCATION_INFO_NEEDED = {
     ui_type:"text",
   },
   "address":{
-    ui_name:"Dirección",
-    ui_type:"text",
+    ui_name:"Dirección de residencia",
   }
 }
+
 
 const STAGES = {
   "province":{
@@ -54,24 +70,102 @@ const STAGES = {
         }
       }
     },
+    // "address":{
+    //   // uiName:"Dirección de residencia:",
+    //   key:"address",
+    //   uiType:"text",
+    //   "settings":{
+    //     defaultMessage:"Escribe de forma completa tu dirección actual de residencia",
+    //     successPattern:/[a-zA-Z ]{3,40}/g,
+    //     // label:"Dirección de residencia:",
+    //     // placeholder:"Escribe la dirección",
+    //     queryParams:{
+    //       form:'residence_address'
+    //     },
+    //     errors:[
+    //       { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
+    //     ],
+    //   }
+    // },
     "address":{
-      // uiName:"Dirección de residencia:",
       key:"address",
-      uiType:"text",
-      "settings":{
-        defaultMessage:"Escribe de forma completa tu dirección actual de residencia",
-        successPattern:/[a-zA-Z ]{3,40}/g,
-        // label:"Dirección de residencia:",
-        // placeholder:"Escribe la dirección",
+      uiType:"recursiveLevel",
+      renderComponent:"kyc/locationComponent/inputAddress",
+      settings:{
         queryParams:{
-          form:'personal_address'
-        },
-        errors:[
-          { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
-        ],
+          form:'createWithdrawAccount',
+          stage:"address"
+        }
+      },
+      "streetName":{
+        key:"streetName",
+        uiType:"select",
+        uiName:"",
+        autopista:{value:"autopista", ui_name:"Autopista"},
+        avenida:{value:"avenida", ui_name:"Avenida"},
+        calle:{value:"calle", ui_name:"Calle"},
+        carrera:{value:"carrera", ui_name:"Carrera"},
+        transversal:{value:"transversal", ui_name:"Transversal"},
+        bulevar:{value:"bulevar", ui_name:"Bulevar"},
+        carretera:{value:"carretera", ui_name:"Carretera"},
+        circunvalar:{value:"circunvalar", ui_name:"Circunvalar"},
+        diagonal:{value:"diagonal", ui_name:"Diagonal"},
+        glorieta:{value:"glorieta", ui_name:"Glorieta"},
+        kilometro:{value:"kilometro", ui_name:"Kilometro"},
+        variante:{value:"variante", ui_name:"Variante"},
+        via:{value:"via", ui_name:"Vía"},
+        "settings":{
+          successPattern:ONLY_TEXT,
+          errors:[ 
+            { pattern:IS_NOT_TEXT, message:'Solo se permiten letras...'}
+          ],
+          defaultMessage:"Elige el tipo de calle",
+          placeholder:"Calle, carrera...",
+        }
+      },
+      "streetNumber":{
+        key:"streetNumber",
+        uiType:"text",
+        uiName:"",
+        "settings":{
+          successPattern:ONLY_NUMBERS,
+          errors:[ 
+            { pattern:IS_NOT_NUMBER, message:'Solo se permiten Números...'}
+          ],
+          defaultMessage:"Escribe el número de tu calle",
+          placeholder:"Número de calle",
+        }
+      },
+      "district":{
+        key:"district",
+        uiType:"text",
+        uiName:"",
+        "settings":{
+          successPattern:ONLY_TEXT,
+          errors:[ 
+            { pattern:IS_NOT_TEXT, message:'Solo se permiten letras...'}
+          ],
+          defaultMessage:"Escribe el nombre del barrio donde resides",
+          placeholder:"Barrio",
+        }
+      },
+      "zipCode":{
+        key:"zipCode",
+        uiType:"text",
+        uiName:"",
+        "settings":{ 
+          successPattern:ONLY_NUMBERS,
+          errors:[ 
+            { pattern:IS_NOT_NUMBER, message:'Solo se permiten Números...'}
+          ],
+          defaultMessage:"Escribe el código postal de tu ubicación",
+          placeholder:"Código postal",
+        }
       }
-    },
+    }
 }
+
+
 
 export const ApiGetLocationStages = async(config) => {
     return LOCATION_INFO_NEEDED
@@ -79,32 +173,25 @@ export const ApiGetLocationStages = async(config) => {
 
 
 export const ApiPostLocation = async(payload) => { 
-
-  const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
-  let body = {data:{}}
-  body.data = payload
-
-  if(env !== 'production'){
-    body.data = {
+  const { location_country, province, city, address:{ district, streetName, streetNumber }  } = payload
+  let body = {
+    data:{
       type:"residence",
-      aditional_info:"", //optional
+      // aditional_info:"", //optional
       country:"international",
       info_needed:{
-        location_country:payload.location_country,
-        province:payload.province,
-        city:payload.city,
-        district:"alamos", //optional
-        street_name:"cra 4",
-        street_number:"23 - 44",
-        floor:"", //optional
-        apartment:"", //optional
-        zip_code:"66660001"
+        location_country,
+        province,
+        city,
+        district, //optional
+        street_name:streetName,
+        street_number:streetNumber,
+        // floor:"", //optional
+        // apartment:"", //optional
+        // zip_code:"66660001"
       }
     }
   }
-
-  console.log('payload', payload)
-  
   const res = await mainService.createLocation(body)
   if(!res)return ;
   await mainService.fetchCompleteUserData()

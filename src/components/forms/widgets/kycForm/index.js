@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react' 
 import InputComponent from 'components/forms/widgets/kyc/InputComponent'
 import { BackButtom, NextButtom } from 'components/forms/widgets/kyc/identityComponent/buttons'
 import LabelComponent from 'components/forms/widgets/kyc/identityComponent/labelComponent'
@@ -18,8 +19,16 @@ import Button from 'components/widgets/buttons/button'
   
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
+
+const SELECT_INITIAL_STATE = {
+  list:{},
+  name:"",
+  state:{},
+  handleAction:() => null,
+  exactResult:true
+}
+
 const KycFormComponent = ({ 
-    state, 
     dataForm, 
     closeModal,
     isNewId,
@@ -34,7 +43,8 @@ const KycFormComponent = ({
       finalStage,
       stageData,
       setStageData,
-      stageStatus
+      stageStatus,
+      setStageStatus
     },
     ...props
   }) => {
@@ -48,14 +58,27 @@ const KycFormComponent = ({
       true
     );
     
-    const { viewportSizes:{ isMobile } } = props
+    const { viewportSizes:{ isMobile }, handleState } = props;
+    const { state } = handleState
+    const [ selectListConfig, setSelectListConfig ] = useState(SELECT_INITIAL_STATE)
     const stageErrorState = (dataForm?.handleError?.errors[stageData?.key] && !state[stageData?.key]) && 'rejected'
     const errorMessage = dataForm?.handleError?.errors[stageData?.key]
     const inputMessage = (typeof errorMessage === 'string' && errorMessage) || stageData?.settings?.defaultMessage
       
-
+    useEffect(() => {
+      if(stageData?.selectList){
+        setSelectListConfig(prevState => ({
+          ...prevState,
+          list:stageData?.selectList,
+          name:stageData?.key,
+          state,
+          handleAction:onChange
+        }))
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [stageData, state])
+ 
     return(
-     
       <Layout 
         style={{background:"white"}}  
         // className="scroll"
@@ -71,7 +94,6 @@ const KycFormComponent = ({
               stageStatus={stageStatus}
               stageController={stageController}
               {...props}
-              // setInfoStages={setInfoStages}
             />
     
             {
@@ -87,62 +109,80 @@ const KycFormComponent = ({
                   </H2>
                 </TitleContainer>
                 
-                  {
-                    isMobile &&
-                      <InfoStateComponent 
-                        id="infoStatemobile__"
-                        currentStage={currentStage}
+                {
+                  isMobile &&
+                    <InfoStateComponent 
+                      id="infoStatemobile__"
+                      currentStage={currentStage}
+                      stageController={stageController}
+                      dataForm={dataForm}
+                      {...props}
+                    />
+                }
+                
+                {
+                    <StickyGroup background="white" id="stickyGroup__" >
+                      <Label
                         stageController={stageController}
                         dataForm={dataForm}
-                        {...props}
+                        currentStage={currentStage}
+                        prevStep={prevStep}
                       />
-                  }
-
-                <StickyGroup background="white" id="stickyGroup__" >
-                  <LabelComponent 
-                    stageController={stageController}
-                    stages={dataForm?.stages}
-                    currentStage={currentStage}
-                    > 
-                    <BackButtom onClick={prevStep} disabled={currentStage <= 0}/>
-                  </LabelComponent>
-
-                  {
-                    loading ?
-                    <InputSkeleton/>
-                    :
-                    <InputComponent
-                      className={`${stageErrorState}`}
-                      onChange={onChange} 
-                      inputStatus={stageStatus}
-                      defaultValue={state[stageData?.key]}
-                      name={stageData?.key} 
-                      message={inputMessage}
-                      placeholder={stageData?.settings?.placeholder}
-                      type={stageData?.uiType}
-                      setStageData={setStageData}
-                      dataForm={dataForm}
-                      state={state}
-                      progressBar={{start:currentStage+1, end:stageController?.length, showSteps:true}}
-                      AuxComponent={[
-                        stageData?.settings?.auxComponent, 
-                        isMobile ? () => null : () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController?.length) || stageStatus !== 'success'} />
-                      ]}
-                    />
-                  }
-                </StickyGroup>
+                      {
+                        loading ?
+                        <InputSkeleton/>
+                        :
+                        stageData?.renderComponent ?
+                        <DynamicLoadComponent
+                          component={stageData?.renderComponent}
+                          onChange={onChange} 
+                          setSelectListConfig={setSelectListConfig}
+                          stageStatus={stageStatus}
+                          placeholder={stageData?.settings?.placeholder}
+                          type={stageData?.uiType}
+                          stageData={stageData}
+                          setStageData={setStageData}
+                          dataForm={dataForm}
+                          handleState={handleState}
+                          progressBar={{start:currentStage+1, end:stageController?.length, showSteps:true}}
+                          stageController={stageController}
+                          currentStage={currentStage}
+                          AuxComponent={[
+                            stageData?.settings?.auxComponent, 
+                            isMobile ? () => null : () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController?.length) || stageStatus !== 'success'} />
+                          ]}
+                        />
+                        : 
+                        <InputComponent
+                          className={`${stageErrorState}`}
+                          onChange={onChange} 
+                          inputStatus={stageStatus}
+                          defaultValue={state[stageData?.key]}
+                          name={stageData?.key} 
+                          message={inputMessage}
+                          placeholder={stageData?.settings?.placeholder}
+                          type={stageData?.uiType}
+                          setStageData={setStageData}
+                          dataForm={dataForm}
+                          state={state}
+                          progressBar={{start:currentStage+1, end:stageController?.length, showSteps:true}}
+                          AuxComponent={[
+                            stageData?.settings?.auxComponent, 
+                            isMobile ? () => null : () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController?.length) || stageStatus !== 'success'} />
+                          ]}
+                        />
+                      }
+                    </StickyGroup>
+                }
 
                 <DynamicLoadComponent
                   component="kyc/selectList"
-                  list={stageData?.selectList}
-                  name={stageData?.key}
-                  state={state}
-                  handleAction={onChange}
+                  {...selectListConfig}
                   // pass useCallBack to inherited functions to this component
                 />
 
                 {
-                  isMobile &&
+                  isMobile &&  
                   <Button 
                     color="primary"
                     variant="contained"
@@ -158,5 +198,25 @@ const KycFormComponent = ({
       </Layout>
     )
   } 
+
+
+
+
+  const Label = ({
+    stageController,
+    dataForm,
+    currentStage,
+    prevStep
+  }) => {
+    return(
+      <LabelComponent 
+        stageController={stageController}
+        stages={dataForm?.stages}
+        currentStage={currentStage}
+        > 
+        <BackButtom onClick={prevStep} disabled={currentStage <= 0}/>
+      </LabelComponent>
+    )
+  }
 
   export default kycHoc(KycFormComponent)
