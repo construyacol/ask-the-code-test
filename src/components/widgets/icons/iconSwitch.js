@@ -188,6 +188,7 @@ const Internals = loadable(() => import("./").then(getExportByName("Internals"))
 const BankAccount = loadable(() => import("./").then(getExportByName("BankAccount")));
 const FacebookMsg = loadable(() => import("./").then(getExportByName("FacebookMsg")));
 const Gmail = loadable(() => import("./").then(getExportByName("Gmail")));
+const BankName = loadable(() => import("./").then(getExportByName("BankName")));
 
 
 
@@ -195,6 +196,8 @@ class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     switch (icon) {
+      case "bankName":
+        return <BankName {...props} />; 
       case "bankAccount":
         return <BankAccount {...props} />; 
       case "gmail":

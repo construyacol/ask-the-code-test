@@ -12,7 +12,7 @@ export function calculateCost(value, costs) {
       break;
     }
   }
-  if(BigNumber(range).isLessThanOrEqualTo(0)) return 0;
+  if(currentValue.isLessThanOrEqualTo(0)) return 0;
   const fixedCost = BigNumber(costs[range]?.fixed)
   const percent = BigNumber(costs[range]?.percent || 0)
   return fixedCost.plus(currentValue.multipliedBy(percent.dividedBy(100))).toString();

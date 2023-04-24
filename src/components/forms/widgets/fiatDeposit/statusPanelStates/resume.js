@@ -16,8 +16,6 @@ import { ContentRight, StatusContainer } from './styles'
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
 
 
-
-
 const ResumeComponent = ({
     handleState:{state},
     stageManager,
@@ -26,7 +24,6 @@ const ResumeComponent = ({
     dataForm,
     ...props
   }) => {
-
 
     return(
         <>
@@ -108,14 +105,12 @@ const PseResumeComponent = ({
   const [ cost, setCost ] = useState()
 
   useEffect(() => {
-    if(state?.depositAmount) {
+    if(state?.depositAmount) { 
       const _cost = calculateCost(state?.depositAmount, depositAccount?.costs)
       setCost(formatToCurrency(_cost, depositAccount?.currency).toFormat())
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
-
-  console.log('cost', cost)
 
   return(
     <>

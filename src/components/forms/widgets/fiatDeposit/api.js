@@ -65,7 +65,6 @@ const DEFAULT_INTERNAL_AMOUNT = {
   }
 }
 
-
 const PSE_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:{
     uiName:"Elije el banco por el cual harás el pago",
@@ -92,7 +91,6 @@ const PSE_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 }
 
-
 const BANK_DEFAULT_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
     ui_type:"select"
@@ -114,19 +112,15 @@ const BANK_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 }
 
-
 const INTERNAL_DEFAULT_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:{
     ui_type:"text"
   }
 }
 
-
 const INTERNAL_NETWORK_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:DEFAULT_INTERNAL_AMOUNT
 }
-
-
 
 const STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
@@ -188,12 +182,38 @@ const DEPOSIT_TYPE_STAGES = {
 }
 
 
-const depositApiStages = (_depositAccount) => {  
-  const depositAccount = _depositAccount?.info_needed ? ungapStructuredClone(_depositAccount?.info_needed) : _depositAccount
+const addIconToBankName = async(dataBank) => {
+  for (const bank in dataBank) {
+    if(typeof dataBank[bank] === 'object') dataBank[bank].icon = "bankName"
+  }
+  return dataBank
+}
+
+
+const addConfigData = (configKey, dataSource) => {
+  const config = {
+    bank_name:addIconToBankName
+  }
+  return config[configKey] ? config[configKey](dataSource) : dataSource
+}
+
+const processInfoNeeded = async(dataSource) => {
+  let infoNeeded = dataSource?.info_needed ? ungapStructuredClone(dataSource?.info_needed) : dataSource
+  for (const infoNeededItem in infoNeeded) {
+    infoNeeded[infoNeededItem] = await addConfigData(infoNeededItem, infoNeeded[infoNeededItem])
+  }
+  return infoNeeded
+}
+
+
+const depositApiStages = async(depositAccount) => {  
+
+  // const infoNeeded = depositAccount?.info_needed ? ungapStructuredClone(depositAccount?.info_needed) : depositAccount
+  const infoNeeded = await processInfoNeeded(depositAccount)
 
   const providerTypes = {
     pse:{
-      ...depositAccount,
+      ...infoNeeded,
       [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
         ui_type:"text"
       }
@@ -203,7 +223,7 @@ const depositApiStages = (_depositAccount) => {
     ...CRYPTO_API_STAGES
   }
 
-  return providerTypes[_depositAccount?.provider_type] || BANK_DEFAULT_STAGES
+  return providerTypes[depositAccount?.provider_type] || BANK_DEFAULT_STAGES
 }
 
 export const createNextStages = async({ 
@@ -214,8 +234,10 @@ export const createNextStages = async({
  
   if(!state[stageData?.key])return;
   const providerType = state[stageData?.key]?.provider_type || 'bank'
-  const apiStages = depositApiStages(state[stageData?.key])
+  const apiStages = await depositApiStages(state[stageData?.key])
 
+
+  
   let stages = {} 
   for (const stage of Object.keys(apiStages)) { 
     stages = {
@@ -304,11 +326,10 @@ export const ApiPostCreatePseDeposit = async({
       comment:"",
       person_type:person_type?.value,
       bank_name,
-      // cost_id:depositCost?.value,
       country:currentWallet?.country,
       currency:currentWallet?.currency,
       deposit_provider_id:depositProvider?.id,
-      callback_url:"https://app.coinsenda.com/wallets"
+      callback_url:"https://app.bitsenda.com/wallets"
     }
   }
   return await mainService.createDeposit(body);

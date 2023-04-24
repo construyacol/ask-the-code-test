@@ -93,16 +93,13 @@ const CriptoView = (props) => {
     if(isEmpty(depositProviders.current)){
       return<SelectDepositNetwork uiName={`Selecciona la red por la que deseas depositar ${currentWallet?.currency?.toUpperCase()}`} callback={setProvider}/>
     }
-
-    
-
    
     return (  
       <> 
       {
         // Mostrar si es USDT de la red ETH 
-        currentWallet?.currency === 'usdt' && depositProviders?.current?.provider_type === 'ethereum' && (
-          <UsdtErcDisclaimer callback={setProvider} accountId={currentWallet?.id}/>
+        depositProviders?.current?.provider_type === 'ethereum' && (
+          <UsdtErcDisclaimer callback={setProvider} networksData={depositProviders} currentWallet={currentWallet}/>
         )
       }
       {props?.children}
@@ -112,7 +109,6 @@ const CriptoView = (props) => {
          : 
             <div></div>
       }
-     
       <DepositForm className="depositForm">
             { 
               currentWallet.currency.includes("eth") &&
@@ -121,8 +117,7 @@ const CriptoView = (props) => {
                 </EtherDisclaimer>
             }
         <ContAddress className={`contAddress ${osDevice}`}>
-        {currentWallet?.currency === 'usdt' && depositProviders?.current?.provider_type === 'ethereum' && <EthCostDisclaimer/>}
-
+        {depositProviders?.current?.provider_type === 'ethereum' && <EthCostDisclaimer/>}
           <DisclaimerMessage
             current_wallet={currentWallet}
             depositProviders={depositProviders}

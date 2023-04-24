@@ -9,6 +9,7 @@ import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import NewItemsLayout from "../../widgets/items/new-items-layout";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState.js'
+import { replaceToCurrency } from "core/config/currencies"
 
 
 
@@ -56,7 +57,7 @@ export const PairList = (props) => {
 
   return (
     <OtherModalLayoutPairs
-      title={`Cambiar ${currencySymbol} a:`}
+      title={`Cambiar ${replaceToCurrency({currency:currencySymbol})} a:`}
       close_modal={closeModal}
     >
       <div className="PairListFind"></div>

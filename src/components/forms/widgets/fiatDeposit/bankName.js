@@ -4,7 +4,7 @@ import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
 import SelectListComponent from '../selectListComponent'
 import useViewport from '../../../../hooks/useWindowSize'
-// import { Disclaimer } from '../sharedStyles'
+// import { AiFillBank } from "react-icons/ai";
 
 
 const BankNameListComponent = ({ 
@@ -32,8 +32,7 @@ const BankNameListComponent = ({
       })
       setStageStatus(_status)
     }
-  
-  
+    
     // load state  by default
     useEffect(() => {
       let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
@@ -44,7 +43,6 @@ const BankNameListComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key]])
   
-
     return(
       <StageContainer className="_bankNameList">
         {children}
@@ -57,7 +55,7 @@ const BankNameListComponent = ({
           placeholder={stageData?.settings?.placeholder}
           type={stageData?.uiType}
         />
-  
+   
         <SelectListComponent
           stageData={stageData}
           state={state}

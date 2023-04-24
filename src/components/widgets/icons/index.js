@@ -6,6 +6,13 @@ import { getExportByName } from 'utils'
 
 
 
+
+export function BankName(props) {
+  const AiFillBank = loadable(() => import("react-icons/ai").then(getExportByName("AiFillBank")));
+  return <AiFillBank {...props}/>
+}
+
+
 export function BankAccount(props) {
   const CiBank = loadable(() => import("react-icons/ci").then(getExportByName("CiBank")));
   return <CiBank {...props}/>
