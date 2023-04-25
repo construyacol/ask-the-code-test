@@ -89,6 +89,14 @@ function RootContainer(props) {
       const BiometricKyc = Element.default
       props.actions.renderModal(() => <BiometricKyc/>);
     }
+    if(params.has('pse_success')){
+      const Element = await import("components/forms/widgets/fiatDeposit/pseViews/callBackSuccess");
+      if (!Element) return;
+      const PseSuccess = Element.default
+      const params = getAllUrlParams(mobileURL ?? history.location.search) || {}
+      // const params = {}
+      props.actions.renderModal(() => <PseSuccess {...params}/>);
+    }
     history.push("/");
   };
 

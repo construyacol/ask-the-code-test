@@ -132,7 +132,7 @@ useEffect(() => {
     }
     setLoading(true) 
     const depositProvider = depositProviders[depositAccount?.provider_type]
-    const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider })
+    const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider, depositAccount })
     if(error){
       setLoading(false)
       return toastMessage(error?.message, "error");

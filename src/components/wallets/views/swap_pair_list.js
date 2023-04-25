@@ -12,7 +12,6 @@ import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState.js'
 import { replaceToCurrency } from "core/config/currencies"
 
 
-
 export const PairList = (props) => {
   const [allPairs, setAllPairs] = useState(null);
   const [loaderMsg] = useState("Cargando Pares");

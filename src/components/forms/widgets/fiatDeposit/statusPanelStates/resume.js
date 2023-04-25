@@ -9,7 +9,7 @@ import {
     StatusHeaderContainer
 } from '../../onBoarding/styles'
 import { FIAT_DEPOSIT_TYPES } from '../api'
-import { calculateCost } from '../../sharedValidations'
+import { calculateCost } from 'components/forms/widgets/sharedValidations'
 import { parseSymbolCurrency } from 'core/config/currencies'
 import { ContentRight, StatusContainer } from './styles'
 

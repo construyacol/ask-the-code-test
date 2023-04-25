@@ -207,7 +207,6 @@ export const PseCTA = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // 
     return(
         <PseContainer className={`${children ? 'withFlexDisplay' : ''} ${!isAvailableToPay ? 'inProcess' : ''}`}>
             {children}
@@ -230,7 +229,8 @@ export const PseCTA = ({
                                 localStorage.setItem(`pse_${depositOrder?.id}`, true);
                                 setIsAvailableToPay(false);
                                 // setLeftMinutes(PSE_DEFAULT_AVAILABLE_PAY_TIME)
-                                window.open(depositOrder?.metadata?.bank_url, '_blank');
+                                window.location.href = depositOrder?.metadata?.bank_url;
+                                // window.open(depositOrder?.metadata?.bank_url, '_blank');
                                 finish && finish()
                             }}
                         />

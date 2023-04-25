@@ -4,6 +4,7 @@ import { mainService } from "services/MainService";
 import { AiFillBank } from "react-icons/ai";
 import { BsCash } from "react-icons/bs";
 import { createSelector } from "reselect";
+import BigNumber from "bignumber.js"
 import {
   parseOnlyNumbers,
 } from '../kyc/utils'
@@ -300,15 +301,35 @@ export const ApiPostCreateBankDeposit = async({
   return await mainService.createDeposit(body);
 }
 
-
-
-
 export const ApiPostCreateInternalDeposit = async({ state }) => {
   //  const paymentRequest = await createNewPaymentRequest()
   //  console.log(paymentRequest)
    return { error:true }
 }
 
+
+const createCallbackUrl = async({
+  currentWallet,
+  depositAmount,
+  depositAccount
+}) => {
+  const { calculateCost } = await import('components/forms/widgets/sharedValidations')
+  const { formatToCurrency } = await import('utils/convert_currency')
+  const { getHostName } = await import('environment')
+  const currency = currentWallet?.currency
+  const cost = calculateCost(depositAmount, depositAccount?.costs)
+  const amount = formatToCurrency(depositAmount?.replace(/,/g, ""), currency)
+  const totalAmount = amount.plus(new BigNumber(cost))
+  const account_id = currentWallet?.id
+  const callbackData = {
+    currency,
+    cost,
+    amount:amount.toFormat(),
+    totalAmount:totalAmount.toFormat(),
+    account_id
+  }
+  return `https://app.${getHostName()}.com?pse_success=${encodeURIComponent(JSON.stringify(callbackData))}` 
+}
 
 export const ApiPostCreatePseDeposit = async({ 
   state:{
@@ -317,8 +338,10 @@ export const ApiPostCreatePseDeposit = async({
     bank_name
   }, 
   currentWallet,
-  depositProvider
+  depositProvider,
+  depositAccount
 }) => { 
+  const callback_url = await createCallbackUrl({ currentWallet, depositAmount, depositAccount})
   let body = {
     data:{
       account_id:currentWallet?.id,
@@ -329,7 +352,7 @@ export const ApiPostCreatePseDeposit = async({
       country:currentWallet?.country,
       currency:currentWallet?.currency,
       deposit_provider_id:depositProvider?.id,
-      callback_url:"https://app.bitsenda.com/wallets"
+      callback_url
     }
   }
   return await mainService.createDeposit(body);
