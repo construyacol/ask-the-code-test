@@ -131,7 +131,6 @@ const LinkContainer = styled(DisclaimerContainer)`
    border-left: 2px solid var(--primary);
 `
 
-
 const CtasContainer = styled.div`
    display: flex;
    column-gap: 20px;

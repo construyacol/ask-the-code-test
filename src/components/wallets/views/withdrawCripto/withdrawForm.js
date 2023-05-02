@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import InputForm from "../../../widgets/inputs/inputForm";
+import { QrReader } from 'core/components/molecules'
 // import ControlButton from "../../../widgets/buttons/controlButton";
 
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
@@ -23,7 +24,11 @@ import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 import { parseSymbolCurrency } from 'core/config/currencies'
+import withdrawQrHoc from 'components/hoc/withdrawQrHoc'
 
+
+
+const WithdrawQrReader = withdrawQrHoc(QrReader)
 
 const WithdrawFormComponent = ({
     setAddressState,
@@ -33,7 +38,6 @@ const WithdrawFormComponent = ({
     loader,
     tagWithdrawAccount,
     addressState,
-    showQrScanner,
     setAddressValue,
     addressToAdd,
     deleteTag,
@@ -74,7 +78,6 @@ const WithdrawFormComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
 
-
     return(
         <WithdrawForm
         id="withdrawForm"
@@ -103,13 +106,9 @@ const WithdrawFormComponent = ({
                             color={`green`}
                             size={22}
                         />
-                        :
-                        <IconSwitch
-                        onClick={showQrScanner}
-                        icon="qr"
-                        color="gray"
-                        size={25}
-                        />
+                        : 
+                        <WithdrawQrReader networks={withdrawProviders} callback={setAddressValue}/>
+                        
                     }
                 </IconsContainer>
             )}
@@ -173,6 +172,28 @@ const WithdrawFormComponent = ({
         </WithdrawForm>
     )
 }
+
+
+
+// withdrawQrHoc(QrReader)
+// crear HOC para qrReader con contexto de retiro cripto el cual se le delegará la responsabilidad para el manejo de interpretación de qr de pago
+// useEffect(() => {
+//     if(history.location.search){
+//       const params = getAllUrlParams(history.location.search)
+//       console.log('paramsFromWithdraw', params)
+//       if(params?.address && params?.network === withdrawProviders?.current?.provider_type)setAddressValue(params?.address?.replace(" ", "+"))
+//     }
+//   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [withdrawProviders])
+// useEffect(() => {
+//     if(history.location.search){
+//       const params = getAllUrlParams(history.location.search)
+//       if(params.network && networks[params.network]) toggleNetwork(params.network);
+//     }
+//   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [history.location.search, networks])
+
+
 
 
 

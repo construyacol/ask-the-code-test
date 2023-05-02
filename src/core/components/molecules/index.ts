@@ -3,4 +3,9 @@ export { default as TagNewComponent } from './tag';
 export { default as ModalCrud } from './modalCrud';
 export { default as HowToWorkCta } from './howToWork';
 export { default as InputComponent } from './input';
+export { default as QrReader } from './qrReader';
+export { default as AmountUiView } from './viewAmountPR';
+
+
+
 

@@ -3,8 +3,8 @@ import { useWalletInfo } from 'hooks/useWalletInfo'
 import { isEmpty } from 'lodash'
 import { useSelector } from "react-redux";
 import { wProvsByCurrencyNetwork, selectDepositAccountsByNetwork } from 'selectors'
-import { NETWORK_LABELS } from 'const/const'
-
+import { getAllUrlParams } from "utils/urlUtils";
+import { NETWORK_LABELS, history } from 'const/const'
 
 export default function withdrawNetworksHoc(AsComponent) {
   return function (props) {
@@ -15,7 +15,7 @@ export default function withdrawNetworksHoc(AsComponent) {
     const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
     // console.log('wProvsByCurrencyNetwork', wProvsByNetwork)
-
+ 
     const toggleNetwork = (network) => {
       const { callback } = props
       setCurrentNetwork(networks[network])
@@ -48,6 +48,14 @@ export default function withdrawNetworksHoc(AsComponent) {
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wProvsByNetwork])
+
+    // useEffect(() => {
+    //   if(history.location.search){
+    //     const params = getAllUrlParams(history.location.search)
+    //     if(params.network && networks[params.network]) toggleNetwork(params.network);
+    //   }
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [history.location.search, networks])
 
     useEffect(() => {
       if(!isEmpty(networks)){
