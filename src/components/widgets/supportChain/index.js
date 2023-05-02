@@ -71,17 +71,6 @@ export const AvailableDepositNetwork = depositNetworksHoc(SelectNetwork)
 export const AvailableWithdrawNetwork = withdrawNetworksHoc(SelectNetwork)
 
 
-
-
-
-
-
-
-
-
-
-
-
 // const SupportChains = ({ networks, currentNetwork, toggleNetwork }) => {
 //     if(isEmpty(networks)) return null;
 //     return(

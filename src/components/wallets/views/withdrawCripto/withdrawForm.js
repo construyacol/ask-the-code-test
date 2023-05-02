@@ -1,14 +1,13 @@
 import { useEffect } from 'react'
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import InputForm from "../../../widgets/inputs/inputForm";
-import { QrReader } from 'core/components/molecules'
-// import ControlButton from "../../../widgets/buttons/controlButton";
-
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
 import AvailableBalance from '../../../widgets/availableBalance'
 import ControlButton from "components/widgets/buttons/controlButton";
+import { QrReader } from 'core/components/molecules'
+import withdrawQrHoc from 'components/hoc/withdrawQrHoc'
 
 // Styled components
 import { 
@@ -24,11 +23,7 @@ import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 import { parseSymbolCurrency } from 'core/config/currencies'
-import withdrawQrHoc from 'components/hoc/withdrawQrHoc'
 
-
-
-const WithdrawQrReader = withdrawQrHoc(QrReader)
 
 const WithdrawFormComponent = ({
     setAddressState,
@@ -42,7 +37,7 @@ const WithdrawFormComponent = ({
     addressToAdd,
     deleteTag,
     setAmountState,
-    handleChangeAmount,
+    handleChangeAmount, 
     amountState,
     handleMaxAvailable,
     amountValue,
@@ -107,7 +102,7 @@ const WithdrawFormComponent = ({
                             size={22}
                         />
                         : 
-                        <WithdrawQrReader networks={withdrawProviders} callback={setAddressValue}/>
+                        <QrReader callback={setAddressValue}/>
                         
                     }
                 </IconsContainer>
@@ -118,6 +113,7 @@ const WithdrawFormComponent = ({
                 () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
             ]} 
         />
+
                 <InputForm  
                     className={addressState !== "good" ? 'hide' : 'isReady'}
                     type="text"
@@ -174,30 +170,7 @@ const WithdrawFormComponent = ({
 }
 
 
-
-// withdrawQrHoc(QrReader)
-// crear HOC para qrReader con contexto de retiro cripto el cual se le delegará la responsabilidad para el manejo de interpretación de qr de pago
-// useEffect(() => {
-//     if(history.location.search){
-//       const params = getAllUrlParams(history.location.search)
-//       console.log('paramsFromWithdraw', params)
-//       if(params?.address && params?.network === withdrawProviders?.current?.provider_type)setAddressValue(params?.address?.replace(" ", "+"))
-//     }
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [withdrawProviders])
-// useEffect(() => {
-//     if(history.location.search){
-//       const params = getAllUrlParams(history.location.search)
-//       if(params.network && networks[params.network]) toggleNetwork(params.network);
-//     }
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [history.location.search, networks])
-
-
-
-
-
-export default WithdrawFormComponent
+export default withdrawQrHoc(WithdrawFormComponent)
 
 const LabelAddress = ({ currencySymbol, withdrawProvider  }) => {
     const user_friendly = withdrawProvider?.user_friendly

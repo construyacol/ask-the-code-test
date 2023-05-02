@@ -8,7 +8,6 @@ import { history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 import { getExportByName } from 'utils'
-import { getAllUrlParams } from "utils/urlUtils";
 
 import { isEmpty } from 'lodash'
 import withCryptoProvider from 'components/hoc/withCryptoProvider'
@@ -31,7 +30,7 @@ const CriptoSupervisor = (props) => {
     <>
       {
        isEmpty(withdrawProvidersByName) ? 
-        <SkeletonWithdrawView />
+        <SkeletonWithdrawView /> 
        : 
        <>
           <CriptoView {...props}/>
@@ -41,7 +40,7 @@ const CriptoSupervisor = (props) => {
   );
 };
 
-
+ 
 export default withCryptoProvider(CriptoSupervisor)
 
 
@@ -229,23 +228,11 @@ export const CriptoView = (props) => {
 
   // Se resetea el valor del input de dirección cuando se cambia red
   useEffect(() => {
-    if(!isEmpty(withdrawProviders)){
+    if(!isEmpty(withdrawProviders) && !history.location.search){
       setAddressState()
       setAddressValue()
     }
   }, [withdrawProviders])
-
- 
-  // useEffect(() => {
-  //   if(history.location.search){
-  //     const params = getAllUrlParams(history.location.search)
-  //     console.log('paramsFromWithdraw', params)
-  //     if(params?.address && params?.network === withdrawProviders?.current?.provider_type)setAddressValue(params?.address?.replace(" ", "+"))
-  //   }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [withdrawProviders])
-
-  console.log('addressValue', addressValue)
 
   const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 
@@ -271,7 +258,7 @@ export const CriptoView = (props) => {
     isMobile,
     provider,
     withdrawProviders,
-    // withdrawProvider:withdrawProviders.current
+    setNetworkProvider
   }
 
   const panelHProps = {
@@ -284,7 +271,6 @@ export const CriptoView = (props) => {
     addressValue,
     withdrawConfirmed,
     isMobile,
-    // withdrawProvider:withdrawProviders.current
   } 
 
   if(isEmpty(withdrawProviders.current)){

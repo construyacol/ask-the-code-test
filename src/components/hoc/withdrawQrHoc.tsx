@@ -9,39 +9,28 @@ type HocType = <P extends object>(
 ) => React.FC<P>;
 
 const withdrawQrHoc: HocType = (Component) => (props:any) => {
+  const { withdrawProviders, setNetworkProvider, setAddressValue } = props;
+  useEffect(() => {
+    if(history.location.search){
+        const params = getAllUrlParams(history.location.search)
+        if(params?.address && params?.network === withdrawProviders?.current?.provider_type)setAddressValue(params?.address?.replace(" ", "+"))
+        setTimeout(() => history.push(history.location.pathname), 1000) //PARTIAL FIX FOR ADDRESS CHANGE
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [withdrawProviders])
 
-   const { withdrawProviders } = props;
-
-   // useEffect(() => {
-   //    if(history.location.search){
-   //       const params = getAllUrlParams(history.location.search)
-   //       console.log('paramsFromWithdraw', params)
-   //       if(params?.address && params?.network === withdrawProviders?.current?.provider_type)setAddressValue(params?.address?.replace(" ", "+"))
-   //    }
-   // // eslint-disable-next-line react-hooks/exhaustive-deps
-   // }, [withdrawProviders])
-
-   useEffect(() => {
+  useEffect(() => {
     if(history.location.search){
       const params = getAllUrlParams(history.location.search)
-      console.log('withdrawQrHoc', params)
-      // if(params.network && networks[params.network]) toggleNetwork(params.network);
+      if((params?.network && withdrawProviders?.providers) && withdrawProviders?.providers[params?.network])setNetworkProvider((prevState:any) => ({...prevState, current: withdrawProviders?.providers[params?.network]}));
     }
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [history.location.search])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history.location.search])
 
-   return <Component {...props} />;
+
+  return <Component {...props} />;
 };
 
 export default withdrawQrHoc;
 
-// export default function kycHoc(AsComponent) {
-//   return function (props) {
-//     return (
-//       <AsComponent
-//         {...props}
-//       />
-//     );
-//   };
-// }
  

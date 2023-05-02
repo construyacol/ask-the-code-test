@@ -3,8 +3,7 @@ import { useWalletInfo } from 'hooks/useWalletInfo'
 import { isEmpty } from 'lodash'
 import { useSelector } from "react-redux";
 import { wProvsByCurrencyNetwork, selectDepositAccountsByNetwork } from 'selectors'
-import { getAllUrlParams } from "utils/urlUtils";
-import { NETWORK_LABELS, history } from 'const/const'
+import { NETWORK_LABELS } from 'const/const'
 
 export default function withdrawNetworksHoc(AsComponent) {
   return function (props) {
@@ -30,7 +29,6 @@ export default function withdrawNetworksHoc(AsComponent) {
         // console.log('wProvsByNetwork', wProvsByNetwork)
         for (let providerId of networksProviders) {
           const networkProvider = wProvsByNetwork[providerId]
-            console.log('networkProvider', networkProvider)
             const unAvailableCopCondition = networkProvider?.currency === 'cop' && networkProvider?.provider_type === 'internal_network'
             if(networkProvider?.currency_type !== 'crypto' || !networkProvider?.enabled || unAvailableCopCondition) continue;
             _networks = {
@@ -49,13 +47,6 @@ export default function withdrawNetworksHoc(AsComponent) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wProvsByNetwork])
 
-    // useEffect(() => {
-    //   if(history.location.search){
-    //     const params = getAllUrlParams(history.location.search)
-    //     if(params.network && networks[params.network]) toggleNetwork(params.network);
-    //   }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [history.location.search, networks])
 
     useEffect(() => {
       if(!isEmpty(networks)){

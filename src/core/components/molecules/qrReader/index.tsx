@@ -7,7 +7,6 @@ import { useActions } from "hooks/useActions";
 import { PAYMENT_REQUEST } from 'const/routes'
 
 
-
 type qrReaderProps = {
    callback?: (value: string) => void
 }
@@ -61,3 +60,4 @@ const QrReader = ({ callback  }:qrReaderProps) => {
 }
 
 export default QrReader
+

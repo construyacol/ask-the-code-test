@@ -5,6 +5,8 @@ export { default as HowToWorkCta } from './howToWork';
 export { default as InputComponent } from './input';
 export { default as QrReader } from './qrReader';
 export { default as AmountUiView } from './viewAmountPR';
+export { default as WithdrawQrReader } from './qrReader/withdrawQrReader';
+
 
 
 

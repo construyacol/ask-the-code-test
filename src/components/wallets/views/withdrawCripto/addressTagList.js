@@ -25,7 +25,6 @@ const AddressTagList = ({ show, addressValue, setAddressValue, addressState, cur
   useEffect(() => {
     if (searchList.length === 1) {
       setAddressValue(searchList[0]?.info?.address || searchList[0]?.info?.identifier);
-      console.log(searchList, searchList.length)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchList]);
