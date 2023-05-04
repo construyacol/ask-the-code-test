@@ -38,7 +38,7 @@ const HomeContainer = () => {
               className={`appContainer ${renderProps?.match?.params?.path ? 'secondLayer' : ''}`}
               id="scrollElement"
               >
-              {isAppOutdated && <TopNotification />}
+              {/* {isAppOutdated && <TopNotification />} */}
               <MainMenuComponent {...renderProps}/>
               <MobileMenuComponent/>
               
