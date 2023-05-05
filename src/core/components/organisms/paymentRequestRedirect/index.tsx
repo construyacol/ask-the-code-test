@@ -12,19 +12,27 @@ import { AmountUiView } from 'core/components/molecules'
 import { replaceToCurrency } from 'core/config/currencies'
 import { history } from "const/const"
 import { useActions } from "hooks/useActions";
+import { checkIfFiat } from 'core/config/currencies';
+import { useWalletInfo } from 'hooks/useWalletInfo'
 
 type PaymentRequestRedirectProps = {
    paymentRequestLink:string,
-   callback?: (value: string) => void
+   callback?: (value: any) => void
 }
 
 const PaymentRequestRedirect = ({ paymentRequestLink, callback }:PaymentRequestRedirectProps) => {
 
    const [ paymentRequest, setPaymentRequest ] = useState<PaymentRequestParams>({} as PaymentRequestParams)
    const actions = useActions();
-
+   const walletInfo = useWalletInfo()
+   
    const getAddress = () => {
-      history.push("?network=internal_network&address="+paymentRequest.recipient)
+      const { currentWallet } = walletInfo
+      if(checkIfFiat(currentWallet?.currency)){
+         callback && callback(paymentRequest)
+      }else{
+         history.push("?network=internal_network&address="+paymentRequest.recipient)
+      }
       actions.renderModal(null);
    }
    const proceedWithPayment = () => window.location.replace(paymentRequestLink);

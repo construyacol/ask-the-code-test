@@ -23,7 +23,7 @@ const QrReader = ({ callback  }:qrReaderProps) => {
       const isPaymentRequest = new RegExp(PAYMENT_REQUEST, "g").test(data)
       if(isPaymentRequest){
          const { PaymentRequestRedirect } = await import("core/components/organisms"); 
-         return actions.renderModal(() => <PaymentRequestRedirect paymentRequestLink={data} />);
+         return actions.renderModal(() => <PaymentRequestRedirect callback={callback} paymentRequestLink={data} />);
       }
       callback && callback(data)
    }
@@ -33,7 +33,7 @@ const QrReader = ({ callback  }:qrReaderProps) => {
       if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
          const { BarcodeScanner } = await import('@awesome-cordova-plugins/barcode-scanner');
          const { text, cancelled } = await BarcodeScanner.scan();
-         if(!!!cancelled)handleScan(text);
+         if(!!!cancelled)handleScan(text);   
       } else if (CAPACITOR_PLATFORM === 'web') {
          actions.renderModal(null);
          const Element = await import("components/widgets/qr-scanner"); 
