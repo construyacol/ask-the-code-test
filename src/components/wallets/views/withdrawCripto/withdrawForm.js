@@ -24,9 +24,6 @@ import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 import { parseSymbolCurrency } from 'core/config/currencies'
 
-// const warningMessage = {
-//     usdt_trc20:'Los retiros > a 5K TRC20 pueden tardar hasta 48 horas'
-//   }
 
 const WithdrawFormComponent = ({
     setAddressState,
@@ -131,7 +128,7 @@ const WithdrawFormComponent = ({
                     name="amount"
                     handleStatus={setAmountState}
                     handleChange={handleChangeAmount}
-                    label={`Ingresa la cantidad del retiro`}
+                    label={`Ingresa la cantidad a enviar`}
                     disabled={loader} 
                     state={amountState}
                     // customError={withdrawProviders?.current?.provider?.name && warningMessage[withdrawProviders?.current?.provider?.name]}
@@ -185,7 +182,7 @@ const LabelAddress = ({ currencySymbol, withdrawProvider  }) => {
     const user_friendly = withdrawProvider?.user_friendly
     const LABELS = {
         default:() => <p className="fuente">{`Ingresa la dirección de destino ${parseSymbolCurrency(currencySymbol)}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>,
-        internal_network:() => <p className="fuente">Ingresa la dirección <strong>(correo electónico)</strong> de destino {parseSymbolCurrency(currencySymbol)} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>            
+        internal_network:() => <p className="fuente">Ingresa la dirección de <strong>correo electónico</strong> destino {parseSymbolCurrency(currencySymbol)} <span className='fuente2 protocolName'>{`(Coinsenda)`}</span> </p>            
     }
     const RenderComponent = LABELS[withdrawProvider?.provider_type] || LABELS.default
     return <RenderComponent/>
@@ -199,7 +196,7 @@ export const TakeCostFromWithdrawAmount = (props) => {
                 type={"checkbox"}
                 size={"medium"}
                 color={"text_color"}
-                uiName={"Cobrar tarifa de la cantidad a retirar"}
+                uiName={"Cobrar tarifa de la cantidad a enviar"}
             />
         </CheckWrapper>
     )

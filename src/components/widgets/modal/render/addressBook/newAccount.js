@@ -9,6 +9,7 @@ import { ControlButtonContainer } from "../../../shared-styles";
 import ControlButton from "../../../buttons/controlButton";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { createProviderInfoNeeded } from 'utils/withdrawProvider'
+import { INTERNAL_NETWORK, FIAT_WITHDRAW_TYPES } from 'components/forms/widgets/fiatWithdraw/api'
 
 
 const NewAccount = ({ currency, provider_type, provider, providerName, switchView, addressToAdd, currentNetwork }) => {
@@ -111,7 +112,7 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
   };
 
   const handleChange = (_, value) => {
-    let pattern = provider_type === 'internal_network' ? /[^@a-zA-Z0-9.]/g : /[^a-zA-Z0-9]/g
+    let pattern = provider_type === 'internal_network' ? !INTERNAL_NETWORK[FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON].settings?.successPattern : /[^a-zA-Z0-9]/g
     setAddressValue(value.replace(pattern, ""));
   }
 

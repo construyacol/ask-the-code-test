@@ -1,9 +1,10 @@
-import { mainService } from "../../../../services/MainService";
+import { mainService } from "services/MainService";
 // import { recursiveAddList } from '../../utils'
 // import { isEmpty } from 'lodash'
 import { AiFillBank } from "react-icons/ai";
 import { BsCash } from "react-icons/bs";
 import { createSelector } from "reselect";
+import BigNumber from "bignumber.js"
 import {
   parseOnlyNumbers,
 } from '../kyc/utils'
@@ -22,8 +23,15 @@ export const FIAT_DEPOSIT_TYPES = {
     AMOUNT:"depositAmount", 
     PROVIDER:"depositAccount",
     PERSON_TYPE:"person_type",
-    CRYPTO:"depositCripto"
+    CRYPTO:"depositCripto",
+    COP_INTERNAL:"cop_internal",
+    COP_INTERNAL_AMOUNT:"internalAmount"
   }
+}
+
+export const CTA_UI_NAME = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]: "Compartir enlace de pago",
+  default: "Crear depósito"
 }
 
 const DEFAULT_DEPOSIT_AMOUNT = {
@@ -40,6 +48,23 @@ const DEFAULT_DEPOSIT_AMOUNT = {
   }
 }
 
+const DEFAULT_INTERNAL_AMOUNT = {
+  uiName:"Ingresa la cantidad a cobrar (opcional)",
+  key:FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT,
+  uiType:"text",
+  "settings":{
+    defaultMessage:"",
+    successPattern:/[0-9]/g,
+    errors:[ 
+        { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+    ],
+    placeholder:"Escribe la cantidad (opcional)",
+    breadCumbConfig:{
+      childLabel:"Con QR de pago",
+      active:true
+    }
+  }
+}
 
 const PSE_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:{
@@ -48,12 +73,24 @@ const PSE_STAGES = {
     uiType:"select",
     "settings":{
       defaultMessage:"",
-      placeholder:"Escribe el nombre de tu banco"
+      placeholder:"Escribe el nombre de tu banco"      
+    }
+  },
+  [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:{
+    uiName:"Elije el banco por el cual harás el pago",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE,
+    uiType:"select",
+    "settings":{
+      defaultMessage:"",
+      placeholder:"Escribe el nombre de tu banco",
+      breadCumbConfig:{
+        childLabel:"Con PSE",
+        active:true
+      }
     }
   },
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 }
-
 
 const BANK_DEFAULT_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
@@ -63,7 +100,6 @@ const BANK_DEFAULT_STAGES = {
     ui_type:"text"
   }
 }
-
 
 const BANK_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
@@ -77,11 +113,19 @@ const BANK_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 }
 
+const INTERNAL_DEFAULT_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:{
+    ui_type:"text"
+  }
+}
 
+const INTERNAL_NETWORK_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:DEFAULT_INTERNAL_AMOUNT
+}
 
 const STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
-    uiName:"¿Qué banco ó servicio utilizarás para depositar?",
+    uiName:"Ó elige un banco o servicio para depositar",
     key:FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER,
     uiType:"select",
     "settings":{
@@ -134,24 +178,53 @@ const CRYPTO_STAGES = {
 const DEPOSIT_TYPE_STAGES = {
   pse:PSE_STAGES,
   bank:BANK_STAGES,
+  internal_network:INTERNAL_NETWORK_STAGES,
   ...CRYPTO_STAGES
 }
 
 
-const depositApiStages = (_depositAccount) => {  
-  const depositAccount = _depositAccount?.info_needed ? ungapStructuredClone(_depositAccount?.info_needed) : _depositAccount
+const addIconToBankName = async(dataBank) => {
+  for (const bank in dataBank) {
+    if(typeof dataBank[bank] === 'object') dataBank[bank].icon = "bankName"
+  }
+  return dataBank
+}
+
+
+const addConfigData = (configKey, dataSource) => {
+  const config = {
+    bank_name:addIconToBankName
+  }
+  return config[configKey] ? config[configKey](dataSource) : dataSource
+}
+
+const processInfoNeeded = async(dataSource) => {
+  let infoNeeded = dataSource?.info_needed ? ungapStructuredClone(dataSource?.info_needed) : dataSource
+  for (const infoNeededItem in infoNeeded) {
+    infoNeeded[infoNeededItem] = await addConfigData(infoNeededItem, infoNeeded[infoNeededItem])
+  }
+  return infoNeeded
+}
+
+
+const depositApiStages = async(depositAccount) => {  
+
+  // const infoNeeded = depositAccount?.info_needed ? ungapStructuredClone(depositAccount?.info_needed) : depositAccount
+  const infoNeeded = await processInfoNeeded(depositAccount)
+
   const providerTypes = {
     pse:{
-      ...depositAccount,
+      ...infoNeeded,
       [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
         ui_type:"text"
       }
     },
     bank:BANK_DEFAULT_STAGES,
+    internal_network:INTERNAL_DEFAULT_STAGES,
     ...CRYPTO_API_STAGES
   }
 
-  return providerTypes[_depositAccount?.provider_type] || BANK_DEFAULT_STAGES
+  return providerTypes[depositAccount?.provider_type] || BANK_DEFAULT_STAGES
 }
 
 export const createNextStages = async({ 
@@ -162,8 +235,10 @@ export const createNextStages = async({
  
   if(!state[stageData?.key])return;
   const providerType = state[stageData?.key]?.provider_type || 'bank'
-  const apiStages = depositApiStages(state[stageData?.key])
+  const apiStages = await depositApiStages(state[stageData?.key])
 
+
+  
   let stages = {} 
   for (const stage of Object.keys(apiStages)) { 
     stages = {
@@ -226,6 +301,35 @@ export const ApiPostCreateBankDeposit = async({
   return await mainService.createDeposit(body);
 }
 
+export const ApiPostCreateInternalDeposit = async({ state }) => {
+  //  const paymentRequest = await createNewPaymentRequest()
+  //  console.log(paymentRequest)
+   return { error:true }
+}
+
+
+const createCallbackUrl = async({
+  currentWallet,
+  depositAmount,
+  depositAccount
+}) => {
+  const { calculateCost } = await import('components/forms/widgets/sharedValidations')
+  const { formatToCurrency } = await import('utils/convert_currency')
+  const { getHostName } = await import('environment')
+  const currency = currentWallet?.currency
+  const cost = calculateCost(depositAmount, depositAccount?.costs)
+  const amount = formatToCurrency(depositAmount?.replace(/,/g, ""), currency)
+  const totalAmount = amount.plus(new BigNumber(cost))
+  const account_id = currentWallet?.id
+  const callbackData = {
+    currency,
+    cost,
+    amount:amount.toFormat(),
+    totalAmount:totalAmount.toFormat(),
+    account_id
+  }
+  return `https://app.${getHostName()}.com?pse_success=${encodeURIComponent(JSON.stringify(callbackData))}` 
+}
 
 export const ApiPostCreatePseDeposit = async({ 
   state:{
@@ -234,8 +338,10 @@ export const ApiPostCreatePseDeposit = async({
     bank_name
   }, 
   currentWallet,
-  depositProvider
+  depositProvider,
+  depositAccount
 }) => { 
+  const callback_url = await createCallbackUrl({ currentWallet, depositAmount, depositAccount})
   let body = {
     data:{
       account_id:currentWallet?.id,
@@ -243,11 +349,10 @@ export const ApiPostCreatePseDeposit = async({
       comment:"",
       person_type:person_type?.value,
       bank_name,
-      // cost_id:depositCost?.value,
       country:currentWallet?.country,
       currency:currentWallet?.currency,
       deposit_provider_id:depositProvider?.id,
-      callback_url:"https://app.coinsenda.com/wallets"
+      callback_url
     }
   }
   return await mainService.createDeposit(body);

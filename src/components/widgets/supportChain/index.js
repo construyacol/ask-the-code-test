@@ -15,7 +15,10 @@ const SelectNetwork = ({ className, ...props }) => {
     const FilterElement = useRef()
     const [ selectOptions, setSelectOptions ] = useState()
 
-    const networkChange = async ({ value }) => props.toggleNetwork(value);
+    const networkChange = async ({ value }) => {
+        if(!value)return
+        props.toggleNetwork(value)
+    };
 
     useEffect(() => {
         if(!isEmpty(props.networks)){
@@ -63,7 +66,7 @@ const SelectNetwork = ({ className, ...props }) => {
         />
     )
 }
-
+ 
 export const AvailableDepositNetwork = depositNetworksHoc(SelectNetwork)
 export const AvailableWithdrawNetwork = withdrawNetworksHoc(SelectNetwork)
 

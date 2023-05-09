@@ -2,16 +2,17 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { mainService } from "./MainService";
 import actions from "../actions";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 export const useCoinsendaServices = () => {
   const dispatch = useDispatch();
   const reduxState = useSelector((state) => state);
-  const { account_id } = useParams();
+  // const params = useParams();
+  // const account_id = params?.account_id
 
   mainService.initialize(
     dispatch,
-    reduxState,
+    reduxState, 
     reduxState.modelData.authData.userToken
   );
 
@@ -24,9 +25,7 @@ export const useCoinsendaServices = () => {
     mainService,
     {
       ...reduxState,
-      current_wallet:
-        reduxState.modelData.wallets &&
-        reduxState.modelData.wallets[account_id],
+      // current_wallet:reduxState.modelData.wallets && reduxState.modelData.wallets[account_id],
     },
     actions,
     dispatch,

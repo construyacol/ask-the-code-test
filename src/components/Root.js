@@ -6,6 +6,7 @@ import { connect, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../actions";
 import withHandleError from "./withHandleError";
+import withCoinsendaServices from "./withCoinsendaServices";
 import HomeContainer from "./home/home-container";
 import { history } from "../const/const";
 import useToastMessage from "../hooks/useToastMessage";
@@ -22,16 +23,15 @@ import {
   // validateExpTime,
   saveUserToken,
   getUserToken,
-  openLoginMobile
+  openLoginMobile 
 } from "utils/handleSession";
-// import checkVersion from 'react-native-store-version';
-// import { useCoinsendaServices } from "services/useCoinsendaServices";
+import { DEFAULT_PARAMS } from 'utils/paymentRequest'
+import { getAllUrlParams } from "utils/urlUtils";
 
-// const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
-// const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets"));
-const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
-const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
+const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));
+const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "components/widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
+const PaymentRequestView = loadable(() => import('pages/paymentRequest'));
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
@@ -39,6 +39,7 @@ history.listen((location) => {
     return localForage.setItem("previousRoute", location.pathname);
   }
 });
+
 
 function RootContainer(props) { 
   // TODO: rename isLoading from state
@@ -48,16 +49,21 @@ function RootContainer(props) {
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
   const [ tryRestoreSession ] = SessionRestore();
 
-  // const [ coinsendaServices, globalState ] = useCoinsendaServices();
-
-
   const initComponent = async (mobileURL) => {
+
     const params = new URLSearchParams(mobileURL ?? history.location.search);
-    if (params.has("token") && params.has("refresh_token")) {
+    if(params.has("token") && params.has("refresh_token")){
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
-      if(!decodeJwt){return} 
+      if(!decodeJwt)return;
       history.push("/");
+    } 
+    const paymentRequest = JSON.parse(localStorage.getItem('paymentRequest'))
+    if(params.has(DEFAULT_PARAMS.main) || paymentRequest){
+      return history.push({
+        pathname: '/paymentRequest', 
+        state:params.has(DEFAULT_PARAMS.main) ? getAllUrlParams(mobileURL ?? history.location.search) : { paymentRequest }
+      });
     }
     const userData = await getUserToken();
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
@@ -83,16 +89,22 @@ function RootContainer(props) {
       const BiometricKyc = Element.default
       props.actions.renderModal(() => <BiometricKyc/>);
     }
+    if(params.has('pse_success')){
+      const Element = await import("components/forms/widgets/fiatDeposit/pseViews/callBackSuccess");
+      if (!Element) return;
+      const PseSuccess = Element.default
+      const params = getAllUrlParams(mobileURL ?? history.location.search) || {}
+      // const params = {}
+      props.actions.renderModal(() => <PseSuccess {...params}/>);
+    }
     history.push("/");
   };
 
   useEffect(() => {
     async function initRoot() {
-      if (CAPACITOR_PLATFORM !== 'web') {
+      if(CAPACITOR_PLATFORM !== 'web'){
         const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
-        if (!userToken && !isAppLoaded) {
-          openLoginMobile(initComponent);
-        }
+        if(!userToken && !isAppLoaded) openLoginMobile(initComponent);
       } 
       if(!isAppLoaded) return initComponent();
     }
@@ -117,25 +129,27 @@ function RootContainer(props) {
   }, [showOnBoarding])
 
   return (
-    // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>
       <Route>
         <ModalsSupervisor/>
       </Route>
-
-      {(!isAppLoaded) ? (
+      <Route exact path="/paymentRequest" component={PaymentRequestView} />
+      {(!isAppLoaded && !history.location.pathname.includes("paymentRequest")) ? (
         <LoaderAplication 
           history={history} 
           tryRestoreSession={tryRestoreSession}
-          setShowOnBoarding={setShowOnBoarding} />
-      ) : (
+          setShowOnBoarding={setShowOnBoarding} 
+          {...props}
+        />
+      ) : isAppLoaded ? (
         <>
-          <CookieMessage/>
           <LazySocket toastMessage={toastMessage} />
+          <CookieMessage/>
           <LazyToast />
           <Route path="/" render={() => <HomeContainer />} />
         </>
-      )}
+      ):<></>
+      }
     </Router>
   );
 }
@@ -146,4 +160,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
+// export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
+export default withCoinsendaServices(withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer)));

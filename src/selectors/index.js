@@ -7,10 +7,22 @@ import { DEFAULT_FISRT_CRITERIAL } from 'const/const'
 import { checkIfFiat, FIAT_PROVIDER_TYPES } from 'core/config/currencies';
 
 
+
+export const selectCurrentWallet = createSelector(
+  (state) => state.modelData.wallets,
+  (_, account_id) => account_id,
+  (wallets, account_id) => {
+    if((account_id && wallets) && wallets[account_id]){
+      return wallets[account_id]
+    }
+    return false
+  }
+);
+
 export const selectDepositAccountsByNetwork = createSelector(
   ({ modelData: { depositAccounts } }) => depositAccounts,
   (_, currency) => currency,
-  (depositAccounts, currency) => {
+  (depositAccounts, currency) => { 
     let res = {};
     if(!depositAccounts) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,6 +86,7 @@ export const selectWithdrawAccounts = createSelector(
     if(!withdraw_accounts) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     for (const [, withdraw_account] of Object.entries(withdraw_accounts)) {
+        // if(withdraw_account.provider_type === provider_type) return res.push(withdraw_account)
         (withdraw_account.provider_type === provider_type && withdraw_account.currency === currency && withdraw_account?.info?.label !== currency) && res.push(withdraw_account);
     }
     return res;
@@ -85,6 +98,7 @@ export const selectWAccountsByAddressProvType = createSelector(
   (_, accountProvider) => accountProvider,
   (withdraw_accounts, accountProvider) => {
     let result = {};
+    if(!accountProvider) return result;
     for (let w_account_id in withdraw_accounts) {
       let address = withdraw_accounts[w_account_id]?.info?.address || withdraw_accounts[w_account_id]?.info?.identifier
       const byCurrency = withdraw_accounts[w_account_id]?.currency

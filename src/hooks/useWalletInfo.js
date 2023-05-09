@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { createSelector } from "reselect";
+import { selectCurrentWallet } from 'selectors'
 import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 
 
@@ -17,17 +18,6 @@ const selectCurrentPair = createSelector(
       }
     }
     return null;
-  }
-);
-
-const selectCurrentWallet = createSelector(
-  (state) => state.modelData.wallets,
-  (_, account_id) => account_id,
-  (wallets, account_id) => {
-    if((account_id && wallets) && wallets[account_id]){
-      return wallets[account_id]
-    }
-    return false
   }
 );
 

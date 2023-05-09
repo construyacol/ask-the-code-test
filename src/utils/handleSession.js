@@ -3,7 +3,8 @@ import { COINSENDA_URL, GET_PUBLIC_KEY_URL, REFRESH_TOKEN_EXP_TIME } from "const
 import jwt from "jsonwebtoken";
 import KeyEncoder from 'key-encoder'
 import { mainService } from 'services/MainService'
-import {STORAGE_KEYS} from "const/storageKeys";
+import { STORAGE_KEYS } from "const/storageKeys";
+// import { SESSION_ERROR } from 'const/session'
 import { store } from '../index'
 import Environment from 'environment'
 import actions from "actions";
@@ -122,7 +123,7 @@ export const getUserToken = async() => {
     return handleError(err, doLogout)
   }
 }
-
+ 
 
 export const verifyUserToken = async(_jwToken) => {
   let publicKey = await getPublicKey()
@@ -173,9 +174,10 @@ export const validateExpTime = async() => {
           return;
         } else {
           console.log('--------  TOKEN INVALIDO  --------')
+          reject(false)
           return handleError(err, () => {
             doLogout()
-            reject(false)
+            // reject(false)
           })
         }
       }

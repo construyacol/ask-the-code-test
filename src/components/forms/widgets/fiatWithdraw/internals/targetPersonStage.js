@@ -38,6 +38,7 @@ const TargetPersonStage = ({
   
     const onChange = (e) => { 
       e.target.preventDefault && e.target.preventDefault();
+      console.log('onChange', e.target.value)
       if(!validations[stageData.key]) return; 
       const [ _value, _status ] = validations[stageData.key](e?.target?.value, {
         ...stageData, 

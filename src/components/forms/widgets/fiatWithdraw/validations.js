@@ -70,7 +70,8 @@ import { parseSymbolCurrency } from 'core/config/currencies';
   }
 
 
-  const emailValidation = (value, data = {}) => {
+  const emailValidation = (emailVal, data = {}) => {
+    let value = emailVal?.toLowerCase()?.trim()
     const patron = data?.settings?.successPattern
     let status = patron.test(value) ? 'success' : false
     const [ _value ] = selectListValidator(value, {...data, regex:patron})

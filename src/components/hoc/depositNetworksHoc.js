@@ -29,10 +29,10 @@ export default function depositNetworksHoc(AsComponent) {
         (async() => {
             if(isEmpty(availableDepositAccounts))return;
             let _networks = {}
-            
             for (const depositAccountNetwork in availableDepositAccounts) {
               let network = depositProviders[depositAccountNetwork]
-              if(availableDepositAccounts[depositAccountNetwork]?.currency_type !== 'crypto') continue;
+              const unAvailableCopCondition = availableDepositAccounts[depositAccountNetwork]?.provider_type === 'internal_network'
+              if(availableDepositAccounts[depositAccountNetwork]?.currency_type !== 'crypto' || unAvailableCopCondition) continue;
               if(!network) network = await coinsendaServices.createAndInsertDepositProvider(currentWallet, availableDepositAccounts[depositAccountNetwork]?.id)
               const provider_type = availableDepositAccounts[depositAccountNetwork]?.provider_type
               _networks = {

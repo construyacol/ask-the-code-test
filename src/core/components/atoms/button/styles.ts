@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components'
 
 interface ButtonStyleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: string;
+    fontSize?: number | string;
 }
 
 
@@ -147,4 +148,6 @@ export const ButtonStyle = styled.button<ButtonStyleProps>`
     &.small{
         ${SmallStyles}
     }
+    font-size: ${props => props.fontSize ? `${props.fontSize}px !important` : "1rem"};
+
 `

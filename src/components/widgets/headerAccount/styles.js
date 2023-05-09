@@ -81,6 +81,12 @@ export const IconAccount = styled.div`
   border: 3px solid #efefef;
   align-items: center;
 
+  &.fit{
+    height:fit-content !important;
+    width:fit-content !important;
+    padding: 4px;
+  }
+
   @media ${device.mobile} {
     height:25px;
     width:25px;

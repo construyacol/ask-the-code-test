@@ -108,7 +108,7 @@ export default (props) => {
           // return e.target.value = value.toFormat();
         } else {
           setInputState("bad");
-          ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
+          ErrorMsgValidate(inputName, e.target.value, min_amount?.toFormat(), minAmountValidation, availableAmountValidation)
         }
         
         return e.target.value = checkIfFiat(currentWallet?.currency) ? value.toFormat() : e.target.value;

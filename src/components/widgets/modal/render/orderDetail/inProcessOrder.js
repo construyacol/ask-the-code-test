@@ -395,7 +395,7 @@ const UploadComponent = ({ order, unButtom, title, goFileLoader, imgSrc, deposit
 };
 
 const getTitle = (tx_path) => {
-  return tx_path === "deposits" ? "Depósito" : "Retiro";
+  return tx_path === "deposits" ? "Depósito" : "Envío";
 };
 
 const GetIcon = ({ order }) => {
@@ -422,7 +422,7 @@ const getState = ({ state, currency }, txType) => {
         : state === "confirmed" && checkIfFiat(currency) && txType === 'deposits'
         ? "Estamos comprobando tu depósito"
         : state === "confirmed" && checkIfFiat(currency) && txType === 'withdraws'
-        ? "Estamos procesando tu retiro"
+        ? "Estamos procesando tu Envío"
         : "En proceso de aceptación...";
     case "crypto":
       return state === "pending" ? "Pendiente" : "Confirmando en blockchain...";

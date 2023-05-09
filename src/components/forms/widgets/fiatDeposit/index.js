@@ -20,7 +20,10 @@ import RenderSwitchComponent from 'components/renderSwitchComponent'
 import { selectDepositProvsByNetwork } from 'selectors'
 import useBreadCumb from 'hooks/useBreadCumb'
 import StatusPanelStates from './statusPanelStates'
-import { FIAT_DEPOSIT_TYPES } from './api'
+import { FIAT_DEPOSIT_TYPES, CTA_UI_NAME } from './api' 
+import { createPaymentRequestLink } from 'utils/paymentRequest'
+import { MENU_LABELS } from 'api/ui/menuItems'
+
 
 const ProviderComponent = loadable(() => import("./depositProviderStage"), {fallback:<StageSkeleton/>});
 const DepositCostComponent = loadable(() => import("./depositCostStage"), {fallback:<StageSkeleton/>});
@@ -28,7 +31,6 @@ const PersonTypeComponent = loadable(() => import("./personType"), {fallback:<St
 const BankNameListComponent = loadable(() => import("./bankName"), {fallback:<StageSkeleton/>});
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
 const CriptoSupervisor = loadable(() => import("components/wallets/views/depositCripto"), {fallback:<StageSkeleton/>});
-
 
 const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
   const { isMobile } = useViewport();
@@ -60,9 +62,9 @@ const {
   goToStage
 } = stageManager
 
-
+ 
 const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
-  parentLabel:'Depositar',
+  parentLabel:MENU_LABELS.deposit,
   childLabel:stageData?.settings?.breadCumbConfig?.childLabel,
   titleSelector:".accountDetailTitle h1>span",
   ctaBackSelector:"#withdraw-menu-button",
@@ -101,21 +103,43 @@ useEffect(() => {
     />);
   }
 
+
+  const sharePaymentRequest = async(props) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Título del contenido compartido',
+          text: 'Descripción del contenido compartido',
+          url: await createPaymentRequestLink({ currency:depositAccount?.currency, amount:state?.internalAmount })
+        });
+      } catch (error) {
+        console.log('Error al compartir:', error);
+      }
+    }else{
+      const modules = await import('./internals')
+      const ModalSharePaymentRequest = modules.default
+      actions.renderModal(() => <ModalSharePaymentRequest {...props?.state}/>); 
+    }
+    return {data:false}
+  }
+  
+
   const createFiatDeposit = async() => {
     const depositMethods = {
       pse:ApiPostCreatePseDeposit,
-      bank:ApiPostCreateBankDeposit
+      bank:ApiPostCreateBankDeposit,
+      internal_network:sharePaymentRequest
     }
     setLoading(true) 
     const depositProvider = depositProviders[depositAccount?.provider_type]
-    const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider })
+    const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider, depositAccount })
     if(error){
       setLoading(false)
       return toastMessage(error?.message, "error");
     }
+    if(!data)return setLoading(false);
     await renderSuccessComponent(data)
     setLoading(false)
-    return 
   }
 
   const ButtonComponent = () => (
@@ -123,19 +147,21 @@ useEffect(() => {
       <ControlButton
         loader={loading}
         formValidate={(currentStage <= stageController.length) && stageStatus === 'success'}
-        label={`${lastStage ? "Crear depósito" : "Siguiente"}`}
+        label={`${lastStage ? (CTA_UI_NAME[stageData?.key] || CTA_UI_NAME?.default) : "Siguiente"}`}
         handleAction={lastStage ? () => createFiatDeposit() : nextStep}
       />
     </ButtonContainers>
   )
+
  
-  const STAGE_COMPONENTS = {
+  const STAGE_COMPONENTS = { 
     [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:CriptoSupervisor
+    [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:CriptoSupervisor,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:AmountComponent
   }
  
   return(

@@ -26,25 +26,25 @@
   "withdraws": {
     "created": {
       "completed": false,
-      "ui_text": "Retiro creado"
+      "ui_text": "Envío creado"
     },
     "pending": {
       "completed": false,
       "ui_text": {
-        "crypto": "Retiro procesado en coinsenda",
-        "fiat": "Confirmando retiro"
+        "crypto": "Envío procesado en coinsenda",
+        "fiat": "Confirmando Envío"
       }
     },
     "confirmed": {
       "completed": false,
       "ui_text": {
         "crypto": "Creando transacción en blockchain",
-        "fiat": "Procesando orden de retiro"
+        "fiat": "Procesando orden de Envío"
       }
     },
     "accepted": {
       "completed": false,
-      "ui_text": "Retiro aceptado"
+      "ui_text": "Envío aceptado"
     } 
   },
   "orderStatus": {
@@ -75,12 +75,12 @@
       },
       "confirmed": {
         "fiat": {
-          "title": "Estamos procesando tu retiro.",
+          "title": "Estamos procesando tu Envío.",
           "description": "Pronto podrás disponer de tu dinero"
         },
         "crypto": {
-          "title": "Tu retiro está siendo procesado",
-          "description": "Blockchain está generando el TxId de tu retiro..."
+          "title": "Tu Envío está siendo procesado",
+          "description": "Blockchain está generando el TxId de tu Envío..."
         }
       }
     }

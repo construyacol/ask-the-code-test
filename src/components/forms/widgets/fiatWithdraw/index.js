@@ -21,7 +21,6 @@ import { selectFiatWithdrawAccounts, selectFiatWithdrawProviders } from 'selecto
 import { selectWithdrawProvidersByName } from 'selectors'
 import useBreadCumb from 'hooks/useBreadCumb'
 
-
 const DEFAULT_PROVIDER_TYPE = 'bank'
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
@@ -30,7 +29,6 @@ const CriptoSupervisor = loadable(() => import("components/wallets/views/withdra
 
 
 const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
-
   const { isMovilViewport } = useViewport();
   const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)

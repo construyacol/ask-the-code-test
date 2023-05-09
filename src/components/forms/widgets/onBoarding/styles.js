@@ -20,5 +20,8 @@ export const StatusHeaderContainer = styled.div`
     grid-template-rows: auto 1fr;
     height: auto;
     max-height: 300px;
+    &.withOutMaxHeight{
+      max-height: none;
+    }
 `
 

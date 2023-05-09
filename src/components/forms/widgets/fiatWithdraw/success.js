@@ -50,6 +50,7 @@ const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 const WithdrawCreatedSuccess = ({ 
     withdrawData = false,
+    callback = () => {},
     // closeModal, 
     // actions, 
     // params, 
@@ -80,6 +81,7 @@ const WithdrawCreatedSuccess = ({
             return setLoading(false)
         }
         setLoading(false)
+        callback && callback()
         return actions.renderModal(null)
     }
 

@@ -18,7 +18,7 @@ export default function CookieMessage(props) {
   const [ fiatWallet, setFiatWallet ] = useState()
 
   const [shouldRender, setShouldRender] = useState(false);
-  const mainRef = useRef()
+  const mainRef = useRef() 
 
   const clickHandler = () => { 
     sessionStorage.setItem(COINSENDA_DISCLAIMER_IS_ACCEPTED, true)
@@ -53,23 +53,18 @@ export default function CookieMessage(props) {
     <Content>
       <IconSwitch 
         size={30}
-        icon="withdraw"
+        icon="eth"
         color="var(--primary)"
       />
       <br/>
-      <h4 className='fuente' style={{textAlign:"center"}}>¡Transferencias totalmente gratuitas!</h4>
       <p className="fuente">
-        Ahora puedes enviar y recibir dinero de forma instantanea a cualquier persona vinculada o no a Coinsenda
+      
+        Los depósitos de <strong className="fuente2">USDT (ERC20)</strong> en la red Ethereum ahora tienen un costo fijo de 15 dólares debido a las altas tarifas de la red. 
+        Te invitamos a depositar <strong className="fuente2">USDT (TRC20)</strong> en la red TRON o <strong className="fuente2">USDT (BEP20)</strong> en la red de Binance sin ningún costo. ✅☝️
       </p>
       <br/>
       <div className={` cookie-button-container ${styles["cookie-button-container"]}`}>
         <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Entendido</span>
-        <Button
-          disabled={!fiatWallet?.id}
-          onClick={goToNew}
-        >
-          Muestrame
-        </Button>
       </div>
     </Content>
   </CoockieContainer>

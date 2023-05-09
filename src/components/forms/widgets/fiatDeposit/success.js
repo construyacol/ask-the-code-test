@@ -44,18 +44,18 @@ const FiatDepositSuccess = ({
     actions, 
     orderData,
     depositAccount
-}) => {
+}) => { 
     
-    const depositOrder = useSelector((state) => state?.modelData?.deposits[orderData?.id]);
-    console.log("depositOrder", depositOrder)
+    const deposits = useSelector((state) => state?.modelData?.deposits);
+    const depositOrder = deposits?.[orderData?.id] || orderData
     const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit') 
     const [ depProvDetail, setDepProvDetail ] = useState([])
     const [ amount, setAmount ] = useState([])
     const closeModal = () => actions.renderModal(null)
     const finish = async () => {
-            closeModal()
-            history.push(`/wallets/activity/${depositOrder.account_id}/deposits`);
-            return setTimeout(() => actions.add_new_transaction_animation(), 20)
+        closeModal()
+        history.push(`/wallets/activity/${depositOrder.account_id}/deposits`);
+        return setTimeout(() => actions.add_new_transaction_animation(), 20)
     }
     const init = async(depositAccount) => {
         setAmount(await formatCurrency(depositOrder?.amount_neto, depositOrder?.currency))
@@ -63,11 +63,10 @@ const FiatDepositSuccess = ({
     }
 
     useEffect(() => {
-        if(depositAccount){
-            init(depositAccount)
-        }
+        if(depositAccount) init(depositAccount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depositAccount])
+
 
     const provider = depositAccount
 
@@ -75,7 +74,6 @@ const FiatDepositSuccess = ({
         bank:BankSuccessDetail,
         pse:PseSuccessDetail
     }
-
 
     return(
         <OtherModalLayout
@@ -112,7 +110,7 @@ const FiatDepositSuccess = ({
                         component={depositAccount?.provider_type}
                         depProvDetail={depProvDetail}
                         provider={provider}
-                    />
+                    /> 
 
                         <SubTitle className="fuente">Datos del depósito</SubTitle>
                         <ContentDetail className="onBottom">
@@ -130,7 +128,7 @@ const FiatDepositSuccess = ({
                             </p>
                         </TotalAmount>
                     </Content>
-
+ 
                     <RenderSwitchComponent
                         STAGE_COMPONENTS={{
                             bank:BankCTA,
@@ -209,7 +207,6 @@ export const PseCTA = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // 
     return(
         <PseContainer className={`${children ? 'withFlexDisplay' : ''} ${!isAvailableToPay ? 'inProcess' : ''}`}>
             {children}
@@ -232,7 +229,8 @@ export const PseCTA = ({
                                 localStorage.setItem(`pse_${depositOrder?.id}`, true);
                                 setIsAvailableToPay(false);
                                 // setLeftMinutes(PSE_DEFAULT_AVAILABLE_PAY_TIME)
-                                window.open(depositOrder?.metadata?.bank_url, '_blank');
+                                window.location.href = depositOrder?.metadata?.bank_url;
+                                // window.open(depositOrder?.metadata?.bank_url, '_blank');
                                 finish && finish()
                             }}
                         />

@@ -19,8 +19,15 @@ export const CrudContainer = styled(FlexColumn)<CrudContainerProps>`
     position:relative;
     border-radius: 10px;
     row-gap: ${props => props.rowGap ? `${props.rowGap}` : '0'};
+    &.no-padding{
+        padding: 0;
+    }
     &.medium{
         max-width: 450px;
+        row-gap: 20px;
+    }
+    &.large{
+        max-width: 700px;
         row-gap: 20px;
     }
 `

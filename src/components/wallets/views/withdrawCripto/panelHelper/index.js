@@ -89,7 +89,7 @@ const PanelHelper = props => {
       if(takeFeeFromAmount){
         if(controlValidation) _orderDetail.push(["Total a recibir", `${_total?.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`] )
       }else{
-        if(controlValidation && total.isLessThanOrEqualTo(totalBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`] )
+        if(controlValidation && total.isLessThanOrEqualTo(totalBalance)) _orderDetail.push(["Total a enviar", `${_total?.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`] )
       }
       setOrderDetail(_orderDetail)
     } 
@@ -104,7 +104,7 @@ const PanelHelper = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPriority, fixedCost, amount, baseFee])
 
-    let title = isMobile || (!isMobile && props.withdrawConfirmed) ? 'Confirmación de retiro' : 'Velocidad de retiro'
+    let title = isMobile || (!isMobile && props.withdrawConfirmed) ? 'Confirmación de envío' : 'Velocidad de envío'
     let isReady = addressState === 'good'
 
 
@@ -183,7 +183,7 @@ const PanelHelper = props => {
                   loader={loader}
                   handleAction={createWithdraw}
                   formValidate={!active_trade_operation && amountState === "good" && addressState === "good" && controlValidation}
-                  label={loader ? 'Enviando...' : (!isMobile && !props.withdrawConfirmed) ? "Continuar" : "Retirar ahora"}
+                  label={loader ? 'Enviando...' : (!isMobile && !props.withdrawConfirmed) ? "Continuar" : "Enviar ahora"}
                 />
               }
       </StatusPanelComponent>
@@ -193,11 +193,3 @@ const PanelHelper = props => {
 
 export default PanelHelper
 
-
-// {
-//   controlValidation &&
-//   <TotalContainer>
-//     <p className='fuente'>Total a retirar</p>
-//     <h1 className='fuente2'>0.00045 <span>ETHT</span></h1>
-//   </TotalContainer>
-// }

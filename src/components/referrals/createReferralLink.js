@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import InputForm from "../widgets/inputs/inputForm";
 import ControlButton from "../widgets/buttons/controlButton";
 import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
-// import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import useToastMessage from "../../hooks/useToastMessage";
 import styled from 'styled-components'
 // import referralImg from './assets/referral.png'
@@ -20,7 +19,6 @@ const CreateReferralLink = (props) => {
   const [ toastMessage ] = useToastMessage();
   const [ loader, setLoader ] = useState(false);
   const { isMovilViewport } = useViewport();
-  // const [coinsendaServices] = useCoinsendaServices();
   const [ isValidCode, setIsValidCode ] = useState('bad')
   const idForClickeableElement = useKeyActionAsClick(true, "create-referral-button", 13, false, "onkeyup");
 

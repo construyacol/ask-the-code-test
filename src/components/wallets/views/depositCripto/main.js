@@ -16,27 +16,29 @@ import {
     DepositForm
 } from './styles'
 import { useCoinsendaServices } from "services/useCoinsendaServices";
+import { QR_CONFIG } from 'const/qr'
+import { useWalletInfo } from 'hooks/useWalletInfo'
+
+// import { AlertDisclaimer } from 'components/widgets/shared-styles'
+// import { P } from 'core/components/atoms'
+// import CookieMessage from 'components/widgets/cookieMessage'
+import UsdtErcDisclaimer, { EthCostDisclaimer } from "./usdtErcDisclaimer"
+
+
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")), {fallback:<div></div>});
 const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")), {fallback:<div></div>});
 
 
-const QR_CONFIG = {
-    errorCorrectionLevel: 'H',
-    type: 'image/jpeg',
-    quality: 0.3,
-    margin: 3.5,
-    color: {
-      dark:"#455868",
-    }
-}
 
 const CriptoView = (props) => {
+
+  const { currentWallet } = useWalletInfo();
+
     const [
       coinsendaServices,
       {
-        current_wallet,
         modelData: { user },
         ui:{ osDevice } 
       },
@@ -85,33 +87,39 @@ const CriptoView = (props) => {
     
     const truncatedAddres = useTruncatedAddress(address || '')
     const addressValue = isMobile ? truncatedAddres : address
-
-
+    
+    console.log("||||||||| depositProviders ==> ", depositProviders.current)
   
     if(isEmpty(depositProviders.current)){
-      return<SelectDepositNetwork uiName={`Selecciona la red por la que deseas depositar ${current_wallet?.currency?.toUpperCase()}`} callback={setProvider}/>
+      return<SelectDepositNetwork uiName={`Selecciona la red por la que deseas depositar ${currentWallet?.currency?.toUpperCase()}`} callback={setProvider}/>
     }
    
     return (  
       <> 
+      {
+        // Mostrar si es USDT de la red ETH 
+        depositProviders?.current?.provider_type === 'ethereum' && (
+          <UsdtErcDisclaimer callback={setProvider} networksData={depositProviders} currentWallet={currentWallet}/>
+        )
+      }
       {props?.children}
       { 
          !isEmpty(depositProviders.current) ?
             <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
-         :
+         : 
             <div></div>
       }
       <DepositForm className="depositForm">
             { 
-            current_wallet.currency.includes("eth") &&
+              currentWallet.currency.includes("eth") &&
                 <EtherDisclaimer className="fuente">
                 No enviar con menos de 70 mil gas
                 </EtherDisclaimer>
             }
         <ContAddress className={`contAddress ${osDevice}`}>
-
+        {depositProviders?.current?.provider_type === 'ethereum' && <EthCostDisclaimer/>}
           <DisclaimerMessage
-            current_wallet={current_wallet}
+            current_wallet={currentWallet}
             depositProviders={depositProviders}
           />
 
@@ -128,6 +136,7 @@ const CriptoView = (props) => {
               <img id="qrDesposit" className="itemFuera" src={qrState} alt="" />
             )}
           </div>
+
           
           <div className="div_deposit--address">
             <p className="fuente dirDep">Dirección de depósito:</p>
@@ -148,11 +157,7 @@ const CriptoView = (props) => {
                 />
             </div> 
           </div>
-          
-          
-  
         </ContAddress>
-        
       </DepositForm>
       </>
     );

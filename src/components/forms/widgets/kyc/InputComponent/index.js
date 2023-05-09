@@ -143,6 +143,11 @@ export const InputWrapper = styled.div`
     }
   }
 
+  input{
+    font-family: "Tomorrow",sans-serif;
+    color: var(--paragraph_color);
+  }
+
 `
 
 
