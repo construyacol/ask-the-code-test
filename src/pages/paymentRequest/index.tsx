@@ -83,10 +83,9 @@ const PaymentRequestView = (props:any) => {
    }, [isLogged])
 
    const RenderContentComponent = (isLoading && !isLogged) ? SkeletonView : isLogged ? IsLoggedView : UnLoggedView
-   console.log('RenderContentComponent', paymentRequest.recipient, user?.email)
    return(
       <PaymentRequestLayout>
-         <CrudContainer rowGap="10px" className={`large flex no-padding`}>
+         <CrudContainer rowGap="10px" className={`large flex no-padding height-fit-content`}>
          {
             paymentRequest.recipient === user?.email && <ViewerContainer>Vista de pagador</ViewerContainer>
          }

@@ -468,6 +468,9 @@ export const ItemAccountContainer = styled.div`
             grid-template-columns: auto auto;
             min-width: auto;
         }
+        .__buttonsContainer--insufficient{
+            flex-direction: initial;
+        }
     }
 `
 

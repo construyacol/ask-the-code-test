@@ -210,7 +210,8 @@ const IsLoggedView = ({
                (wallet && OPERATIONAL_LEVELS.includes(user?.level)) ?
                   <>
                      <ItemAccountContainer className={`${stageStatus} itemAccountContainer`}>
-                        <span></span>
+                        {!isMobile && <span/>}
+                        
                         <HeaderMainContainer className="_accountHeaderMainContainer">
                            <IconAccount className="onAccountList fit">
                               <IconSwitch
@@ -234,13 +235,13 @@ const IsLoggedView = ({
                         </HeaderMainContainer>
                         {
                            stageStatus === "insufficient" ?
-                              <ButtonsContainer className="insufficient">
+                              <ButtonsContainer className="insufficient __buttonsContainer--insufficient">
                                  <HR/>
                                  <Button onClick={goToDesposit} size="small" variant="outlined" color={"primary"}> 
                                     Depositar
                                  </Button>
                               </ButtonsContainer>
-                              :
+                              : !isMobile &&
                               <RightSection 
                                  isMovilViewport={false}
                                  account={wallet}
