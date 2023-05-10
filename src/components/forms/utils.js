@@ -10,7 +10,7 @@ import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 // import { ApiGetPersonalStages } from './widgets/personalKycComponent/oldApi'
 import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
-import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
+import { ApiGetContactStages, getDefaultContactState } from './widgets/kyc/contactComponent/api'
 import { 
   ApiGetIdentityStages, 
   ApiGetIdentityErrors,
@@ -24,10 +24,16 @@ import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages } from './widgets/fiatWit
 
 // import countryValidators from './apiRes'
 
-export const filterElement = (list, query) => {
+export const filterElement = (list, query, isExact) => {
+
+
   let result = {}
   Object.keys(list).forEach(itemList => {
-    if(itemList.includes(query?.toLowerCase())){
+    let condition = isExact ? itemList.includes(query?.toLowerCase()) : query?.toLowerCase()?.includes(itemList)
+    // if(query?.toLowerCase()?.includes(itemList)){
+    //   console.log('|||||| filterElement ==> ', itemList, `${query}_`)
+    // }
+    if(condition){
       return result = { ...result, [itemList]:list[itemList] }
     }
   })
@@ -83,28 +89,23 @@ export const onSubmit = async(callback, TimeOut = 100) => {
 }
 
 export const depurateSelectList = (objectList) => {
-  let selectList = {...objectList} 
+  let selectList = typeof objectList === 'object' ? ungapStructuredClone(objectList) : {...objectList};
   delete selectList.ui_name
   delete selectList.ui_type
+  delete selectList.settings
   // eslint-disable-next-line array-callback-return
   Object.keys(selectList).forEach(key => {
-    selectList[key].uiName = selectList[key]?.ui_name || selectList[key]?.name
+    if(typeof selectList[key] !== 'object') return;
+    selectList[key].uiName = selectList[key]?.ui_name || selectList[key]?.name || selectList[key]?.uiName
     selectList[key].value = key
     delete selectList[key]?.ui_name
     delete selectList[key]?.name
-    // delete selectList[key]?.id
     delete selectList[key]?.code
   })
   return selectList
 } 
  
-export const getSelectList = async(listKey, payload) => {
-  let list  
-  let res = await mainService[API_FETCH_SELECT_LIST[listKey]] ? await mainService[API_FETCH_SELECT_LIST[listKey]](payload) : (payload && payload[listKey])
-  if(!res){return}
-  list = await convertArrayToObjectList(res) //convert array list to object list
-  return depurateSelectList(list)
-}
+
 
 const clearSourceData = async(data) => {
   let clearSource = {}
@@ -123,8 +124,8 @@ export const createStage = async(source, modelated = {}, index) => {
   let _source = typeof source === 'object' ? ungapStructuredClone(source) : {...source};
   if(_source?.ui_type === 'select')_source = await clearSourceData(_source)
   let stage = {}
-  _source.uiName = _source.ui_name || _source.uiName
-  _source.uiType = _source.ui_type || _source.uiType 
+  _source.uiName = _source.ui_name || _source.uiName || modelated?.ui_name || modelated?.uiName
+  _source.uiType = _source.ui_type || _source.uiType || modelated?.ui_type || modelated?.uiType
   delete _source.ui_name
   delete _source.ui_type
 
@@ -164,6 +165,15 @@ export const convertArrayToObjectList = async(list) => {
 }
 
 
+export const getSelectList = async(listKey, payload) => {
+  let list  
+  let res = await mainService[API_FETCH_SELECT_LIST[listKey]] ? await mainService[API_FETCH_SELECT_LIST[listKey]](payload) : (payload && payload[listKey])
+  if(!res){return}
+  list = await convertArrayToObjectList(res) //convert array list to object list
+  return depurateSelectList(list)
+}
+
+
 export const recursiveAddList = async(mapObject, payload) => {
   let apiStages = ungapStructuredClone(mapObject)
   let stages = {} 
@@ -175,9 +185,9 @@ export const recursiveAddList = async(mapObject, payload) => {
     }
     if(["select"].includes(stages[stage]?.uiType)){
       stages[stage].selectList = await getSelectList(stage, payload)
-    } 
+    }  
     if(["recursiveLevel"].includes(stages[stage]?.uiType)){
-      stages[stage] = await recursiveAddList(stages[stage], payload)
+      stages[stage] = await recursiveAddList(stages[stage], payload || apiStages[stage])
     }
   }
   
@@ -205,17 +215,17 @@ const getErrors = (config) => {
   }
   return ERRORS[config.formName] && ERRORS[config.formName](config)
 }
- 
 
+ 
 const getDefaultState = (config) => {
   const STATES = {
-    identity:ApiGetIdentityState
+    identity:ApiGetIdentityState,
+    contact:getDefaultContactState
   }
   return STATES[config.formName] && STATES[config.formName](config)
 }
-
+ 
 export const initStages = async(_config, API_STAGES) => {
-
   let config = {..._config}
   config.handleError = getErrors(config)
   config.defaultState = getDefaultState(config)

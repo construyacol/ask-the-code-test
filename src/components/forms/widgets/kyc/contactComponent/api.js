@@ -23,25 +23,30 @@ const STAGES = {
         errors:[
           { pattern:/[^0-9]/g, message:'Solo se permiten Números...'}
         ],
-        // auxComponent:"kyc/contactComponent/countryPrefix", //targetId to render component
-        auxComponent:null,
+        auxComponent:"kyc/contactComponent/countryPrefix", //targetId to render component
+        // auxComponent:null,
         mainComponent:null
       }
     }
 }  
 
-export const CONTACT_DEFAULT_STATE = {
+const CONTACT_DEFAULT_STATE = {
   contact:{ 
-    // meta_phone: "colombia",
+    meta_phone: "colombia"
   }
+}
+
+export const getDefaultContactState = (config) => {
+  return CONTACT_DEFAULT_STATE.contact
 }
 
 export const ApiGetContactStages = async(config) => {
     return CONTACT_INFO_NEEDED
 }
-
-export const ApiPostContact = async(payload) => {
-  const res = await mainService.createContact(payload)
+ 
+export const ApiPostContact = async({ meta_phone, phone, prefixCountryList }) => {
+  let countryPrefix = (meta_phone && meta_phone) ? prefixCountryList[meta_phone]?.prefix[0] : ''
+  const res = await mainService.createContact({ phone:`${countryPrefix} ${phone}` })
   if(!res)return ;
   await mainService.fetchCompleteUserData()
   const reqData = await mainService.getLevelRequirement()

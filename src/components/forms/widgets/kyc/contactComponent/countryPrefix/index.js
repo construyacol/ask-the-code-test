@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getSelectList } from '../../../../utils'
 // import InputComponent from '../personalKycComponent/input'
 import { IoIosArrowDown } from 'react-icons/io'
-
+ 
 import {
     PrefixContainer
 } from './styles' 
@@ -49,7 +49,7 @@ const CountryPrefix = ({ dataForm, setStageData, name, state, ...props }) => {
         }
     }, [])
 
-    useEffect(()=>{
+    useEffect(()=>{ 
         if(activeStage){
             setMetaPhoneData(setStageData, dataForm, selectList)
             extendContainer()
@@ -80,8 +80,6 @@ const CountryPrefix = ({ dataForm, setStageData, name, state, ...props }) => {
     }, [selectList])
 
     const prefix = countryData?.prefix || "+ --";
-
-    // console.log('|||||||||||||||||||||||||  countryData  dataForm ==> ', dataForm)
 
     return(
         <PrefixContainer 

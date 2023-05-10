@@ -50,7 +50,7 @@ const InfoStateComponent = (props:infoProps) => {
                         </span> 
                     </P>
                     <TextContainer>
-                        <P className="description description__title">Prox:</P>
+                        <P className="description description__title">Sigue:</P>
                         <DescriptionContainer>
                             <DescriptionCarousel style={{transform:`translateY(-${nextStage*16}px)`}}>
                                 {

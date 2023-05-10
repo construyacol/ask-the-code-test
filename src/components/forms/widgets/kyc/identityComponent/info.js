@@ -145,7 +145,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
 
   return(
     <KycFormComponent
-      state={state}
+      handleState={handleState}
       dataForm={dataForm}
       closeModal={closeModal}
       isNewId={props?.isNewId}
