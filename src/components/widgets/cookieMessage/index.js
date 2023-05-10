@@ -1,21 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react'
-// import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
 import styled from 'styled-components'
-// import { getHostName } from 'environment'
 import IconSwitch from '../icons/iconSwitch';
-import Button from '../buttons/button';
-import { device, history } from 'const/const';
-// import { serveModelsByCustomProps } from 'selectors'
-import { useSelector } from "react-redux";
-import { checkIfFiat } from 'core/config/currencies';
+import { device } from 'const/const';
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
 
 export default function CookieMessage(props) {
-
-  const { wallets } = useSelector((state) => state.modelData);
-  const [ fiatWallet, setFiatWallet ] = useState()
 
   const [shouldRender, setShouldRender] = useState(false);
   const mainRef = useRef() 
@@ -24,21 +15,6 @@ export default function CookieMessage(props) {
     sessionStorage.setItem(COINSENDA_DISCLAIMER_IS_ACCEPTED, true)
     setShouldRender(false)
   }
-
-  const goToNew = () => {
-    history.push(`/wallets/withdraw/${fiatWallet?.id}`)
-    clickHandler()
-  }
-
-  useEffect(() => {
-    (() => {
-      for (const walletId in wallets) {
-        const wallet = wallets[walletId]
-        if(checkIfFiat(wallet?.currency)) setFiatWallet(wallet)
-      }
-    })()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     const value = sessionStorage.getItem(COINSENDA_DISCLAIMER_IS_ACCEPTED)

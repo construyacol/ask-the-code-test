@@ -12,7 +12,7 @@ export function useAppVersion() {
       const storeVersions = window.appVersion;
       const appInfo = await App.getInfo();
       CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.ANDROID && setIsAppOutdated(CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.ANDROID && storeVersions.androidVersionCode !== appInfo.build);
-      CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.IOS && setIsAppOutdated(CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.IOS && storeVersions.iosVersion !== appInfo.build);
+      // CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.IOS && setIsAppOutdated(CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.IOS && storeVersions.iosVersion !== appInfo.build);
     } catch (e) {
       console.error("CHECKING_APP_VERSION", e);
     }
