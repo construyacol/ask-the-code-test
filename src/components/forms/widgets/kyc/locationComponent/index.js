@@ -7,7 +7,7 @@ import { initStages } from '../../../utils'
 import KycFormComponent from '../../kycForm'
 
 
-const LocationComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
+const LocationComponent = ({ handleDataForm, handleState, closeModal }) => {
 
   const { dataForm, setDataForm } = handleDataForm
   const { state, setState } = handleState

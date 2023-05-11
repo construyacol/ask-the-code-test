@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { filterElement } from '../../../utils'
+import { isEmpty } from 'lodash'
 
 // import components
 import ItemList from './itemList'
@@ -15,7 +16,7 @@ const SelectList = ({ list, name, state, handleAction, exactResult = true, ...pr
   
   let [ height ] = useHeight(list)
   const [ searchList, setSearchList ] = useState(list || {})
-  const [ currentItemTagExist, setCurrentItemTagExist ] = useState(null)
+  const [ currentItemTagExist, setCurrentItemTagExist ] = useState(false)
   // console.log('state - SelectList:  ', state, currentItemTagExist)
   
   useEffect(() => {
@@ -24,29 +25,27 @@ const SelectList = ({ list, name, state, handleAction, exactResult = true, ...pr
     }else{
       setCurrentItemTagExist(null)
     }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, name, searchList])
-
  
   useEffect(() => {
     if(list){
+      console.log('exactResult', exactResult)
       const itemList = filterElement(list, state[name], exactResult)
       setSearchList(itemList)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[name], list])
 
-  // console.log('searchList state', state)
-
+  // console.log('exactResult', exactResult)
+  // console.log('SelectList => list =>', list)
 
   let isMovilHeight = document.body.clientWidth < 768 ? `25vh` : `0px`
-  
 
   return(
     <SelectListMain
       id="selectListMain"
-      height={(list && !currentItemTagExist) ? height : isMovilHeight}
+      height={(!isEmpty(list) && !currentItemTagExist) ? height : isMovilHeight}
       >
       {
         (list && !currentItemTagExist) &&

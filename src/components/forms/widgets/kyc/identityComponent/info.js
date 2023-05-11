@@ -71,7 +71,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
     return prevStage()
   }
 
-  console.log('dataForm', dataForm)
+  // console.log('dataForm', dataForm)
 
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();

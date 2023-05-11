@@ -23,7 +23,6 @@ const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent')
 const SELECT_INITIAL_STATE = {
   list:{},
   name:"",
-  state:{},
   handleAction:() => null,
   exactResult:true
 }
@@ -71,13 +70,15 @@ const KycFormComponent = ({
           ...prevState,
           list:stageData?.selectList,
           name:stageData?.key,
-          state,
           handleAction:onChange
         }))
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stageData, state])
- 
+    }, [stageData])
+  // }, [stageData, state])
+
+  // console.log('selectListConfig', selectListConfig)
+
     return(
       <Layout 
         style={{background:"white"}}  
@@ -178,6 +179,7 @@ const KycFormComponent = ({
                 <DynamicLoadComponent
                   component="kyc/selectList"
                   {...selectListConfig}
+                  state={state}
                   // pass useCallBack to inherited functions to this component
                 />
 

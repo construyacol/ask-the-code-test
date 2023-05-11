@@ -39,15 +39,13 @@ const birthday = (value, data) => {
     }
     return [ _value, status ]
   }
-  
-  
-  
    
   const phone = (value, data) => {
     validateLabelMsg(value, data)
+    let metaPhoneValue = data?.state?.meta_phone
     let _value = parseOnlyNumbers(value)
-    // let status = (_value.match(data.settings.successPattern) && data.state['meta_phone']) && 'success'
-    let status = _value.match(data.settings.successPattern) && 'success';
+    let status = (_value.match(data.settings.successPattern) && metaPhoneValue) && 'success';
+    // let status = _value.match(data.settings.successPattern && 'success';
     return [ _value, status ]
   }
   
