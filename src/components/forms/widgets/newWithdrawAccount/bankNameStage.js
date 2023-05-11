@@ -26,14 +26,12 @@ const BankNameListComponent = ({
       e.target.preventDefault && e.target.preventDefault();
       if(!validations[stageData.key]) return; 
       const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm});
-      console.log('stageData', _value, _status)
       e.target.value = _value
       setState(prevState => {
         return { ...prevState, [stageData?.key]: _value }
       })
       setStageStatus(_status)
     }
-  
   
     // load state  by default
     useEffect(() => {
@@ -44,8 +42,6 @@ const BankNameListComponent = ({
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key]])
-
-  
 
     return(
       <StageContainer className="_bankNameList">
@@ -59,7 +55,7 @@ const BankNameListComponent = ({
           placeholder={stageData?.settings?.placeholder}
           type={stageData?.uiType}
         />
-  
+   
         <SelectListComponent
           stageData={stageData}
           state={state}

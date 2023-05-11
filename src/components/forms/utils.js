@@ -24,12 +24,11 @@ import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages } from './widgets/fiatWit
 
 // import countryValidators from './apiRes'
 
-export const filterElement = (list, query, isExact) => {
-  console.log('filterElement_isExact', isExact)
+export const filterElement = (list, query, isExact = true) => {
+  // console.log('filterElement_isExact', isExact)
   let result = {}
   Object.keys(list).forEach(itemList => {
     let condition = isExact ? itemList.includes(query?.toLowerCase()) : query?.toLowerCase()?.includes(itemList)
-    console.log('itemList', isExact, condition)
     // if(query?.toLowerCase()?.includes(itemList)){
     //   console.log('|||||| filterElement ==> ', itemList, `${query}_`)
     // }

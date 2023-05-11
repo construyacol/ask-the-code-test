@@ -52,7 +52,7 @@ export default function InputAddress(props){
          name:currentInput,
          state:addressState,
          handleAction:inputOnChange,
-         exactResult:true
+         exactResult:false
       })
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [currentInput, addressState])

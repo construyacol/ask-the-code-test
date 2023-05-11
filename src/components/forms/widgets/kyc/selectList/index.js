@@ -38,7 +38,7 @@ const SelectList = ({ list, name, state, handleAction, exactResult = true, ...pr
   }, [state[name], list])
 
   // console.log('exactResult', exactResult)
-  // console.log('SelectList => list =>', list)
+  console.log('SelectList =>', name, state, list)
 
   let isMovilHeight = document.body.clientWidth < 768 ? `25vh` : `0px`
 

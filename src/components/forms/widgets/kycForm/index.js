@@ -178,8 +178,8 @@ const KycFormComponent = ({
 
                 <DynamicLoadComponent
                   component="kyc/selectList"
-                  {...selectListConfig}
                   state={state}
+                  {...selectListConfig}
                   // pass useCallBack to inherited functions to this component
                 />
 
