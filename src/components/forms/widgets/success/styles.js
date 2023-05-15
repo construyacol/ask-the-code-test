@@ -1,6 +1,6 @@
 import styled, { keyframes }  from "styled-components"
 import { TotalAmount } from '../../../widgets/shared-styles'
-import { device } from '../../../../const/const'
+import { CAPACITOR_PLATFORM, device } from '../../../../const/const'
 import { 
     ItemAccountContainer,
     MobileBalance
@@ -67,6 +67,13 @@ export const LayoutContainer = styled.section`
 
         h1, p{
             text-align:center;
+        }
+    }
+
+    @media ${device.mobile} {
+        height: ${CAPACITOR_PLATFORM === 'ios' ? '93vh' : '100vh'};
+        h1{
+            margin-top: 40px;
         }
     }
 `
