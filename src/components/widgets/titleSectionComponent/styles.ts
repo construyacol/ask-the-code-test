@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { OnlySkeletonAnimation } from '../loaders/skeleton'
 import { device } from '../../../const/const'
 
-
 const Container = styled.div`
     display:grid;
     grid-template-columns:1fr auto;
@@ -32,28 +31,28 @@ export const TitleContainer = styled(Container)`
                 top: 100px;
             }
         }
-
     }
     
-    
-    &.accoun-detail{
+    &.account-detail{
         top: 120px;
         z-index: 3;
         background: rgb(249 249 251 / 94%);
         backdrop-filter: blur(6px);
-
+        &.activity.deposits.crypto,
+        &.crypto.deposit{
+            grid-template-columns:auto 1fr auto;
+            column-gap: 15px;
+        }
         .ALFilterSect{
             align-items:center;
         }
         .ALfiltros{
             background:transparent;
         }
-        
         h1{
             padding: 12px 0 20px;
             font-size:24px;
         }
-
         @media ${device.mobile} {
             &.createWithdrawAccount{
                 position: initial;

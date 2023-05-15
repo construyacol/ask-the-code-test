@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Button, P } from 'core/components/atoms'
 import { loggedViewProps, doPaymentProps } from 'interfaces/paymentRequest';
+import { walletprops } from  'interfaces/state'
 import { useSelector } from "react-redux";
 import { modelDataProps } from 'interfaces/state'
 import { serveModelsByCustomProps, wProvsByCurrencyNetwork, selectWAccountsByAddressProvType } from 'selectors'
@@ -33,12 +34,6 @@ import { HR } from 'components/widgets/headerAccount/styles'
 import { OPERATIONAL_LEVELS } from 'const/levels'
 // import useToastMessage from "hooks/useToastMessage";
 
-
-
-interface walletprops {
-   id: string,
-   [key: string]: any
-}
 
 interface providerProps {
    [key: string]: any
