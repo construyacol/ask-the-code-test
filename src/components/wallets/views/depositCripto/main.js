@@ -117,7 +117,7 @@ const CriptoView = (props) => {
                 </EtherDisclaimer>
             }
         <ContAddress className={`contAddress ${osDevice}`}>
-        {depositProviders?.current?.provider_type === 'ethereum' && <EthCostDisclaimer/>}
+          {depositProviders?.current?.provider_type === 'ethereum' && <EthCostDisclaimer/>}
           <DisclaimerMessage
             current_wallet={currentWallet}
             depositProviders={depositProviders}

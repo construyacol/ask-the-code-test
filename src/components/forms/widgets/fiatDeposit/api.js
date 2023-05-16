@@ -125,7 +125,7 @@ const INTERNAL_NETWORK_STAGES = {
 
 const STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
-    uiName:"Ó elige un banco o servicio para depositar",
+    uiName:"Elige un banco o servicio para depositar",
     key:FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER,
     uiType:"select",
     "settings":{

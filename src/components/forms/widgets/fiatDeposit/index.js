@@ -24,7 +24,6 @@ import { FIAT_DEPOSIT_TYPES, CTA_UI_NAME } from './api'
 import { createPaymentRequestLink } from 'utils/paymentRequest'
 import { MENU_LABELS } from 'api/ui/menuItems'
 
-
 const ProviderComponent = loadable(() => import("./depositProviderStage"), {fallback:<StageSkeleton/>});
 const DepositCostComponent = loadable(() => import("./depositCostStage"), {fallback:<StageSkeleton/>});
 const PersonTypeComponent = loadable(() => import("./personType"), {fallback:<StageSkeleton/>});
