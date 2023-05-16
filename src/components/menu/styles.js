@@ -253,7 +253,7 @@ export const SideMenuContainer = styled(Menu)`
     position: absolute;
     height: 100vh;
     width: 100vw;
-    top: ${CAPACITOR_PLATFORM === 'ios' ? '100px' : 0};
+    top: ${CAPACITOR_PLATFORM === 'ios' ? '0' : 0};
     z-index: 4;
     max-width:250px;
 
