@@ -27,6 +27,13 @@ import {
 } from "utils/handleSession";
 import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 import { getAllUrlParams } from "utils/urlUtils";
+import { Keyboard } from '@capacitor/keyboard';
+
+Keyboard.addListener('keyboardWillShow', info => {
+  console.log('keyboard will show with height:', info.keyboardHeight);
+});
+
+Keyboard.setAccessoryBarVisible({ isVisible: true });
 
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "components/widgets/toast/ToastContainer"));
@@ -103,6 +110,12 @@ function RootContainer(props) {
   useEffect(() => {
     async function initRoot() {
       if(CAPACITOR_PLATFORM !== 'web'){
+        const appHeight = () => {
+          const doc = document.documentElement
+          doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+        }
+        window.addEventListener('resize', appHeight)
+        appHeight()
         const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
         if(!userToken && !isAppLoaded) openLoginMobile(initComponent);
       } 
