@@ -29,10 +29,6 @@ import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 import { getAllUrlParams } from "utils/urlUtils";
 import { Keyboard } from '@capacitor/keyboard';
 
-Keyboard.addListener('keyboardWillShow', info => {
-  console.log('keyboard will show with height:', info.keyboardHeight);
-});
-
 Keyboard.setAccessoryBarVisible({ isVisible: true });
 
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));

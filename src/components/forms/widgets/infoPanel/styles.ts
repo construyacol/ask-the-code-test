@@ -150,7 +150,7 @@ export const InfoPanelContainer = styled.section`
     position: absolute;
     width: calc(100vw - 32px);
     margin: 0;
-    height: calc(100vh - 50px);
+    height: calc(var(--app-height) - 50px);
     background: white;
     transform: translateX(0);
     transition: .3s;

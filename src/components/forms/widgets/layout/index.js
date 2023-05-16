@@ -16,7 +16,7 @@ const Layout = ({ children, background, closeControls, className, callback }) =>
   return(
     <Wrapper 
       id="mainLayout" 
-      style={{background}}
+      style={{background, height: 'var(--app-height)', overflow: 'hidden'}}
       onClick={closeModal}
       data-close_modal={true}
       className={`${className}`}
