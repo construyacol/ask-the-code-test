@@ -1,6 +1,7 @@
 import React from "react";
 import SimpleLoader from "../loaders";
 import styled from 'styled-components'
+import {CAPACITOR_PLATFORM} from "const/const";
 
 
 const InputFormContainer = styled.div`
@@ -89,6 +90,7 @@ export const InputFormAuth = (props) => {
               : error
               ? "1px solid red"
               : "1px solid #50667a61",
+          width: CAPACITOR_PLATFORM === 'ios' ? "85%" : "100%",
         }}
       >
         {!verifying ? (
