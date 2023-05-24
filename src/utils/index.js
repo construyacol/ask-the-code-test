@@ -206,9 +206,10 @@ const get_img_quality = (size) => {
   return quality;
 };
 
+const defaultPosition = CAPACITOR_PLATFORM === 'ios' ? reactToastify.POSITION.TOP_CENTER : reactToastify.POSITION.BOTTOM_RIGHT;
 export const toast = async (msg, type, position) => {
   return reactToastify(msg, {
-    position: reactToastify.POSITION[!position ? "BOTTOM_RIGHT" : position],
+    position: reactToastify.POSITION[!position ? defaultPosition : position],
     pauseOnFocusLoss: false,
     draggablePercent: 60,
     className: `${

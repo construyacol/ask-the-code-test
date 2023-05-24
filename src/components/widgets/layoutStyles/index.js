@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { device } from '../../../const/const'
+import { CAPACITOR_PLATFORM, device } from '../../../const/const'
 
 
 export const BaseLayout = styled.div`
@@ -100,6 +100,20 @@ export const AccountDetailContainer = styled.div`
         position: relative;
         row-gap: 5px;
     }
+
+    ${CAPACITOR_PLATFORM === 'ios' && `&.deposit, &.withdraw, &.swap{
+        @media ${device.mobile} {
+            align-items: initial !important;
+            .depositView {
+                width: 100%;
+                .contIcontSwitch, .contButtons.deposit {
+                    display: grid;
+                    align-items: center;
+                    justify-items: center;
+                }
+            }
+        }
+    }`}
 
     &.deposit.crypto,
     &.withdraw.crypto{

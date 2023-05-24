@@ -31,6 +31,25 @@ import { Keyboard } from '@capacitor/keyboard';
 
 Keyboard.setAccessoryBarVisible({ isVisible: true });
 
+Keyboard.addListener('keyboardWillShow', () => {
+  console.log('keyboard will show');
+  const doc = document.documentElement
+  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+  const html = document.getElementsByTagName('html')[0]
+  html.style.overflow = 'scroll'
+  html.style.maxHeight = 'var(--app-height)'
+});
+
+Keyboard.addListener('keyboardDidHide', () => {
+  console.log('keyboard did hide');
+  const doc = document.documentElement
+  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+  const html = document.getElementsByTagName('html')[0]
+  html.style.overflow = ''
+  html.style.maxHeight = ''
+});
+
+
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "components/widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
@@ -106,6 +125,18 @@ function RootContainer(props) {
   useEffect(() => {
     async function initRoot() {
       if(CAPACITOR_PLATFORM !== 'web'){
+        function handleTouchEnd(event) {
+          // scroll into input
+          console.log('event.target ==> ', event.target);
+          event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          event.preventDefault();
+        }
+
+        const inputElements = document.querySelectorAll('input, select, textarea');
+        inputElements.forEach(function(element) {
+          element.addEventListener('touchend', handleTouchEnd);
+        });
+
         const appHeight = () => {
           const doc = document.documentElement
           doc.style.setProperty('--app-height', `${window.innerHeight}px`)
