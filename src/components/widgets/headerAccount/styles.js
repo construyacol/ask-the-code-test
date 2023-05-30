@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { device } from '../../../const/const'
+import { CAPACITOR_PLATFORM, device } from '../../../const/const'
 
 
 export const HeaderContainer = styled.div`
@@ -132,6 +132,14 @@ export const AccountLabel = styled(P)`
       color: #afafaf;
     }
   }
+
+  ${CAPACITOR_PLATFORM === 'ios' && `@media ${device.mobile} {
+    display: unset;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }`}
 `
 
 export const CurrencyLabel = styled(P)`

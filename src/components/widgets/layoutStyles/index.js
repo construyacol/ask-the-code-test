@@ -101,7 +101,7 @@ export const AccountDetailContainer = styled.div`
         row-gap: 5px;
     }
 
-    ${CAPACITOR_PLATFORM === 'ios' && `&.deposit, &.withdraw, &.swap{
+    ${CAPACITOR_PLATFORM === 'ios' && `&.deposit, &.withdraw, &.swap, &.activity {
         @media ${device.mobile} {
             align-items: initial !important;
             .depositView {
