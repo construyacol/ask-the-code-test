@@ -17,7 +17,6 @@ export const getExportByName = (componentName) => (exportObject) => ({
 
 
 export const postLocalNotification = async (payload) => {
-
   if(!payload || ["web"].includes(CAPACITOR_PLATFORM)) return;
 
   let {
@@ -25,7 +24,7 @@ export const postLocalNotification = async (payload) => {
     body = "Notification body",
     summaryText = "summaryText",
     largeBody = "largeBody",
-    id = "1234"
+    id = new Date().getTime()
   } = payload
 
   const { LocalNotifications } = await import("@capacitor/local-notifications");
