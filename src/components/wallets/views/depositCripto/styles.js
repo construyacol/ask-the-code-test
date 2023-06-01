@@ -67,6 +67,13 @@ export const ContAddress = styled.section`
     position: relative;
   }
 
+  @media ${device.mobile}{
+    .soloAd{
+      font-size:.87rem;
+    }
+  }
+
+
 `
 
 

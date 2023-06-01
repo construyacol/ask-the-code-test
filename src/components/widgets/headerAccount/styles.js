@@ -81,6 +81,8 @@ export const IconAccount = styled.div`
   border: 3px solid #efefef;
   align-items: center;
 
+
+
   &.fit{
     height:fit-content !important;
     width:fit-content !important;
@@ -107,12 +109,12 @@ export const P = styled.p`
 
 export const AccountLabel = styled(P)`
   color: var(--paragraph_color);
-  font-size: 18px;
   font-weight: 600;
-
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   column-gap: 5px;
+
 
   &._aux{
     font-size: 13px !important;
@@ -127,6 +129,7 @@ export const AccountLabel = styled(P)`
   }
 
   @media ${device.mobile} {
+    font-size: 1rem;
     &.wallet{
       font-size: 14px;
       color: #afafaf;
