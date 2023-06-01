@@ -11,6 +11,7 @@ import DetailTemplateComponent from '../../../detailTemplate'
 import { MiddleSection } from '../../../detailTemplate'
 import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 import { selectDepositAccountsByNetwork } from 'selectors'
+import BigNumber from "bignumber.js"
 
 import moment from "moment";
 import "moment/locale/es";
@@ -49,7 +50,7 @@ export const useDetailParseData = (order, detailType) => {
               ],
               [
                 `Costo del depósito`,
-                `${await formatCurrency(order?.cost, order.currency)} ${currencySimbol}`,
+                `${await formatCurrency(new BigNumber(order?.cost).plus(order?.cost_tax || 0), order.currency)} ${currencySimbol}`,
               ]
             ];
           }else if(depositProvider?.provider_type === 'internal_network'){
@@ -64,7 +65,7 @@ export const useDetailParseData = (order, detailType) => {
               ],
               [
                 `Costo del depósito`,
-                `${await formatCurrency(order?.cost, order.currency)} ${currencySimbol}`,
+                `${await formatCurrency(new BigNumber(order?.cost).plus(order?.cost_tax || 0), order.currency)} ${currencySimbol}`,
               ]
             ];
           }else if(depositProvider?.currency_type === 'crypto'){
@@ -157,7 +158,7 @@ export const useDetailParseData = (order, detailType) => {
       ["ID del depósito:", order?.id],
       ["Estado:", getState(order?.state)],
       [`Cantidad ${isPending ? 'por depositar' : 'depositada'}:`, `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
-      ["Costo del depósito:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+      ["Costo del depósito:",  `${order?.cost && await formatCurrency(new BigNumber(order?.cost).plus(order?.cost_tax || 0), order?.currency)} ${currencySimbol}`],
       [`Cantidad ${isPending ? 'por acreditar' : 'acreditada'}:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
     ]
     return parsedOrder 
@@ -205,7 +206,7 @@ export const useDetailParseData = (order, detailType) => {
   const formatShortDeposit = async(order) => {
     let parsedOrder = [
       [`Cantidad por acreditar:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
-      ["Costo:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+      ["Costo:",  `${order?.cost && await formatCurrency(new BigNumber(order?.cost).plus(order?.cost_tax || 0), order?.currency)} ${currencySimbol}`],
     ]
     return parsedOrder 
   }
