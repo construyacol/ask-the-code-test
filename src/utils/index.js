@@ -15,6 +15,29 @@ export const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
 });
 
+export const loadKeyboard = async () => {
+  const { Keyboard } = await import("@capacitor/keyboard");
+  Keyboard.setAccessoryBarVisible({ isVisible: true });
+
+  Keyboard.addListener('keyboardWillShow', () => {
+    console.log('keyboard will show');
+    const doc = document.documentElement
+    doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+    const html = document.getElementsByTagName('html')[0]
+    html.style.overflow = 'scroll'
+    html.style.maxHeight = 'var(--app-height)'
+  });
+
+  Keyboard.addListener('keyboardDidHide', () => {
+    console.log('keyboard did hide');
+    const doc = document.documentElement
+    doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+    const html = document.getElementsByTagName('html')[0]
+    html.style.overflow = ''
+    html.style.maxHeight = ''
+  });
+}
+
 
 export const postLocalNotification = async (payload) => {
   if(!payload || ["web"].includes(CAPACITOR_PLATFORM)) return;

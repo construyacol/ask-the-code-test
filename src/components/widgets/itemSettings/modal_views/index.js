@@ -46,7 +46,6 @@ const Container = styled.section`
     color: #59b200;
     align-self: center;
   }
-  
 `
 
 export class ModalSettingsView extends Component {

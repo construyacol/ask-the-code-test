@@ -27,33 +27,14 @@ import {
 } from "utils/handleSession";
 import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 import { getAllUrlParams } from "utils/urlUtils";
-import { Keyboard } from '@capacitor/keyboard';
-
-Keyboard.setAccessoryBarVisible({ isVisible: true });
-
-Keyboard.addListener('keyboardWillShow', () => {
-  console.log('keyboard will show');
-  const doc = document.documentElement
-  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
-  const html = document.getElementsByTagName('html')[0]
-  html.style.overflow = 'scroll'
-  html.style.maxHeight = 'var(--app-height)'
-});
-
-Keyboard.addListener('keyboardDidHide', () => {
-  console.log('keyboard did hide');
-  const doc = document.documentElement
-  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
-  const html = document.getElementsByTagName('html')[0]
-  html.style.overflow = ''
-  html.style.maxHeight = ''
-});
-
+import { loadKeyboard } from "utils";
 
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "components/widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
 const PaymentRequestView = loadable(() => import('pages/paymentRequest'));
+
+loadKeyboard();
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {

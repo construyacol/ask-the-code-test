@@ -31,7 +31,7 @@
 .Mconfirmar.ioSystem{
     position: fixed !important;
     bottom: 100px;
-    
+    width: calc(100% - 30px);
 }
 
 
@@ -42,6 +42,10 @@
 .ConfirmationModal {
   background: black;
   background: linear-gradient(to bottom right, #00000099, #000000f0);
+}
+
+.ConfirmationModal.ioSystem {
+  padding: 15px;
 }
 
 .local_loader {

@@ -147,6 +147,10 @@ export const SuccessViewContent = styled.div`
         bottom: 10px;
         background: #f9f9fbe8;
         backdrop-filter: blur(2px);
+        ${CAPACITOR_PLATFORM === 'ios' && `
+            bottom: 54px;
+            padding-bottom: 10px;
+        `}
     }
 
 `
