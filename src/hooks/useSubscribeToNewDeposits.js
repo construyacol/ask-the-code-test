@@ -20,7 +20,7 @@ const useSubscribeDepositHook = () => {
       if(deposit_providers[provider_id]?.currency_type === 'crypto') await coinsendaServices.subscribeToNewDeposits(provider_id, wallet?.id);
       await sleep(1500) 
     }
-    toastMessage('Detección de depósitos en progreso...')
+    // toastMessage('Detección de depósitos en progreso...')
   };
 
   const getSuscriptionDate = (walletId) => sessionStorage.getItem(`wallet_${walletId}`)
