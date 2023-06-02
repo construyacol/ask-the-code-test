@@ -11,6 +11,7 @@ import { skeleton } from "../loaders/skeleton";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import Layout from "components/forms/widgets/layout"
 import "./2fa.css";
+import {CAPACITOR_PLATFORM} from "const/const";
 
 const OTP_TITLE = "Coinsenda";
 
@@ -83,7 +84,7 @@ const TwoFactorActivate = (props) => {
               <div className="header2fa"></div>
               <div className="body2fa">
                 <div className="bodySon">
-                  <p className="fuente" style={{maxWidth:"500px"}}>
+                  <p className="fuente" style={{maxWidth: CAPACITOR_PLATFORM === 'ios' ? "90%" : "500px"}}>
                     Abre Google Authenticator y escanea el código QR ó ingresa el código secreto manualmente.
                   </p>
                   {qr && !loader ? (
@@ -98,7 +99,7 @@ const TwoFactorActivate = (props) => {
 
             <div className="TLayout layer2">
               <div className="header2fa">
-                <h3 className="fuente">
+                <h3 className="fuente" style={{ marginTop: CAPACITOR_PLATFORM === 'ios' ? "35px" : "25px" }}>
                   Habilitar segundo factor de autenticación <span className="fuente2">2FA</span>
                 </h3>
                 <IconSwitch icon="twofa" size={75} color="var(--primary)" />

@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
 import { AiOutlineClose } from "react-icons/ai";
+import {CAPACITOR_PLATFORM} from "const/const";
 
 
 export const DisclaimerContainer = styled.div`
@@ -286,6 +287,7 @@ export const ControlButtonContainer = styled.div`
   bottom: ${(props) => `${props.bottom}px`};
   #controlsContainer {
     transform: scale(0.95);
+    ${CAPACITOR_PLATFORM === "ios" && "z-index: 2;"}
   }
 `;
 

@@ -15,6 +15,7 @@ import "./modal.css";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { IconClose } from "../shared-styles";
 import { useSelector } from "react-redux";
+import {CAPACITOR_PLATFORM} from "const/const";
 
 
 
@@ -160,7 +161,7 @@ export const StandardTicket = (props) => {
   return (
     <div
       id={idCloseButton}
-      className={`modalCont2 ConfirmationModal`}
+      className={`modalCont2 ConfirmationModal ${osDevice}`}
       data-close_modal={true}
       onClick={_cancelarClick ? _cancelarClick : null}
     >
@@ -235,6 +236,13 @@ const Wrapper = styled.section`
     max-width: 450px;
     justify-self: center;
   }
+
+  ${CAPACITOR_PLATFORM === 'ios' && `
+  .CMControls {
+    width: 100%;
+    display: flex;
+  }
+  `}
 `;
 
 // export const ConfirmSwapComponent = ({ from, spent, to, bought, type, description }) => {
