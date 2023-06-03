@@ -3,7 +3,7 @@
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import { useSelector } from "react-redux";
 import sleep from 'utils/sleep'
-import useToastMessage from "hooks/useToastMessage";
+// import useToastMessage from "hooks/useToastMessage";
 
 export const TIME_LIMIT_PER_REQUEST = 60;
 
@@ -11,7 +11,7 @@ const useSubscribeDepositHook = () => {
 
   const [ coinsendaServices ] = useCoinsendaServices();
   const { deposit_providers } = useSelector((state) => state.modelData);
-  const [ toastMessage ] = useToastMessage();
+  // const [ toastMessage ] = useToastMessage();
 
   const subscribeToNewDeposits = async(wallet) => {
     sessionStorage.setItem(`wallet_${wallet?.id}`, JSON.stringify(new Date()));

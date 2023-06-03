@@ -28,7 +28,7 @@ import {
 import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 import { getAllUrlParams } from "utils/urlUtils";
 import { loadKeyboard } from "utils";
-
+ 
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "components/widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
