@@ -14,11 +14,11 @@ const { normalizeUser } = normalizr_services;
 export const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
 });
-
+  
 export const loadKeyboard = async () => {
+  if (CAPACITOR_PLATFORM !== 'ios') return
   const { Keyboard } = await import("@capacitor/keyboard");
   Keyboard.setAccessoryBarVisible({ isVisible: true });
-
   Keyboard.addListener('keyboardWillShow', () => {
     console.log('keyboard will show');
     const doc = document.documentElement
@@ -27,7 +27,6 @@ export const loadKeyboard = async () => {
     html.style.overflow = 'scroll'
     html.style.maxHeight = 'var(--app-height)'
   });
-
   Keyboard.addListener('keyboardDidHide', () => {
     console.log('keyboard did hide');
     const doc = document.documentElement
