@@ -26,6 +26,6 @@ export const createNewPaymentRequest = async({ currency = DEFAULT_PARAMS.currenc
 export const createPaymentRequestLink = async({ currency = DEFAULT_PARAMS.currency, amount = DEFAULT_PARAMS.amount }:paymentRequestParams) => {
    const { getHostName } = await import('environment')
    const paymentRequest = await createNewPaymentRequest({ currency, amount })
-   return `https://app.${getHostName()}.com?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
-   // return `http://localhost:2998/?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
+   // return `https://app.${getHostName()}.com?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
+   return `http://localhost:2998/?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
 }

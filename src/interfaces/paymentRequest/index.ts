@@ -46,7 +46,7 @@ export interface PaymentRequestParams {
     amount: paymentAmount["amount"];
     expirationTime?: string;
     metaData?: {
-        [key: string]: string;
+        [key: string]: any;
     };
  }
 

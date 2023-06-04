@@ -19,7 +19,7 @@ const PaymentDetail = ({ uiCurrencyName, amount }:paymentDetailProps) => {
     return(
        <>
           <SubTitle className="fuente no-margin-bottom">Datos del pago</SubTitle>
-          <ContentDetail className="onBottom">
+          <ContentDetail className="onBottom __contentDetail">
              <DetailTemplateComponent
                 skeletonItems={2}
                 items={paymentDetail}

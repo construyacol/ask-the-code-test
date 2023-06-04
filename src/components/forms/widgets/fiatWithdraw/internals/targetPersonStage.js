@@ -3,12 +3,16 @@ import validations from '../validations'
 import { StageContainer } from '../../sharedStyles'
 import InputComponent from '../../kyc/InputComponent'
 import SelectListComponent from '../../selectListComponent'
+import { AuxContainer } from './styles' 
 // import useViewport from 'hooks/useWindowSize'
 import { FIAT_WITHDRAW_TYPES, DEFAULT_IDENTIFIER_TYPE } from '../api'
 import { ItemListComponent, SelectListContainer } from 'components/forms/widgets/selectListComponent'
 import Buttom from 'components/widgets/buttons/button'
 import { IoPersonAddOutline } from 'react-icons/io5';
 import useViewport from 'hooks/useViewport'
+import { QrReader } from 'core/components/molecules'
+
+// import { useLocation } from 'react-router-dom';
 
 const TargetPersonStage = ({ 
     stageManager, 
@@ -28,6 +32,7 @@ const TargetPersonStage = ({
     const [ idType ] = useState(DEFAULT_IDENTIFIER_TYPE)
     const [ newAccount, setNewAccount ] = useState(false)
     const inputEl = useRef()
+    // let location = useLocation();
 
     const {
       stageData,
@@ -37,8 +42,7 @@ const TargetPersonStage = ({
     } = stageManager
   
     const onChange = (e) => { 
-      e.target.preventDefault && e.target.preventDefault();
-      console.log('onChange', e.target.value)
+      e?.target?.preventDefault && e?.target?.preventDefault();
       if(!validations[stageData.key]) return; 
       const [ _value, _status ] = validations[stageData.key](e?.target?.value, {
         ...stageData, 
@@ -101,7 +105,7 @@ const TargetPersonStage = ({
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectList, stageStatus, inputEl?.current?.value])
-
+ 
 
     // se crea la lista de cuentas internas guardadas por el usuario (contiene custom label)
     useEffect(() => {
@@ -125,6 +129,12 @@ const TargetPersonStage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawAccounts])
 
+    const qrResponse = (data) => {
+      onChange({target:{value:data?.recipient || data}});
+      setState(prevState => {
+        return { ...prevState, [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]: data?.amount }
+      })
+    } 
 
     return(
       <StageContainer className="_bankNameList">
@@ -138,6 +148,10 @@ const TargetPersonStage = ({
           label={stageData?.uiName}
           placeholder={stageData?.settings?.placeholder}
           type={stageData?.uiType}
+          AuxComponent={() => 
+            <AuxContainer>
+              <QrReader callback={qrResponse}/>
+            </AuxContainer>}
         />
         {
           newAccount ?

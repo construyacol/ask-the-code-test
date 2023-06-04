@@ -1,9 +1,10 @@
 import { CAPACITOR_PLATFORM } from 'const/const';
 import styled from 'styled-components'
+import { device } from "const/const"
+
 interface CrudContainerProps {
     rowGap?: string;
-  }
-
+}
 
 export const Flex = styled.div`
     display: flex;
@@ -15,11 +16,15 @@ export const FlexColumn = styled(Flex)`
 
 export const CrudContainer = styled(FlexColumn)<CrudContainerProps>`
     padding: 1.5rem 3rem;
-    width: 90%;
+    width: calc(100% - 6rem);
     background-color: white;
     position:relative;
     border-radius: 10px;
     row-gap: ${props => props.rowGap ? `${props.rowGap}` : '0'};
+
+    &.height-fit-content{
+        height: fit-content;
+    }
     &.no-padding{
         padding: 0;
     }
@@ -31,5 +36,9 @@ export const CrudContainer = styled(FlexColumn)<CrudContainerProps>`
     &.large{
         max-width: 700px;
         row-gap: 20px;
+    }
+    @media ${device.mobile} {
+        padding: 1.5rem 1rem;
+        width: calc(100% - 2rem);
     }
 `

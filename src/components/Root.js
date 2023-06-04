@@ -43,7 +43,6 @@ history.listen((location) => {
   }
 });
 
-
 function RootContainer(props) { 
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded);
