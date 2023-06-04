@@ -8,6 +8,7 @@ import { useActions } from "../../../../../hooks/useActions";
 import { InputKeyActionHandler } from "../../../accountList/styles";
 import { useItemsInteractions } from "../../../../../hooks/useNavigationKeyActions";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+import {CAPACITOR_PLATFORM} from "const/const";
 
 export const ItemList = (props) => {
 
@@ -329,9 +330,16 @@ const ItemTextContainer = styled.div`
   align-items: center;
   max-height: 40px;
   align-content: center;
+  ${CAPACITOR_PLATFORM === 'ios' ? `
+    overflow: hidden;
+    width: calc(100% - 45px);
+  ` : ''}
 
   > div {
     display: flex;
+    ${CAPACITOR_PLATFORM === 'ios' ? `
+    width: calc(100% - 85px) !important;
+  ` : ''}
   }
 
   .label {

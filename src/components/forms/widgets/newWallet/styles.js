@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { device } from "../../../../const/const"
+import { CAPACITOR_PLATFORM, device } from "../../../../const/const"
 import { OnlySkeletonAnimation } from '../../../widgets/loaders/skeleton'
 
 
@@ -154,5 +154,6 @@ export const Layout = styled.section`
     left:0;
     display: flex;
     place-content: center;
+    ${CAPACITOR_PLATFORM === 'ios' && 'height:96vh;'}
 `
 

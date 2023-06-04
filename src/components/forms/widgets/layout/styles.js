@@ -40,6 +40,7 @@ export const Wrapper = styled.div`
 
     @media ${device.mobile} {
       grid-template-columns: 1fr;
+      align-content: flex-start;
     }
   }
 

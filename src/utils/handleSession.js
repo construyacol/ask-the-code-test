@@ -119,8 +119,7 @@ export const getUserToken = async() => {
       decodedToken
     }
   } catch (err) {
-    err.source = 'Error dispatched from getUserToken function'
-    return handleError(err, doLogout)
+    return handleError({...err, source: 'Error dispatched from getUserToken function'}, doLogout)
   }
 }
  

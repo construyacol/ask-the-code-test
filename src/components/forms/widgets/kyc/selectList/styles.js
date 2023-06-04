@@ -30,6 +30,8 @@ export const SelectListMain = styled.div`
   @media ${device.mobile} {
     width: 100%;
     margin:20px 0;
+    max-height: 300px;
+    margin-top: 0px;
   }
 
 `

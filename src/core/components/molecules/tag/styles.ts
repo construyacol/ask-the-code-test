@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-
+import { device } from 'const/const';
 
 export const TagCont = styled.div`
     padding: 5px 10px;
@@ -12,5 +12,9 @@ export const TagCont = styled.div`
     p{
         margin: 0;
         color: white !important;
+    }
+    @media ${device.mobile} {
+        position: absolute;
+        right: 1.5rem;
     }
 `

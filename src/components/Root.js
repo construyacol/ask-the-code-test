@@ -27,11 +27,14 @@ import {
 } from "utils/handleSession";
 import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 import { getAllUrlParams } from "utils/urlUtils";
-
+import { loadKeyboard } from "utils";
+ 
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "components/widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
 const PaymentRequestView = loadable(() => import('pages/paymentRequest'));
+
+loadKeyboard();
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
@@ -102,6 +105,24 @@ function RootContainer(props) {
   useEffect(() => {
     async function initRoot() {
       if(CAPACITOR_PLATFORM !== 'web'){
+        function handleTouchEnd(event) {
+          // scroll into input
+          console.log('event.target ==> ', event.target);
+          event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          event.preventDefault();
+        }
+
+        const inputElements = document.querySelectorAll('input, select, textarea');
+        inputElements.forEach(function(element) {
+          element.addEventListener('touchend', handleTouchEnd);
+        });
+
+        const appHeight = () => {
+          const doc = document.documentElement
+          doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+        }
+        window.addEventListener('resize', appHeight)
+        appHeight()
         const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
         if(!userToken && !isAppLoaded) openLoginMobile(initComponent);
       } 

@@ -13,6 +13,7 @@ import { swing_in_bottom_bck } from "../../../animations";
 import { selectWithdrawAccounts } from "selectors";
 import { IconClose } from "../../../shared-styles"; 
 import useViewport from 'hooks/useWindowSize'
+import {CAPACITOR_PLATFORM} from "const/const";
 // import { selectWithdrawAccountsByNetWork } from "selectors";
 
 
@@ -171,5 +172,9 @@ export const ContainerLayout = styled.div`
     &.ioSystem{
       padding-bottom:100px;
     }
+    ${CAPACITOR_PLATFORM === 'ios' && `
+      height: var(--app-height);
+      min-height: 540px;
+    `}
   }
 `;

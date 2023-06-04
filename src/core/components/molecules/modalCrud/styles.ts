@@ -1,3 +1,4 @@
+import { CAPACITOR_PLATFORM } from 'const/const';
 import styled from 'styled-components'
 import { device } from "const/const"
 
@@ -30,6 +31,7 @@ export const CrudContainer = styled(FlexColumn)<CrudContainerProps>`
     &.medium{
         max-width: 450px;
         row-gap: 20px;
+        ${CAPACITOR_PLATFORM === 'ios' ? 'padding: 1.5rem 1.5rem;' : ''}
     }
     &.large{
         max-width: 700px;

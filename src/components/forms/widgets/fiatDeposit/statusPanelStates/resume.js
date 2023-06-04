@@ -104,7 +104,7 @@ const PseResumeComponent = ({
 
   const [ cost, setCost ] = useState()
 
-  useEffect(() => {
+  useEffect(() => { 
     if(state?.depositAmount) { 
       const _cost = calculateCost(state?.depositAmount, depositAccount?.costs)
       setCost(formatToCurrency(_cost, depositAccount?.currency).toFormat())
@@ -156,7 +156,7 @@ const PseResumeComponent = ({
                 <LeftText className="fuente">Costo:</LeftText>
                 <MiddleSection />
                 <RightText className={`${cost ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${cost} - ${parseSymbolCurrency(depositAccount?.currency)}` || 'skeleton --------'} 
+                 {`$ ${cost} - ${parseSymbolCurrency(depositAccount?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }
