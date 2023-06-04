@@ -3,16 +3,12 @@
   "appName": "Coinsenda",
   "webDir": "build",
   "ios": {
-      "webview": {
-        "configuration": {
-          "inspectable": true
+    "webview": {
+      "configuration": {
+        "inspectable": true
       }
     },
     "contentInset": "always"
-  },
-  "server": {
-    "url": "http://localhost:2998",
-    "cleartext": true
   },
   "cordova": { 
     "preferences": {
