@@ -563,6 +563,12 @@ export const ButtonContainers = styled.div`
       padding-bottom: 24px;
     ` : ''}} 
   }
+
+  @media (max-height: 550px) {
+    ${CAPACITOR_PLATFORM === 'ios' ? `
+      position: initial !important;
+    ` : ''}} 
+  }
 `
 
 export const FormContainer = styled.div`
