@@ -203,6 +203,7 @@ const processInfoNeeded = async(dataSource) => {
   for (const infoNeededItem in infoNeeded) {
     infoNeeded[infoNeededItem] = await addConfigData(infoNeededItem, infoNeeded[infoNeededItem])
   }
+  if(dataSource?.provider_type === 'pse') delete infoNeeded.callback_url
   return infoNeeded
 }
 
@@ -236,8 +237,6 @@ export const createNextStages = async({
   if(!state[stageData?.key])return;
   const providerType = state[stageData?.key]?.provider_type || 'bank'
   const apiStages = await depositApiStages(state[stageData?.key])
-
-
   
   let stages = {} 
   for (const stage of Object.keys(apiStages)) { 

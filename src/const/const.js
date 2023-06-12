@@ -166,7 +166,7 @@ export const NEW_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/add-n
 
 export const DEPOSITS_URL = `${DepositApiUrl}`;
 export const GET_DEPOSIT_BY_USERS_URL = `${DepositApiUrl}users`;
-export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`;
+export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit-public`;
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit-public`;
 export const SUBSCRIBE_TO_DEPOSITS_URL = `${DepositApiUrl}depositProviders/subscribe-to-new-deposits`;
 
