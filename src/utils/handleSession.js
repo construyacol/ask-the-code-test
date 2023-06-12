@@ -55,26 +55,40 @@ export const verifyTokensValidity = () => {
 }
 
 function messageCallback(iab, { message, jwt, refresh_token }, callback){
-    iab.close();
     // If click appleId in auth hub, it will start the native flow for the app
     SIGNIN_EVENT_MESSAGE === message && appleIdLogin(iab, callback);
     // HACK: in order to reuse the browser logic
     callback && callback(`?token=${jwt}&refresh_token=${refresh_token}`)
 }
 
-function openIab(url, callback) {
-  let iab = window?.cordova?.InAppBrowser?.open(url, '_blank', 'location=no,zoom=no,footer=no,toolbar=no,hidenavigationbuttons=no')
-  iab.show();
-  iab.addEventListener('loadstart', e => console.log("EVENT_LOADING_IAB", e));
-  iab.addEventListener('loadstop', e => console.log("EVENT_LOADING_IAB", e));
-  iab.addEventListener('loaderror', (err) => {
-    console.log("EVENT_LOADING_IAB", err)
-    iab.close()
-    setTimeout(() => {
-      openLoginMobile()
-    }, 1000);
+async function openIab(url, callback) {
+  const { InAppBrowser } = await import("@ionic-native/in-app-browser")
+  const options = {
+    zoom: 'no',
+    location: 'no',
+    toolbar: 'no',
+    hideurlbar: 'yes',
+    toolbarposition: 'bottom'
+  }
+  
+  const browser = InAppBrowser.create(url, '_blank', options)
+  browser.on('message').subscribe(data => {
+    messageCallback(browser, data?.data, callback)
+    browser.close();
   });
-  iab.addEventListener('message',({ data }) => messageCallback(iab, data, callback));
+
+  // let iab = window?.cordova?.InAppBrowser?.open(url, '_blank', 'location=no,zoom=no,footer=no,toolbar=no,hidenavigationbuttons=no')
+  // iab.show();
+  // iab.addEventListener('loadstart', e => console.log("EVENT_LOADING_IAB", e));
+  // iab.addEventListener('loadstop', e => console.log("EVENT_LOADING_IAB", e));
+  // iab.addEventListener('loaderror', (err) => {
+  //   console.log("EVENT_LOADING_IAB", err)
+  //   iab.close()
+  //   setTimeout(() => {
+  //     openLoginMobile()
+  //   }, 1000);
+  // });
+  // iab.addEventListener('message',({ data }) => messageCallback(iab, data, callback));
 }
 
 export function openLoginMobile(callback) {
