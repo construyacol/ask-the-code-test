@@ -151,11 +151,11 @@ useEffect(() => {
       />
     </ButtonContainers>
   )
-
+ 
  
   const STAGE_COMPONENTS = { 
     [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent, //First Stage
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent,
