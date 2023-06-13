@@ -144,7 +144,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   )
 
   // console.log('withdrawAccounts', withdrawAccounts)
-  // console.log('handleState', handleState)
+  console.log('||||||||| state ===> ', state)
 
   return(
     <>

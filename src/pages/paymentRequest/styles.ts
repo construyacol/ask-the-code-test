@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DisclaimerContainer } from 'components/widgets/shared-styles'
+import { device } from 'const/const'
 
 
 
@@ -42,6 +43,11 @@ export const ButtonsContainer = styled.div`
          font-size: 15px !important;
       }
    }
+   @media ${device.mobile} {
+      flex-direction: column-reverse;
+      row-gap: 15px;
+      background: white;
+   }
 `
 
 export const IsLoggedLayout = styled.div`
@@ -68,6 +74,11 @@ export const IsLoggedLayout = styled.div`
    .itemAccountContainer.insufficient{
       border-left: 5px solid var(--red_color);
    }
+   @media ${device.mobile} {
+      .accountLabel{
+         font-size: 14px;
+      }
+   }
 `
 
 export const PaymentRequestLayout = styled.div`
@@ -76,18 +87,32 @@ export const PaymentRequestLayout = styled.div`
    top: 0;
    left: 0;
    width: 100%;
-   height: 100%;
+   height: calc(100vh - 3rem);
    z-index: 1;
    background: linear-gradient( to bottom right, #005894, #0198ff );
    justify-content: center;
    align-items: center;
+   overflow-y: scroll;
+   padding: 1.5rem 0;
+   min-height: calc(100vh - 3rem);
+
    .payment--content{
-      padding:35px 45px;      
+      padding:35px 2.5rem;      
    }
    input{
       font-size: 15px !important;
    }
+   @media ${device.mobile} {
+      .payment--content{
+         padding:35px 1rem;      
+         width: calc(100% - 2rem);
+      }
+      align-items: flex-start;
+   }
+
    
+
+
 `
 
 export const HeaderContainer = styled.div`
@@ -103,8 +128,11 @@ export const HeaderContainer = styled.div`
 export const ContentContainer = styled.div`
     p, input{
         font-size:15px;
-        /* color: ${props => props.theme.palette.text_color}; */
         width: 100%;
+    }
+
+    .__contentDetail{
+      width: calc(100% - 15px);
     }
     display: flex;
     flex-direction: column;

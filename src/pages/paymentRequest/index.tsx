@@ -4,7 +4,7 @@ import IconSwitch from "components/widgets/icons/iconSwitch";
 import { SPAN, H3, P } from 'core/components/atoms'
 import { 
    PaymentRequestParams,
-   AmountProps,
+   // AmountProps,
    UserRecipientProps,
 } from 'interfaces/paymentRequest';
 import { formatToCurrency } from "utils/convert_currency";
@@ -19,6 +19,7 @@ import { replaceToCurrency } from 'core/config/currencies'
 import { modelDataProps } from 'interfaces/state'
 import BigNumber from 'bignumber.js';
 import { OPERATIONAL_LEVELS } from 'const/levels'
+import { AmountUiView } from 'core/components/molecules'
 
 //styles
 import { 
@@ -82,10 +83,9 @@ const PaymentRequestView = (props:any) => {
    }, [isLogged])
 
    const RenderContentComponent = (isLoading && !isLogged) ? SkeletonView : isLogged ? IsLoggedView : UnLoggedView
-   console.log('RenderContentComponent', paymentRequest.recipient, user?.email)
    return(
       <PaymentRequestLayout>
-         <CrudContainer rowGap="10px" className={`large flex no-padding`}>
+         <CrudContainer rowGap="10px" className={`large flex no-padding height-fit-content`}>
          {
             paymentRequest.recipient === user?.email && <ViewerContainer>Vista de pagador</ViewerContainer>
          }
@@ -139,18 +139,8 @@ export default PaymentRequestView
 
 
 const UserRecipient = ({ metaData }:UserRecipientProps) => <SPAN>&nbsp;de {metaData?.userName}</SPAN>
-const AmountUiView = ({amount, uiCurrencyName}:AmountProps) => {
-   if(!amount)return null;
-   return(
-      <SPAN>
-         &nbsp;por la cantidad de  
-         <SPAN className="number">
-            &nbsp;{amount}&nbsp;
-         </SPAN>
-         <strong>{uiCurrencyName}</strong>
-      </SPAN>
-   )
-}
+
+
 
 
 

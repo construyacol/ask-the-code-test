@@ -1,5 +1,16 @@
 import styled from 'styled-components'
 
+export const AuxContainer = styled.div`
+    width: auto;
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    padding: 0 15px;
+    display: flex;
+    align-self: center;
+`
+
+
 export const Flex = styled.div`
     display: flex;
 `

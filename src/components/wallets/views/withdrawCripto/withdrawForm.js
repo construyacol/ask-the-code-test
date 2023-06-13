@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import InputForm from "../../../widgets/inputs/inputForm";
-// import ControlButton from "../../../widgets/buttons/controlButton";
-
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
 import AvailableBalance from '../../../widgets/availableBalance'
 import ControlButton from "components/widgets/buttons/controlButton";
+import { QrReader } from 'core/components/molecules'
+import withdrawQrHoc from 'components/hoc/withdrawQrHoc'
 
 // Styled components
 import { 
@@ -33,12 +33,11 @@ const WithdrawFormComponent = ({
     loader,
     tagWithdrawAccount,
     addressState,
-    showQrScanner,
     setAddressValue,
     addressToAdd,
     deleteTag,
     setAmountState,
-    handleChangeAmount,
+    handleChangeAmount, 
     amountState,
     handleMaxAvailable,
     amountValue,
@@ -74,7 +73,6 @@ const WithdrawFormComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
 
-
     return(
         <WithdrawForm
         id="withdrawForm"
@@ -103,13 +101,9 @@ const WithdrawFormComponent = ({
                             color={`green`}
                             size={22}
                         />
-                        :
-                        <IconSwitch
-                        onClick={showQrScanner}
-                        icon="qr"
-                        color="gray"
-                        size={25}
-                        />
+                        : 
+                        <QrReader callback={setAddressValue}/>
+                        
                     }
                 </IconsContainer>
             )}
@@ -119,6 +113,7 @@ const WithdrawFormComponent = ({
                 () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
             ]} 
         />
+
                 <InputForm  
                     className={addressState !== "good" ? 'hide' : 'isReady'}
                     type="text"
@@ -175,8 +170,7 @@ const WithdrawFormComponent = ({
 }
 
 
-
-export default WithdrawFormComponent
+export default withdrawQrHoc(WithdrawFormComponent)
 
 const LabelAddress = ({ currencySymbol, withdrawProvider  }) => {
     const user_friendly = withdrawProvider?.user_friendly

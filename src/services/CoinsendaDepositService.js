@@ -149,7 +149,7 @@ export class DepositService extends WebService {
       [account.id]: {
         ...account,
         dep_prov:Array.from(new Set([...account.dep_prov, depProvider?.id])),
-        deposit_provider: deposit_providers[depProvider?.id],
+        deposit_provider: deposit_providers?.[depProvider?.id],
       },
     };
     await this.dispatch(update_item_state(update_wallet, "wallets"));

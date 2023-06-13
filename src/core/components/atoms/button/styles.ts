@@ -2,12 +2,10 @@ import { device } from "const/const"
 import { ButtonHTMLAttributes } from 'react'
 import styled, { css } from 'styled-components'
 
-
 interface ButtonStyleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: string;
     fontSize?: number | string;
 }
-
 
 const LargeStyles = css`
     padding: 0.75rem 2.813rem;
@@ -40,24 +38,6 @@ export const ButtonStyle = styled.button<ButtonStyleProps>`
     align-items: center;
     column-gap: 7px;
     font-family: "Raleway",sans-serif;
-
-    &.bold{
-        font-weight: bold;
-    }
-    &.fit{
-        height: max-content;
-        width: fit-content;
-    }
-    &.justify-end{
-        justify-self: end;
-    }
-    &.align-center{
-        align-self: center;
-    }
-
-    &.displayNone{
-        display: none;
-    }
 
     &.text{
         color: ${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};
@@ -96,9 +76,7 @@ export const ButtonStyle = styled.button<ButtonStyleProps>`
     &.contained{
         background:${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};
         color: white; 
-        &:hover{   
-        }
-
+        &:hover{}
         &.disabled{
             opacity: 1;
             background:${props => props.theme.palette.skeleton_color};
@@ -137,6 +115,8 @@ export const ButtonStyle = styled.button<ButtonStyleProps>`
     @media ${device.mobile} {
         ${SmallStyles}
     }
+
+    font-size: ${props => props.fontSize ? `${props.fontSize}px !important` : "1rem"};
     
     &.large{
         ${LargeStyles}
@@ -148,6 +128,28 @@ export const ButtonStyle = styled.button<ButtonStyleProps>`
     &.small{
         ${SmallStyles}
     }
-    font-size: ${props => props.fontSize ? `${props.fontSize}px !important` : "1rem"};
+
+
+    
+    &.no-padding{
+        padding: 0;
+    }
+    &.bold{
+        font-weight: bold;
+    }
+    &.fit{
+        height: max-content;
+        width: fit-content;
+    }
+    &.justify-end{
+        justify-self: end;
+    }
+    &.align-center{
+        align-self: center;
+    }
+
+    &.displayNone{
+        display: none;
+    }
 
 `

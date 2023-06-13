@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Button, P } from 'core/components/atoms'
 import { loggedViewProps, doPaymentProps } from 'interfaces/paymentRequest';
+import { walletprops } from  'interfaces/state'
 import { useSelector } from "react-redux";
 import { modelDataProps } from 'interfaces/state'
 import { serveModelsByCustomProps, wProvsByCurrencyNetwork, selectWAccountsByAddressProvType } from 'selectors'
@@ -33,12 +34,6 @@ import { HR } from 'components/widgets/headerAccount/styles'
 import { OPERATIONAL_LEVELS } from 'const/levels'
 // import useToastMessage from "hooks/useToastMessage";
 
-
-
-interface walletprops {
-   id: string,
-   [key: string]: any
-}
 
 interface providerProps {
    [key: string]: any
@@ -210,7 +205,8 @@ const IsLoggedView = ({
                (wallet && OPERATIONAL_LEVELS.includes(user?.level)) ?
                   <>
                      <ItemAccountContainer className={`${stageStatus} itemAccountContainer`}>
-                        <span></span>
+                        {!isMobile && <span/>}
+                        
                         <HeaderMainContainer className="_accountHeaderMainContainer">
                            <IconAccount className="onAccountList fit">
                               <IconSwitch
@@ -234,13 +230,13 @@ const IsLoggedView = ({
                         </HeaderMainContainer>
                         {
                            stageStatus === "insufficient" ?
-                              <ButtonsContainer className="insufficient">
+                              <ButtonsContainer className="insufficient __buttonsContainer--insufficient">
                                  <HR/>
                                  <Button onClick={goToDesposit} size="small" variant="outlined" color={"primary"}> 
                                     Depositar
                                  </Button>
                               </ButtonsContainer>
-                              :
+                              : !isMobile &&
                               <RightSection 
                                  isMovilViewport={false}
                                  account={wallet}

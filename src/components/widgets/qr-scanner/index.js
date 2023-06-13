@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import QrReader from "react-qr-reader";
 import OtherModalLayout from "../modal/otherModalLayout";
-import { useActions } from "../../../hooks/useActions";
-import useToastMessage from "../../../hooks/useToastMessage";
+import { useActions } from "hooks/useActions";
+import useToastMessage from "hooks/useToastMessage";
 import styled from "styled-components";
-import { device, MAIN_COLOR } from "../../../const/const";
+import { device, MAIN_COLOR } from "const/const";
 import IconSwitch from "../icons/iconSwitch";
 import { CloseButton } from "../shared-styles";
+// import { regexPaymentRequest } from 'utils/regex'
+import { PAYMENT_REQUEST } from 'const/routes'
 
 const QrScanner = (props) => {
   const [facingMode, setFacingMode] = useState(false);
@@ -21,14 +23,12 @@ const QrScanner = (props) => {
   };
 
   const handleScan = (data) => {
-    if (data) {
-      if (data.indexOf("?") > -1) {
-        data = data.slice(0, data.indexOf("?"));
-      }
-      props.onScan(data.slice(data.indexOf(":") + 1));
-      closeModal();
-    }
-  };
+    if(!data)return
+    closeModal();
+    if (new RegExp(PAYMENT_REQUEST, "g").test(data)) return props.onScan(data)
+    if (data.indexOf("?") > -1) data = data.slice(0, data.indexOf("?"));
+    props.onScan(data.slice(data.indexOf(":") + 1));
+  }
 
   return (
     <OtherModalLayout>

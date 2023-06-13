@@ -125,7 +125,7 @@ const INTERNAL_NETWORK_STAGES = {
 
 const STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
-    uiName:"Ó elige un banco o servicio para depositar",
+    uiName:"Elige un banco o servicio para depositar",
     key:FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER,
     uiType:"select",
     "settings":{
@@ -203,6 +203,7 @@ const processInfoNeeded = async(dataSource) => {
   for (const infoNeededItem in infoNeeded) {
     infoNeeded[infoNeededItem] = await addConfigData(infoNeededItem, infoNeeded[infoNeededItem])
   }
+  if(dataSource?.provider_type === 'pse') delete infoNeeded.callback_url
   return infoNeeded
 }
 
@@ -236,8 +237,6 @@ export const createNextStages = async({
   if(!state[stageData?.key])return;
   const providerType = state[stageData?.key]?.provider_type || 'bank'
   const apiStages = await depositApiStages(state[stageData?.key])
-
-
   
   let stages = {} 
   for (const stage of Object.keys(apiStages)) { 

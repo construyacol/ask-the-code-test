@@ -7,7 +7,11 @@ export const getAllUrlParams = (url = window.location.search):resultParams => {
   const params = new URLSearchParams(queryString);
   const result:resultParams = {};
   for (const [key, value] of params.entries()) {
-    result[key] = typeof JSON.parse(value) === 'object' ? JSON.parse(value) : value;
+    try{
+      result[key] = typeof JSON.parse(value) === 'object' ? JSON.parse(value) : value;
+    }catch(e){
+      result[key] = value
+    }
   }
   return result;
 }

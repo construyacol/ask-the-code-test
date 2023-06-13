@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ItemList } from "../../../widgets/modal/render/addressBook/itemList";
 import { selectWithdrawAccounts } from "selectors";
 import { useSelector } from "react-redux";
-
+import { isEmpty } from "lodash";
  
 const AddressTagList = ({ show, addressValue, setAddressValue, addressState, currentNetwork }) => {
 
@@ -17,10 +17,7 @@ const AddressTagList = ({ show, addressValue, setAddressValue, addressState, cur
     (() => {
       if(!withdrawAccounts || !addressValue || !show)return;
       const value = addressValue.replace(/^@/g, "");
-      // const value = addressValue
       const result = withdrawAccounts.filter((withdrawAccount) => withdrawAccount?.info?.label?.toLowerCase()?.includes(value.toLowerCase()) );
-      console.log('addressValue', result.length < withdrawAccounts.length, value, result)
-      // console.log('withdrawAccounts', withdrawAccounts)
       if (result.length < withdrawAccounts.length) setSearchList(result);
     })()
   }, [addressValue]);
@@ -28,33 +25,23 @@ const AddressTagList = ({ show, addressValue, setAddressValue, addressState, cur
   useEffect(() => {
     if (searchList.length === 1) {
       setAddressValue(searchList[0]?.info?.address || searchList[0]?.info?.identifier);
-      console.log(searchList, searchList.length)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchList]);
 
   const handleEventClick = (e) => {
-    // console.log('|||||||||||||||||||||||||| handleEventClick ===> ', e.target.classList, show, addressValue)
     e.stopPropagation()
-    if ((e.target.classList && !e.target.classList.contains("search-component")) && !document.querySelector('#tagAddress') && !addressState) {
-      setAddressValue("");
-    }
+    if ((e.target.classList && !e.target.classList.contains("search-component")) && !document.querySelector('#tagAddress') && !addressValue) setAddressValue("");;
   };
 
   useEffect(() => {
-    if (!withdrawAccounts?.length) {
-      return;
-    }
-    const WIN = window;
-    WIN.addEventListener("click", handleEventClick);
-    return () => WIN.removeEventListener("click", handleEventClick);
+    if(!isEmpty(withdrawAccounts)) window.addEventListener("click", handleEventClick);
+    return () => window.removeEventListener("click", handleEventClick);
   }, []);
 
   if (!show) {
     return null;
   }
-
-  // console.log('|||||||||||||||||||||||||||  withdrawAccounts ===> ', tagWithdrawAccount, withdrawAccounts)
 
   return (
     <SearchComponentWrapper id="addressTagList">
@@ -91,7 +78,7 @@ export default AddressTagList;
 const SearchComponentWrapper = styled.section`
   width: 100%;
   height: auto;
-  max-height: 310px
+  max-height: 310px;
   overflow-x: hidden;
   position: absolute;
   top: 135px;

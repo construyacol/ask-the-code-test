@@ -22,7 +22,7 @@ import ActivityFilters from "../widgets/activityList/filters";
 import useViewport from '../../hooks/useWindowSize'
 import { parseQueryString } from '../../utils' 
 // import 'components/wallets/views/wallet_views.css'
-
+// import { SubscribeDepositsButton } from 'core/components/molecules'
 import { isEmpty } from 'lodash'
 // import { funcDebounces } from 'utils'
 // import sleep from "utils/sleep";
@@ -30,11 +30,16 @@ import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
 import { checkIfFiat } from 'core/config/currencies';
 import { useSelector } from "react-redux";
 import { serveModelsByCustomProps } from 'selectors'
+import { getExportByName } from 'utils'
+
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListViewSkeleton /> });
 const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
 const LazyDepositView = loadable(() => import("./views/deposit"), { fallback: <SkeletonDepositView/> });
+
+// const SubscribeDepositsButton = loadable(() => import(/* webpackPrefetch: true */ "core/components/molecules"));
+const SubscribeButton = loadable(() => import("core/components/molecules").then(getExportByName("SubscribeDepositsButton")));
 
 function WalletContainer(props) {
 
@@ -80,19 +85,27 @@ export const AccountDetail = (props) => {
   const { match: { params }, pairCollectionByCurrency, action } = props;
   const { handleSubscribeToNewDeposits } = useSubscribeDepositHook()
   const currentWallet = props?.wallets[params?.account_id]
+  let hasActivity = currentWallet?.count > 0
 
   const { currentPair } = useSelector(({ modelData:{ pairs } }) => pairs)
-
+ 
   useEffect(() => {
-      if(!isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)) handleSubscribeToNewDeposits(currentWallet)
+    let hasDepProvs = !isEmpty(currentWallet?.dep_prov)
+    let condition1 = hasDepProvs && ["activity"].includes(params?.path)
+    // let condition1 = hasDepProvs && ["deposits"].includes(params?.tx_path)
+    let condition2 = hasDepProvs && (!hasActivity && ["deposit"].includes(params?.path))
+    // let condition2 = hasDepProvs && ["deposit"].includes(params?.path)
+    if(condition1 || condition2) handleSubscribeToNewDeposits(currentWallet)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params?.path])
+  }, [params?.path, params?.tx_path])
 
   useEffect(() => {
     if(currentPair?.primary_currency !== currentWallet?.currency) action.searchCurrentPairAction(pairCollectionByCurrency[currentWallet?.currency]?.buy_pair, "pair");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
+
+  const currencyType = checkIfFiat(currentWallet?.currency) ? 'fiat' : 'crypto'
+
   return( 
           <AccountDetailLayout className="_accountDetailLayout">
             <HeaderAccount>
@@ -106,13 +119,15 @@ export const AccountDetail = (props) => {
               targetList="wallets"
             />
             <TitleSection
-              className={`accoun-detail ${parseQueryString()}`}
+              className={`account-detail ${parseQueryString()} ${params?.tx_path} ${currencyType}`}
               titleKey={params?.path}
               {...props} 
             >
+              {/* {((["deposits"].includes(params?.tx_path) || (!hasActivity && ["deposit"].includes(params?.path))) && !checkIfFiat(currentWallet?.currency)) && <SubscribeButton wallet={currentWallet}/>} */}
+              {((["deposits"].includes(params?.tx_path) || ["deposit"].includes(params?.path)) && !checkIfFiat(currentWallet?.currency)) && <SubscribeButton wallet={currentWallet}/>}
               <RenderAuxComponent {...props} />
             </TitleSection> 
-            <AccountDetailContainer className={`_accountDetailContainer ${params?.path} ${checkIfFiat(currentWallet?.currency) ? 'fiat' : 'crypto'} ${parseQueryString()}`}>
+            <AccountDetailContainer className={`_accountDetailContainer ${params?.path} ${currencyType} ${parseQueryString()}`}>
               <SwitchView {...props} />
             </AccountDetailContainer>
           </AccountDetailLayout>
@@ -120,14 +135,14 @@ export const AccountDetail = (props) => {
 };
 
 
-        // <ActivityFilters view={params.primary_path} />
+
 
 const RenderAuxComponent = (props) => {
   const { isMovilViewport } = useViewport()
   const { params:{ path, primary_path } } = props.match;
   const Views = {
     activity:isMovilViewport ? null : <ActivityFilters view={primary_path}/>,
-    // deposit:<ActivityFilters view={primary_path}/>
+    // deposit:<p>putita</p>
   };
 
   return Views[path] || null;

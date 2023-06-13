@@ -24,7 +24,6 @@ import { FIAT_DEPOSIT_TYPES, CTA_UI_NAME } from './api'
 import { createPaymentRequestLink } from 'utils/paymentRequest'
 import { MENU_LABELS } from 'api/ui/menuItems'
 
-
 const ProviderComponent = loadable(() => import("./depositProviderStage"), {fallback:<StageSkeleton/>});
 const DepositCostComponent = loadable(() => import("./depositCostStage"), {fallback:<StageSkeleton/>});
 const PersonTypeComponent = loadable(() => import("./personType"), {fallback:<StageSkeleton/>});
@@ -152,11 +151,11 @@ useEffect(() => {
       />
     </ButtonContainers>
   )
-
+ 
  
   const STAGE_COMPONENTS = { 
     [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent, //First Stage
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent,

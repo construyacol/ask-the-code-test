@@ -117,7 +117,7 @@ const SelectListComponent = ({
                     color={"var(--primary)"}
                 />  
               }
-          </IconAccount>
+          </IconAccount> 
           <LabelContainer className="_header__labelContainer">
               <AccountLabel>
                 {
@@ -267,6 +267,9 @@ export const ItemProviderBankContainer = styled.div`
   &.createButton{
     ._header__labelContainer p{
       font-size: 17px;
+      @media ${device.mobile} {
+        font-size: 1rem;
+      }
     }
   }
 
@@ -278,6 +281,11 @@ export const ItemProviderBankContainer = styled.div`
       transform: translateX(0px);
     }
   }
+
+
+
+
+
 
   &:hover{
     &.createButton{
@@ -307,6 +315,11 @@ export const ItemProviderBankContainer = styled.div`
   }
 
   @media ${device.mobile} {
+
+    .button_item--nextCta{
+      position: absolute;
+      right: 1rem;
+    }
     &.withAuxComp{
       grid-template-columns: 1fr auto;
     }

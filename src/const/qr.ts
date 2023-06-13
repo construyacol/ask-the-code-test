@@ -1,3 +1,4 @@
+
 export const QR_CONFIG = {
     errorCorrectionLevel: 'H',
     type: 'image/jpeg',

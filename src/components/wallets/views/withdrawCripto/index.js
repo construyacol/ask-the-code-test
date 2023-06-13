@@ -7,8 +7,8 @@ import SkeletonWithdrawView from "./skeleton";
 import { history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
-import { CAPACITOR_PLATFORM } from 'const/const';
-import { checkCameraPermission, getExportByName } from 'utils'
+import { getExportByName } from 'utils'
+
 import { isEmpty } from 'lodash'
 import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import WithdrawFormComponent from './withdrawForm'
@@ -30,7 +30,7 @@ const CriptoSupervisor = (props) => {
     <>
       {
        isEmpty(withdrawProvidersByName) ? 
-        <SkeletonWithdrawView />
+        <SkeletonWithdrawView /> 
        : 
        <>
           <CriptoView {...props}/>
@@ -40,7 +40,7 @@ const CriptoSupervisor = (props) => {
   );
 };
 
-
+ 
 export default withCryptoProvider(CriptoSupervisor)
 
 
@@ -86,7 +86,7 @@ export const CriptoView = (props) => {
       actions.renderModal(null);
     }
   };
-
+ 
 
   const createWithdraw = async() => {
     if(!isMobile && !withdrawConfirmed){
@@ -184,28 +184,9 @@ export const CriptoView = (props) => {
     }
   };
   
-
-  const showQrScanner = async () => {
-    if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
-      const { BarcodeScanner } = await import('@awesome-cordova-plugins/barcode-scanner');
-      const { text, cancelled } = await BarcodeScanner.scan();
-      if (!!!cancelled) setAddressValue(text);
-    } else if (CAPACITOR_PLATFORM === 'web') {
-      actions.renderModal(null);
-      const Element = await import("../../../widgets/qr-scanner"); 
-      const RenderComponent = Element.default
-      actions.renderModal(() => <RenderComponent onScan={setAddressValue} />);
-    }
-  };
-
   const handleChangeAddress = (_, value) => {
-    // console.log('handleChangeAddress', value, value.replace(/[^@a-zA-Z0-9.]/g, ""))
-    // debugger
-    // setAddressValue(value.replace(/[^@a-zA-Z0-9.]/g, ""));
     setAddressValue(value);
   };
-
-
 
   const deleteTag = () => {
     setTagWithdrawAccount(null);
@@ -245,15 +226,13 @@ export const CriptoView = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState, withdraw_accounts, addressValue]);
 
+  // Se resetea el valor del input de dirección cuando se cambia red
   useEffect(() => {
-    if(!isEmpty(withdrawProviders)){
+    if(!isEmpty(withdrawProviders) && !history.location.search){
       setAddressState()
       setAddressValue()
     }
   }, [withdrawProviders])
-
-
-  // console.log('WithdrawCripto', props)
 
   const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 
@@ -264,7 +243,6 @@ export const CriptoView = (props) => {
     currencySymbol,
     tagWithdrawAccount,
     addressState,
-    showQrScanner,
     setAddressValue,
     addressToAdd,
     deleteTag,
@@ -280,7 +258,7 @@ export const CriptoView = (props) => {
     isMobile,
     provider,
     withdrawProviders,
-    // withdrawProvider:withdrawProviders.current
+    setNetworkProvider
   }
 
   const panelHProps = {
@@ -293,7 +271,6 @@ export const CriptoView = (props) => {
     addressValue,
     withdrawConfirmed,
     isMobile,
-    // withdrawProvider:withdrawProviders.current
   } 
 
   if(isEmpty(withdrawProviders.current)){

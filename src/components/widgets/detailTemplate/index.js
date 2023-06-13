@@ -1,4 +1,5 @@
 import { OnlySkeletonAnimation } from "../loaders/skeleton";
+import { device } from 'const/const';
 import styled from 'styled-components'
 
 export default function DetailTemplateComponent ({ items, skeletonItems = 3, className = "", ...props }){
@@ -111,4 +112,11 @@ export const ItemContainer = styled.div`
       font-weight: bold;
     }
   }
+
+  @media ${device.mobile} {
+    ${RightText}, ${LeftText} {
+      padding: 0;
+    }
+  }
+
 `;

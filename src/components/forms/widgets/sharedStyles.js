@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { device } from '../../../const/const'
+import { CAPACITOR_PLATFORM, device } from '../../../const/const'
 import { OnlySkeletonAnimation } from '../../widgets/loaders/skeleton'
 import { HR } from 'components/widgets/headerAccount/styles'
 
@@ -557,7 +557,11 @@ export const ButtonContainers = styled.div`
     background: #f9f9fb;
     z-index: 1;
     padding: 10px;
-    bottom: 0px;  
+    bottom: 0px; 
+    ${CAPACITOR_PLATFORM === 'ios' ? `
+      bottom: 50px;
+      padding-bottom: 24px;
+    ` : ''}} 
   }
 `
 

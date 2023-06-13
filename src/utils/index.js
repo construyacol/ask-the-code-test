@@ -14,10 +14,31 @@ const { normalizeUser } = normalizr_services;
 export const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
 });
+  
+export const loadKeyboard = async () => {
+  if (CAPACITOR_PLATFORM !== 'ios') return
+  const { Keyboard } = await import("@capacitor/keyboard");
+  Keyboard.setAccessoryBarVisible({ isVisible: true });
+  Keyboard.addListener('keyboardWillShow', () => {
+    console.log('keyboard will show');
+    const doc = document.documentElement
+    doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+    const html = document.getElementsByTagName('html')[0]
+    html.style.overflow = 'scroll'
+    html.style.maxHeight = 'var(--app-height)'
+  });
+  Keyboard.addListener('keyboardDidHide', () => {
+    console.log('keyboard did hide');
+    const doc = document.documentElement
+    doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+    const html = document.getElementsByTagName('html')[0]
+    html.style.overflow = ''
+    html.style.maxHeight = ''
+  });
+}
 
 
 export const postLocalNotification = async (payload) => {
-
   if(!payload || ["web"].includes(CAPACITOR_PLATFORM)) return;
 
   let {
@@ -25,7 +46,7 @@ export const postLocalNotification = async (payload) => {
     body = "Notification body",
     summaryText = "summaryText",
     largeBody = "largeBody",
-    id = "1234"
+    id = new Date().getTime()
   } = payload
 
   const { LocalNotifications } = await import("@capacitor/local-notifications");
@@ -206,9 +227,10 @@ const get_img_quality = (size) => {
   return quality;
 };
 
+const defaultPosition = CAPACITOR_PLATFORM === 'ios' ? reactToastify.POSITION.TOP_CENTER : reactToastify.POSITION.BOTTOM_RIGHT;
 export const toast = async (msg, type, position) => {
   return reactToastify(msg, {
-    position: reactToastify.POSITION[!position ? "BOTTOM_RIGHT" : position],
+    position: reactToastify.POSITION[!position ? defaultPosition : position],
     pauseOnFocusLoss: false,
     draggablePercent: 60,
     className: `${

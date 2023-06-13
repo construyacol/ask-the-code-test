@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { wProvsByCurrencyNetwork, selectDepositAccountsByNetwork } from 'selectors'
 import { NETWORK_LABELS } from 'const/const'
 
-
 export default function withdrawNetworksHoc(AsComponent) {
   return function (props) {
 
@@ -15,7 +14,7 @@ export default function withdrawNetworksHoc(AsComponent) {
     const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
     // console.log('wProvsByCurrencyNetwork', wProvsByNetwork)
-
+ 
     const toggleNetwork = (network) => {
       const { callback } = props
       setCurrentNetwork(networks[network])
@@ -30,7 +29,6 @@ export default function withdrawNetworksHoc(AsComponent) {
         // console.log('wProvsByNetwork', wProvsByNetwork)
         for (let providerId of networksProviders) {
           const networkProvider = wProvsByNetwork[providerId]
-            console.log('networkProvider', networkProvider)
             const unAvailableCopCondition = networkProvider?.currency === 'cop' && networkProvider?.provider_type === 'internal_network'
             if(networkProvider?.currency_type !== 'crypto' || !networkProvider?.enabled || unAvailableCopCondition) continue;
             _networks = {
@@ -48,6 +46,7 @@ export default function withdrawNetworksHoc(AsComponent) {
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wProvsByNetwork])
+
 
     useEffect(() => {
       if(!isEmpty(networks)){

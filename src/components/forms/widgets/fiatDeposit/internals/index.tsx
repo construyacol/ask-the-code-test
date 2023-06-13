@@ -17,6 +17,7 @@ import { IconClose } from "components/widgets/shared-styles";
 import { HeaderContainer, ContentContainer } from 'pages/paymentRequest/styles'
 import { modelDataProps } from 'interfaces/state'
 import { DisclaimerContainer } from 'components/widgets/shared-styles'
+import useViewport from 'hooks/useViewport'
 
 // const createUri = async() => {
 //    const { refreshToken } = await getUserToken()
@@ -30,6 +31,7 @@ const ModalSharePaymentRequest = (props:any): JSX.Element => {
    const user = useSelector(({ modelData:{ user } }:modelDataProps) => user);
    const [ paymentRequestLink, setPaymentRequestLink ] = useState("")
    const [ loading ] = useState(false)
+   const { isMobile } = useViewport();
 
    useEffect(() => {
       (async() => {
@@ -81,15 +83,10 @@ const ModalSharePaymentRequest = (props:any): JSX.Element => {
             </HeaderContainer>
 
             <ContentContainer>
-               {/* <QrGenerator
-                  size={120}
-                  currency={props?.depositAccount?.currency}
-                  amount={props?.internalAmount}
-               /> */}
+               
                <P className={"no-margin"}>Se ha creado un enlace con una solicitud de pago <span className="fuente2">{props?.internalAmount ? `por ${props?.internalAmount} ${uiCurrencyName}` : ''}</span></P>
-                
                <LinkContainer>
-                  <P size={14} maxWidth={350} className={"no-margin ellipsis number"} color="primary">{paymentRequestLink}</P>
+                  <P size={14} maxWidth={isMobile ? 250 : 350} className={"no-margin ellipsis number"} color="primary">{paymentRequestLink}</P>
                </LinkContainer>
                
                <CtasContainer>
@@ -130,7 +127,6 @@ const LinkContainer = styled(DisclaimerContainer)`
    background-color: #0198ff24;
    border-left: 2px solid var(--primary);
 `
-
 
 const CtasContainer = styled.div`
    display: flex;
