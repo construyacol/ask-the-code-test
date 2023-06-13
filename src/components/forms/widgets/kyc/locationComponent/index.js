@@ -7,7 +7,7 @@ import { initStages } from '../../../utils'
 import KycFormComponent from '../../kycForm'
 
 
-const LocationComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
+const LocationComponent = ({ handleDataForm, handleState, closeModal }) => {
 
   const { dataForm, setDataForm } = handleDataForm
   const { state, setState } = handleState
@@ -32,8 +32,10 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}
     setStageStatus(null)
-    document.querySelector(`[name="${stageData?.key}"]`).value = ""
-    document.querySelector(".label_text__" + stageData?.key).style.color = 'gray'
+    let stageInput = document.querySelector(`[name="${stageData?.key}"]`)
+    let labelTextEl = document.querySelector(".label_text__" + stageData?.key)
+    if(stageInput)stageInput.value = ""
+    if(labelTextEl)labelTextEl.style.color = 'gray'
     setLoading(true)
     nextStage()
     // await getNextSelectList(stageData?.key)
@@ -55,9 +57,10 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   // console.log('dataForm', dataForm)
 
   const onChange = (e) => {
-    e.target.preventDefault && e.target.preventDefault();
-    // if(!validations[stageData.key]) return;
-    const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm});
+    e?.target?.preventDefault && e?.target?.preventDefault();
+    const validationMethod = typeof validations[stageData.key] === 'function' ? validations[stageData.key] : validations[stageData.key]?.method
+    if(!validationMethod) return;
+    const [ _value, _status ] = validationMethod(e?.target?.value, {...stageData, state, dataForm});
     e.target.value = _value
     //// applies to update state through an effect when it comes from a default state
     setState(prevState => {
@@ -79,7 +82,7 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   }, [state[stageData?.key]])
 
   
-  useEffect(() => {
+  useEffect(() => { 
     if(currentStage >= stageController.length){
       const execPost = async() => {
         setLoading(true)
@@ -96,12 +99,14 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
+  // console.log('handleState', handleState)
+ 
   return(
     <KycFormComponent
-      state={state}
+      handleState={handleState}
       dataForm={dataForm}
       closeModal={closeModal}
-      prevStep={prevStep}
+      prevStep={prevStep} 
       loading={loading}
       onChange={onChange}
       stageManager={stageManager}

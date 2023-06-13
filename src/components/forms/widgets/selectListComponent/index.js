@@ -36,10 +36,11 @@ const SelectListComponent = ({
   
     const [ searchList, setSearchList ] = useState()
     const { isMovilViewport } = useViewport();
-  
+    const exactResult = true
+   
     useEffect(() => {
       if(selectList){
-        const itemList = filterElement(selectList, state[stageData?.key])
+        const itemList = filterElement(selectList, state[stageData?.key], exactResult)
         setSearchList(itemList)
         callback && callback(itemList)
       }
