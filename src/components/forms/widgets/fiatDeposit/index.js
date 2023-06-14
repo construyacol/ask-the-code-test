@@ -23,6 +23,8 @@ import StatusPanelStates from './statusPanelStates'
 import { FIAT_DEPOSIT_TYPES, CTA_UI_NAME } from './api' 
 import { createPaymentRequestLink } from 'utils/paymentRequest'
 import { MENU_LABELS } from 'api/ui/menuItems'
+import withCoinsendaServices from 'components/withCoinsendaServices'
+
 
 const ProviderComponent = loadable(() => import("./depositProviderStage"), {fallback:<StageSkeleton/>});
 const DepositCostComponent = loadable(() => import("./depositCostStage"), {fallback:<StageSkeleton/>});
@@ -43,7 +45,7 @@ const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
   const { currentWallet } = walletInfo
   const [ costList, depositAccount ] = useSelector(() => selectProviderData(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]));
   const depositProviders = useSelector((_state) => selectDepositProvsByNetwork(_state, currentWallet?.id));
-  
+    
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -70,14 +72,14 @@ const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
   unMountCondition:currentStage === 0,
   callback:() => goToStage(0)
 }) 
-
+ 
 useEffect(() => {
   if(stageData?.settings?.breadCumbConfig?.active){
     !isActiveBreadCumb && insertBreadCumb()
   }
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [stageData])
-
+ 
  
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}  
@@ -130,7 +132,8 @@ useEffect(() => {
       internal_network:sharePaymentRequest
     }
     setLoading(true) 
-    const depositProvider = depositProviders[depositAccount?.provider_type]
+    let depositProvider = depositProviders[depositAccount?.provider_type]
+    if(!depositProvider) depositProvider = await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccount?.id);
     const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider, depositAccount })
     if(error){
       setLoading(false)
@@ -206,5 +209,5 @@ useEffect(() => {
 }
 
 
-export default NewFiatDepositComponent
+export default withCoinsendaServices(NewFiatDepositComponent)
 
