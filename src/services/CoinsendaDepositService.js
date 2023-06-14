@@ -141,9 +141,7 @@ export class DepositService extends WebService {
       depositAccountId
     );
     const deposit_providers = await this.fetchDepositProviders();
-    if (!depProvider) {
-      return;
-    }
+    if (!depProvider)return;
 
     const update_wallet = {
       [account.id]: {

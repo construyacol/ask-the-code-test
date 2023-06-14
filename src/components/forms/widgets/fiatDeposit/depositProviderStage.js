@@ -6,8 +6,6 @@ import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { AiFillBank } from "react-icons/ai";
 import { isEmpty } from 'lodash'
-import withCoinsendaServices from 'components/withCoinsendaServices'
-import { serveModelsByCustomProps } from 'selectors'
 import { checkIfFiat } from 'core/config/currencies';
 import { TagNewComponent } from 'core/components/molecules'
 import styled from 'styled-components'
@@ -29,12 +27,10 @@ function ProviderComponent({
  
     const { isMovilViewport } = useViewport();
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
-    const depositProvidersByType = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider_type'));
     const [ depositServiceList, setDepositServiceList ] = useState({})
     const [ showPaymentRequest, setShowPaymentRequest ] = useState(false)
   
     const selectProvider = (provider) => {
-      // console.log('selectProvider', provider)
       setState(prevState => ({ ...prevState, [stageData?.key]: provider }))
       setStageStatus('success')
     }
@@ -57,11 +53,10 @@ function ProviderComponent({
     
     useEffect(() => {
       (async() => { 
-        if(isEmpty(depositAccounts) || isEmpty(depositProvidersByType))return;
+        if(isEmpty(depositAccounts))return;
         let servicesList = {...DEFAULT_SERVICE} 
         for (const depositAccountName in depositAccounts) {
           if(["pse"].includes(depositAccountName) && ["savings"].includes(currentWallet?.type))continue;
-          if(!depositProvidersByType[depositAccounts[depositAccountName]?.provider_type] && depositAccounts[depositAccountName]?.provider_type !== 'internal_network') await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id);
           let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
           // if(depositAccounts[depositAccountName]?.currency_type === 'crypto')continue;
           servicesList = {
@@ -76,7 +71,7 @@ function ProviderComponent({
         if(servicesList?.internal_network) setShowPaymentRequest(true);
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [depositAccounts, depositProvidersByType])
+    }, [depositAccounts])
 
 
     return(
@@ -148,7 +143,7 @@ function ProviderComponent({
     )
   }
 
-  export default withCoinsendaServices(ProviderComponent)
+  export default ProviderComponent
 
   const selectDepositAccounts = createSelector(
     (state) => state.modelData.depositAccounts,
