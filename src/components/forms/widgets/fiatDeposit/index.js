@@ -132,8 +132,7 @@ useEffect(() => {
       internal_network:sharePaymentRequest
     }
     setLoading(true) 
-    let depositProvider = depositProviders[depositAccount?.provider_type]
-    if(!depositProvider) depositProvider = await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccount?.id);
+    let depositProvider = depositProviders[depositAccount?.provider_type] || await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccount?.id);
     const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider, depositAccount })
     if(error){
       setLoading(false)

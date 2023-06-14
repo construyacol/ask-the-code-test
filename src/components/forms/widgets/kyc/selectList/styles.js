@@ -1,5 +1,7 @@
-import styled, { keyframes } from 'styled-components'
-import { device } from 'const/const'
+import styled, { keyframes, css } from 'styled-components'
+import { device, CAPACITOR_PLATFORM } from 'const/const'
+
+
 
 export const SelectListMain = styled.div`
   width: calc(100% - 20px);
@@ -30,8 +32,10 @@ export const SelectListMain = styled.div`
   @media ${device.mobile} {
     width: 100%;
     margin:20px 0;
-    max-height: 300px;
-    margin-top: 0px;
+    ${CAPACITOR_PLATFORM === 'ios' && css`
+      max-height: 300px;
+      margin-top: 0px;
+    `}
   }
 
 `
