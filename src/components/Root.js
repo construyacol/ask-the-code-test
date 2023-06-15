@@ -62,6 +62,8 @@ function RootContainer(props) {
     } 
     const paymentRequest = JSON.parse(localStorage.getItem('paymentRequest'))
     if(params.has(DEFAULT_PARAMS.main) || paymentRequest){
+      console.log('GET paymentRequest from Link => ', paymentRequest)
+      debugger
       return history.push({
         pathname: '/paymentRequest', 
         state:params.has(DEFAULT_PARAMS.main) ? getAllUrlParams(mobileURL ?? history.location.search) : { paymentRequest }
