@@ -10,7 +10,7 @@ export const ContAddress = styled.section`
   align-items: center;
   width: 100%;
   height: 100%;
-  row-gap: 20px;
+  row-gap: 3rem;
 
   .div_deposit--address{
     display: flex;

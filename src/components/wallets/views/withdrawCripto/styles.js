@@ -45,8 +45,8 @@ export const WithdrawForm = styled(OperationForm)`
   @media (max-width: 768px) {
     height: calc(100% - 40px);
     width: 100%;
-    padding: 40px 0;
-    row-gap: 20px;
+    padding: 50px 0;
+    row-gap: 60px;
     grid-template-rows: 140px 170px auto;
   }
 `;
