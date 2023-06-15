@@ -43,8 +43,6 @@ const PaymentRequestRedirect = ({ paymentRequestLink, callback }:PaymentRequestR
          pathname: '/paymentRequest', 
          state:{ paymentRequest: JSON.parse(decodeURIComponent(queryString)) }
        });
-      
-      // window.location.replace(paymentRequestLink)
    };
  
    useEffect(() => {
