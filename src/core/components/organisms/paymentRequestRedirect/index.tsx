@@ -18,7 +18,7 @@ import { useWalletInfo } from 'hooks/useWalletInfo'
 type PaymentRequestRedirectProps = {
    paymentRequestLink:string,
    callback?: (value: any) => void
-}
+} 
 
 const PaymentRequestRedirect = ({ paymentRequestLink, callback }:PaymentRequestRedirectProps) => {
 
@@ -35,7 +35,15 @@ const PaymentRequestRedirect = ({ paymentRequestLink, callback }:PaymentRequestR
       }
       actions.renderModal(null);
    }
-   const proceedWithPayment = () => window.location.replace(paymentRequestLink);
+
+   const proceedWithPayment = () => {
+      const queryString = paymentRequestLink.split('=')[1];
+      actions.renderModal(null);
+      return history.push({
+         pathname: '/paymentRequest', 
+         state:{ paymentRequest: JSON.parse(decodeURIComponent(queryString)) }
+       });
+   };
  
    useEffect(() => {
       if(paymentRequestLink){
@@ -59,7 +67,7 @@ const PaymentRequestRedirect = ({ paymentRequestLink, callback }:PaymentRequestR
             <H3>Se ha detectado una solicitud de pago</H3>
          </HeaderContainer>
 
-         <ContentContainer>
+         <ContentContainer> 
                
                <P className={"no-margin"}>
                   Solicitud de pago creada por <strong>{paymentRequest?.metaData?.userName}</strong>

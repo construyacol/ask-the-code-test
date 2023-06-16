@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { show } from '../../../widgets/animations'
-import { device } from 'const/const'
+import { device, CAPACITOR_PLATFORM } from 'const/const'
 
 export const Wrapper = styled.div`
 
@@ -40,7 +40,9 @@ export const Wrapper = styled.div`
 
     @media ${device.mobile} {
       grid-template-columns: 1fr;
-      align-content: flex-start;
+      ${CAPACITOR_PLATFORM === 'ios' && css`
+        align-content: flex-start;
+      `}
     }
   }
 

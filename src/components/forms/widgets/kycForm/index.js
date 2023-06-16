@@ -175,7 +175,7 @@ const KycFormComponent = ({
                       }
                     </StickyGroup>
                 }
-
+ 
                 <DynamicLoadComponent
                   component="kyc/selectList"
                   state={state}

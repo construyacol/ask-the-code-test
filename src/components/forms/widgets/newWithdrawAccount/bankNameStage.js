@@ -31,7 +31,7 @@ const BankNameListComponent = ({
         return { ...prevState, [stageData?.key]: _value }
       })
       setStageStatus(_status)
-    }
+    } 
   
     // load state  by default
     useEffect(() => {
@@ -42,6 +42,8 @@ const BankNameListComponent = ({
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key]])
+
+    // console.log('|||||||||||||| stageData ===>', stageData)
 
     return(
       <StageContainer className="_bankNameList">

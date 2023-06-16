@@ -103,6 +103,7 @@ export const PaymentRequestLayout = styled.div`
       font-size: 15px !important;
    }
    @media ${device.mobile} {
+      z-index: 99;
       .payment--content{
          padding:35px 1rem;      
          width: calc(100% - 2rem);
