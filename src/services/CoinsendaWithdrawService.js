@@ -266,8 +266,12 @@ export class WithdrawService extends WebService {
       }
     })
     if(efectyProvider){
+      const { replaceToCurrency } = await import('core/config/currencies')
       bankList = {
-        [efectyProvider?.value]:efectyProvider,
+        [efectyProvider?.value]:{
+          ...efectyProvider,
+          name:replaceToCurrency({currency:efectyProvider?.currency, sourceName:efectyProvider?.name})
+        },
         ...bankList
       }
     }
