@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { isEmpty } from 'lodash' 
 import useViewport from "../../../hooks/useWindowSize";
 import loadable from "@loadable/component";
-import { device, history } from '../../../const/const'
+import { device, history } from 'const/const'
+import { ACCOUNT_LABEL } from 'const/account'
 import useCurrencies from '../../../hooks/useCurrencies'
 import BalanceComponent from "../balance/balance";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
@@ -12,7 +13,7 @@ import { checkIfFiat, replaceTo, REPLACE_TO_CURRENCY_CONFIG } from 'core/config/
 import {
     // HeaderContainer,
     HeaderMainContainer,
-    IconAccount,
+    IconAccount, 
     LabelContainer,
     AccountLabel,
     CurrencyLabel,
@@ -27,6 +28,8 @@ import { AccountListWrapper } from '../layoutStyles'
 import { BiRightArrowAlt } from 'react-icons/bi';
 import { parseSymbolCurrency, CURRENCY_LIST_DEFAULT_ORDER } from 'core/config/currencies'
 import { orderedList } from 'utils/orderedList'
+import { LabelFlag } from 'core/components/molecules'
+
 
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -73,8 +76,8 @@ export default function ListViewComponent(props) {
 export const AccountItemSkeleton = ({ className = "" }) => (
     <ItemAccountContainer className={`skeleton ${className}`}>
         <HeaderMainContainer>
-                <IconAccount className="_iconSkeleton"></IconAccount>
-                <LabelContainer className="_header__labelContainer">
+            <IconAccount className="_iconSkeleton"></IconAccount>
+            <LabelContainer className="_header__labelContainer">
                 <AccountLabel className="accountLabel--skeleton__p">Skeleton wallet</AccountLabel>
                 <CurrencyLabel>------</CurrencyLabel>
             </LabelContainer>
@@ -135,14 +138,15 @@ const ItemAccount = ({ account, currency, index, loading, setLoading, coinsendaS
     }
 
     const accountName = REPLACE_TO_CURRENCY_CONFIG[account?.currency] ? replaceTo(account?.name, REPLACE_TO_CURRENCY_CONFIG[account?.currency]) : account?.name
- 
+
     return(
-        <ItemAccountContainer onClick={loading ? null : toDetail} className={`${(loading && currentAccount) ? 'loading' : ''}`}>
+        <ItemAccountContainer onClick={loading ? null : toDetail} className={`${(loading && currentAccount) ? 'loading' : ''} relative`}>
+            <LabelFlag className={`${account.type} absolute fuente2`}>{ACCOUNT_LABEL[account.type]}</LabelFlag>
             <IndicatorHover>
                 <div className="indicator" >
                     <div className="indicatorSon" ></div>
                 </div>
-            </IndicatorHover>
+            </IndicatorHover> 
             <HeaderMainContainer className="_accountHeaderMainContainer">
                 <IconAccount className="onAccountList">
                     <IconSwitch
@@ -150,8 +154,8 @@ const ItemAccount = ({ account, currency, index, loading, setLoading, coinsendaS
                         size={isMovilViewport ? 30 : 35}
                     />
                 </IconAccount>
-                <LabelContainer className="_header__labelContainer">
-                    <AccountLabel className="wallet">{accountName || 'Mi billetera'}</AccountLabel>
+                <LabelContainer className="_header__labelContainer ">  
+                    <AccountLabel className="wallet">{accountName || 'Mi billetera'} </AccountLabel>
                     { 
                         isMovilViewport ?
                             <MobileBalanceComponent
@@ -345,6 +349,10 @@ export const ItemAccountContainer = styled.div`
     padding: 0 35px 0 20px;
     border-left:5px solid #E9E9E9;
     transition:.15s;
+
+    &.relative{
+        position: relative;
+    }
 
     ._enterToWalletIcon{
         fill: var(--paragraph_color);

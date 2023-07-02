@@ -1,7 +1,7 @@
 import { FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import getIcon from './icons'
 import { P } from 'core/components/atoms'
-
+import useViewport from 'hooks/useViewport'
 import { 
     SettingElementLayout,
     IconContainer,
@@ -27,12 +27,13 @@ export const SettingElementSkeleton = () => {
 const SettingElement = (props:settingType) => {
     const { 
         itemElement, 
-        isCompleted, 
+        isCompleted,  
         isLastElement,
         AuxComponent,
         handleAction
     } = props
 
+    const { isMobile } = useViewport();
     const IconVerified = isCompleted ? FiCheckCircle : FiAlertCircle;
     const uiState = isCompleted ? itemElement?.states?.uiEnabled : itemElement?.states?.uiDisabled;
     const IconSetting = getIcon(itemElement.value) || IconVerified
@@ -54,10 +55,13 @@ const SettingElement = (props:settingType) => {
                     size={16}
                     color={`${isCompleted ? "#219D6E" : "red" }`}
                 />
-                <UiStateCont className={`fuente ${isCompleted ? "verified" : "unverified" }`}>
-                    {uiState}
-                </UiStateCont>
-            </SettingTitleCont>
+                {
+                    !isMobile &&
+                    <UiStateCont className={`fuente ${isCompleted ? "verified" : "unverified" }`}>
+                        {uiState}
+                    </UiStateCont>
+                }
+            </SettingTitleCont> 
 
             <P className="description__p fuente">
                 {itemElement.uiDescription}
