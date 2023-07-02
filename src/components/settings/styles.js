@@ -517,16 +517,6 @@ export const UiStateCont = styled.span`
     border-radius: 3px;
     font-weight:normal;
 
-    @media ${device.mobile}{
-        display:none;
-        ${'' /* &.accepted,
-        &.pending,
-        &.confirmed,
-        &.rejected{
-            display:initial;
-        } */}
-    }
-
     &.verified,
     &.accepted{
         background: #2bc48a1f;
