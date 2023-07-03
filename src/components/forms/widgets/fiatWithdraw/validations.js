@@ -34,8 +34,8 @@ import BigNumber from "bignumber.js"
 
   const getMinAmount = (minAmount, { withdrawProvider, state:{ withdrawAccount } }) => {
     const { currency } = withdrawProvider
-    // const costAmount = getCost({withdrawProvider, withdrawAccount, amount:minAmount.toString()})
-    const costAmount = 0
+    const costAmount = getCost({withdrawProvider, withdrawAccount, amount:minAmount.toString()})
+    // const costAmount = 0
     let _minAmount = formatToCurrency(minAmount.toString().replace(/,/g, ""), currency);
     const withdrawAmount = _minAmount.plus(costAmount || 0)
     return withdrawAmount
