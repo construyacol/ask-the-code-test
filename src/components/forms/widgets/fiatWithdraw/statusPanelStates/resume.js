@@ -2,7 +2,7 @@ import styled from 'styled-components'
 // import { useSelector } from "react-redux";
 // import { selectWithdrawProvider } from 'selectors'
 import { useEffect, useState } from 'react'
-import { getCost } from '../validations'
+import { getCost, getTotalToReceive } from '../validations'
 import { formatToCurrency } from 'utils/convert_currency'
 import { ItemContainer, LeftText, MiddleSection, RightText } from 'components/widgets/detailTemplate'
 import loadable from "@loadable/component";
@@ -36,7 +36,7 @@ const ResumeComponent = ({
     return(
         <>
           <StatusHeaderContainer>
-            <TitleContainer>
+            <TitleContainer> 
               <h1 className="fuente">Resumen del envío</h1>
             </TitleContainer>
             <RenderSwitchComponent 
@@ -124,12 +124,15 @@ const BankStatus = ({ state, stageManager, withdrawProvider }) => {
   const { withdrawAccount, withdrawAmount } = state
   const bankName = withdrawAccount?.bank_name
   const [ cost, setCost ] = useState()
+  const [ totalToReceive, setTotalToReceive ] = useState(0)
 
   useEffect(() => { 
     if(withdrawProvider && withdrawAccount && withdrawAmount){
       let cost = getCost({withdrawProvider, withdrawAccount, amount:withdrawAmount})
+      let _totalToReceive = getTotalToReceive(cost, withdrawAmount)
       let parsed = formatToCurrency(cost, withdrawProvider?.currency)
-      setCost(parsed.toFormat())
+      setCost(parsed.isNaN() ? 0 : parsed.toFormat())
+      setTotalToReceive(_totalToReceive.isPositive() ? _totalToReceive.toFormat() : 0)
     }
   }, [withdrawProvider, withdrawAccount, withdrawAmount])
 
@@ -164,13 +167,22 @@ const BankStatus = ({ state, stageManager, withdrawProvider }) => {
           </ItemContainer>
           {
             (bankName?.value !== 'efecty' && withdrawAmount) &&
-            <ItemContainer>
-                <LeftText className="fuente">Costo:</LeftText>
+            <>
+              <ItemContainer>
+                  <LeftText className="fuente">Costo:</LeftText>
+                  <MiddleSection />
+                  <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
+                    {`$ ${cost} - ${parseSymbolCurrency(withdrawProvider?.currency)}` || 'skeleton --------'} 
+                  </RightText>
+              </ItemContainer>
+              <ItemContainer>
+                <LeftText className="fuente">Cantidad a recibir:</LeftText>
                 <MiddleSection />
                 <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${cost} - ${parseSymbolCurrency(withdrawProvider?.currency)}` || 'skeleton --------'} 
+                  {`$ ${totalToReceive} - ${parseSymbolCurrency(withdrawProvider?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
+            </>
           }
         </>
       }

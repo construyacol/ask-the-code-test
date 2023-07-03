@@ -9,7 +9,13 @@ import { FIAT_WITHDRAW_TYPES } from './api'
 import { selectListValidator } from 'components/forms/widgets/kyc/validations'
 import { calculateCost } from '../sharedValidations'
 import { parseSymbolCurrency } from 'core/config/currencies';
+import BigNumber from "bignumber.js"
 
+  export const getTotalToReceive = (_cost, _amount) => {
+    let cost = BigNumber.isBigNumber(_cost) ? _cost : new BigNumber(_cost) 
+    let amount = BigNumber.isBigNumber(_amount) ? _amount : new BigNumber(_amount.replace(/,/g, "")) 
+    return amount.minus(cost)
+  }
 
   // TODO: Falta calcular los precios de efecty con reduce method
   export const getCost = ({ withdrawProvider, withdrawAccount, amount }) => {
