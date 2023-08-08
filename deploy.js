@@ -3,13 +3,13 @@ const keys = getKeys("./build");
 
 const deploySetup = {
   staging: {
-    bucket: "app.bitsenda.com",
+    bucket: "v2-app.bitsenda.com",
   },
   pre_prod: {
-    bucket: "app.cryptosenda.com",
+    bucket: "v2-app.cryptosenda.com",
   },
   prod: {
-    bucket: "app.coinsenda.com"
+    bucket: "v2-app.coinsenda.com"
   }
 };
 
