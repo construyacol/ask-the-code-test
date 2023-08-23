@@ -7,41 +7,29 @@ import { NavLink } from "react-router-dom";
 import loadable from "@loadable/component";
 import { isSafari } from '../../utils'
 import menuItems from "api/ui/menuItems";
-import { isEmpty } from 'lodash';
 
 
 
 const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
-export default function SubMenuComponent({ targetList }) {
+export default function SubMenuComponent({ targetList, accountSwapAvailable }) {
 
     const { navigation_components } = menuItems
     const { currentFilter } = useSelector((state) => state?.ui?.current_section?.params);
-    const { wallets, pairs:{ all_collections } } = useSelector((state) => state?.modelData);
+    const { wallets } = useSelector((state) => state?.modelData);
     const { activity_for_account } = useSelector((state) => state?.storage);
     const { account_id, primary_path, path } = useParams()
     const itemsMenu = navigation_components[targetList]?.items_menu
     const [ accountHasTx, setAccountHasTx ] = useState(false)
-    const [ accountSwapAvailable, setAccountSwapAvailable ] = useState(false)
     
     useEffect(() => {
         if(wallets[account_id]?.count > 0 || activity_for_account[account_id]){
             setAccountHasTx(true)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [wallets[account_id], activity_for_account])
-
-
-    useEffect(() => {
-        if(!isEmpty(all_collections)){
-            const foundCollection = all_collections.find(element => element?.primary_currency === wallets[account_id].currency ||  element?.secondary_currency === wallets[account_id].currency)
-            foundCollection && setAccountSwapAvailable(true)
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [all_collections])
+    }, [wallets[account_id], activity_for_account]) 
 
     const getLink = (link) => `/${primary_path}/${link}/${account_id}${link === "activity" ? `/${currentFilter}` : ""}`;
-    
 
     return(
         <SubMenu className="subMenu">

@@ -4,12 +4,12 @@ import DepositFiat from "./depositFiat";
 import { checkIfFiat } from 'core/config/currencies';
 import { useWalletInfo } from 'hooks/useWalletInfo'
 
-const DepositView = () => {
+const DepositView = ({ accountSwapAvailable }) => {
   const { currentWallet } = useWalletInfo();
   return (
     <>
       {!checkIfFiat(currentWallet?.currency) ? (
-        <CriptoSupervisor/>
+        <CriptoSupervisor accountSwapAvailable={accountSwapAvailable}/>
       ) : (
         <DepositFiat />
       )}

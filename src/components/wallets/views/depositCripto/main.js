@@ -23,6 +23,7 @@ import { useWalletInfo } from 'hooks/useWalletInfo'
 // import { P } from 'core/components/atoms'
 // import CookieMessage from 'components/widgets/cookieMessage'
 import UsdtErcDisclaimer, { EthCostDisclaimer } from "./usdtErcDisclaimer"
+import UnSwapableDisclaimer from './unSwapableDisclaimer'
 
 
 
@@ -93,9 +94,14 @@ const CriptoView = (props) => {
     if(isEmpty(depositProviders.current)){
       return<SelectDepositNetwork uiName={`Selecciona la red por la que deseas depositar ${currentWallet?.currency?.toUpperCase()}`} callback={setProvider}/>
     }
+
    
     return (  
       <> 
+
+      {
+        !props?.accountSwapAvailable && <UnSwapableDisclaimer currentWallet={currentWallet}/>
+      }
       {
         // Mostrar si es USDT de la red ETH 
         depositProviders?.current?.provider_type === 'ethereum' && (

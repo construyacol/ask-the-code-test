@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import loadable from "@loadable/component";
 import actions from "../../actions";
@@ -88,6 +88,8 @@ export const AccountDetail = (props) => {
   let hasActivity = currentWallet?.count > 0
 
   const { currentPair } = useSelector(({ modelData:{ pairs } }) => pairs)
+  const { wallets, pairs:{ all_collections } } = useSelector((state) => state?.modelData);
+  const [ accountSwapAvailable, setAccountSwapAvailable ] = useState(false)
  
   useEffect(() => {
     let hasDepProvs = !isEmpty(currentWallet?.dep_prov)
@@ -103,6 +105,16 @@ export const AccountDetail = (props) => {
     if(currentPair?.primary_currency !== currentWallet?.currency) action.searchCurrentPairAction(pairCollectionByCurrency[currentWallet?.currency]?.buy_pair, "pair");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  
+  useEffect(() => {
+    if(!isEmpty(all_collections)){
+        const foundCollection = all_collections.find(element => element?.primary_currency === wallets[params?.account_id].currency ||  element?.secondary_currency === wallets[params?.account_id].currency)
+        foundCollection && setAccountSwapAvailable(true)
+    }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [all_collections])
+
+// console.log('accountSwapAvailable', accountSwapAvailable)
 
   const currencyType = checkIfFiat(currentWallet?.currency) ? 'fiat' : 'crypto'
 
@@ -116,6 +128,7 @@ export const AccountDetail = (props) => {
               />
             </HeaderAccount>
             <SubMenuComponent
+              accountSwapAvailable={accountSwapAvailable}
               targetList="wallets"
             />
             <TitleSection
@@ -128,7 +141,7 @@ export const AccountDetail = (props) => {
               <RenderAuxComponent {...props} />
             </TitleSection> 
             <AccountDetailContainer className={`_accountDetailContainer ${params?.path} ${currencyType} ${parseQueryString()}`}>
-              <SwitchView {...props} />
+              <SwitchView accountSwapAvailable={accountSwapAvailable} {...props} />
             </AccountDetailContainer>
           </AccountDetailLayout>
   );
