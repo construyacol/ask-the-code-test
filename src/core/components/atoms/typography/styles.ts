@@ -40,6 +40,9 @@ export const textBaseStyles = css<typoGraphyProps>`
     &.bold{
       font-weight: bold;
     }
+    &.uppercase{
+      text-transform: uppercase;
+    }
     &.capitalize{
       text-transform: capitalize !important;
     }

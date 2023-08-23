@@ -48,14 +48,14 @@ export const EthCostDisclaimer = () => {
    )
 }
 
-const ButtonCont = styled.div`
+export const ButtonCont = styled.div`
    display: flex;
    column-gap: 30px;
    flex-wrap: wrap;
    margin-top: 50px;
 `
 
-const ContentDisclaimer = styled.div`
+export const ContentDisclaimer = styled.div`
    &.__hide{
       display: none;
    }
