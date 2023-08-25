@@ -94,4 +94,9 @@ config(icono esquina superior derecha en Android estudio) > Project structure...
 
 for more info: https://forum.ionicframework.com/t/error-when-i-build-with-phonegap-barcodescanner-ionic-native/218337/5
 
+Remote debug
+
+https://developer.chrome.com/docs/devtools/remote-debugging/webviews/
+chrome://inspect/#devices
+
 para crear URI SCHEMAS sigue el siguiente [ENLACE](./docs/schemaURI.md)
