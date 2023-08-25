@@ -20,7 +20,7 @@ import { useAppVersion } from "hooks/useAppVersion";
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
 const ReferralComponent = loadable(() => import("pages/referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
-const StorePageView = loadable(() => import("pages/store"), {fallback: <LazyLoaderPage path={"referral"} />});
+const StorePageView = loadable(() => import("pages/store"), {fallback: <div>CARGANDO TIENDA</div>});
 const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <LazyLoaderPage path={"settings"} />});
 
 const HomeContainer = () => {
