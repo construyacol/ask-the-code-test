@@ -40,7 +40,7 @@ const CriptoSupervisor = (props) => {
   );
 };
 
- 
+  
 export default withCryptoProvider(CriptoSupervisor)
 
 
@@ -65,6 +65,7 @@ export const CriptoView = (props) => {
     },
     priority:{ currentPriority }
   } = props
+  console.log('|||||||||||| CriptoView =====> ', props)
 
   const actions = useActions();
   const { isMobile } = useViewport()

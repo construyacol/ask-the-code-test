@@ -8,17 +8,20 @@ import { NETWORK_LABELS } from 'const/const'
 export default function withdrawNetworksHoc(AsComponent) {
   return function (props) {
 
-    const { currentWallet } = useWalletInfo()
+    const { currentWallet } = useWalletInfo() 
     const [ networks, setNetworks ] = useState({})
     const [ currentNetwork, setCurrentNetwork ] = useState(props.currentNetwork || { provider_type:"" })
     const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
-    // console.log('wProvsByCurrencyNetwork', wProvsByNetwork)
+    // console.log('wProvsByCurrencyNetwork', wProvsByNetwork) 
  
     const toggleNetwork = (network) => {
       const { callback } = props
       setCurrentNetwork(networks[network])
       // sessionStorage.setItem(`withdrawNetworkDefault_${currentWallet?.id}`, JSON.stringify({suscriptionDate:new Date(), network}));
+      console.log('toggleNetwork', network, networks)
+      console.log('availableDepositAccounts', availableDepositAccounts)
+      debugger
       callback && callback({providers:networks, current:networks[network]})
     }
 

@@ -253,7 +253,7 @@ export class WithdrawService extends WebService {
   async getBankList() {
     const { withdrawProviders } = this.globalState.modelData;
     let _withdrawProviders = typeof withdrawProviders === 'object' ? ungapStructuredClone(withdrawProviders) : {...withdrawProviders};
-
+ 
     let wProviderBanKey = Object.keys(_withdrawProviders).find(wAKey => ["bank"].includes(_withdrawProviders[wAKey]?.provider_type))
     let efectyProvider = this.createEfectyProv(_withdrawProviders)
     let bankList = _withdrawProviders[wProviderBanKey]?.info_needed?.bank_name
@@ -266,11 +266,10 @@ export class WithdrawService extends WebService {
       }
     })
     if(efectyProvider){
-      const { replaceToCurrency } = await import('core/config/currencies')
       bankList = {
         [efectyProvider?.value]:{
           ...efectyProvider,
-          name:replaceToCurrency({currency:efectyProvider?.currency, sourceName:efectyProvider?.name})
+          name:efectyProvider?.provider?.ui_name
         },
         ...bankList
       }
