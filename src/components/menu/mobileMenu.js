@@ -19,6 +19,7 @@ export default function MobileMenuComponent(props) {
     const params = useParams()
     const actions = useActions()
     const { menuPrincipal } = menuItems
+    const { user  } = useSelector((state) => state.modelData);
 
     const selectItem = itemName => {
         actions.CleanNotifications(itemName);
@@ -36,6 +37,7 @@ export default function MobileMenuComponent(props) {
                                 if (item.clave !== "settings" && verification_state !== "accepted") { return null }
                                 if (item.clave === "prices") { return null }
                                 if (item.clave === "withdraw_accounts") { return null }
+                                if (item.clave === "store" && !user?.email?.includes("bitrefill")) { return null }
 
                                 return (
                                     <MenuItem

@@ -173,9 +173,8 @@ export const CriptoView = (props) => {
 
   const handleMaxAvailable = (available) => {
     let amountEl = document.getElementsByName("amount")[0];
-    amountEl.value = available
+    if(Number(available) > 0) amountEl.value = available;
     setWithdrawData(prevState => ({...prevState, amount:available}))
-    if (amountEl.value > 0) { setAmountState("good") }
   };
   
   const handleChangeAddress = (_, value) => {

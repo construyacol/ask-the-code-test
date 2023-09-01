@@ -27,17 +27,19 @@ import menuItems from "api/ui/menuItems";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 
-function SideMobileMenu({ actions, logOut }) {
+function SideMobileMenu({ actions, logOut, user }) {
 
     const { current_section:{ params:{ show_menu_principal } } } = useSelector((state) => state.ui);
     const closeMenu = () => { actions.current_section_params({ show_menu_principal: false })}
     const { osDevice } = useSelector((state) => state.ui);
+
 
     return(
         <SideMenuContainer className={`${show_menu_principal ? '_show' : '_hide'}`}>
             <UserInfoComponent 
                 closeMenu={closeMenu}
                 actions={actions}
+                user={user}
             />
             <MenuItemsContainer>
                 <MovilMenuComponent 
@@ -66,6 +68,8 @@ function SideMenuComponent(props) {
   const [ isExpanded, setIsExpanded ] = useState(true)
   const Coinsenda = loadable(() => import("../widgets/icons/logos/coinsenda"));
   const { isLaptopViewport, isMovilViewport } = useViewport()
+  const { user  } = useSelector((state) => state.modelData);
+
 
   const logOut = () => {
     actions.confirmationModalToggle();
@@ -86,12 +90,13 @@ function SideMenuComponent(props) {
   };
 
   const SideIcon = isExpanded ? IoIosArrowBack : IoIosArrowForward 
- 
+  
+
     return(
         <>
             {
                 isMovilViewport ?
-                <SideMobileMenu logOut={logOut} actions={actions}/>
+                <SideMobileMenu user={user} logOut={logOut} actions={actions}/>
                 :
                 <SideMenuContainer className={`${(isLaptopViewport || !isExpanded) ? 'laptopView'  : 'largeLayout'}`}>
                     {
@@ -115,6 +120,7 @@ function SideMenuComponent(props) {
                         logOut={logOut}
                         activarItem={activarItem}
                         isExpanded={isExpanded}
+                        user={user}
                         {...props} 
                     />
                 </SideMenuContainer>
@@ -170,16 +176,18 @@ export const PopUpnotice = styled.div`
 const MenuItemsComponent = props => {
 
   const { isLaptopViewport } = useViewport()
-  const { menuPrincipal } = menuItems
+  const { menuPrincipal } = menuItems 
   const { verification_state } = useSelector((state) => state.ui);
+  const { user } = props
 
     return( 
         <>  
             <MenuItemsContainer className={`${(!props.isExpanded || isLaptopViewport) ? '' : 'largeLayout'} ${verification_state !== "accepted" ? 'inverified' : ''}`}>
                     {
-                        menuPrincipal.map((item) => {
+                        menuPrincipal.map((item) => { 
                              if (item.clave !== "settings" && verification_state !== "accepted") { return false }
-                            if (item.clave === "withdraw_accounts") { return null }
+                             if (item.clave === "store" && !user?.email?.includes("bitrefill")) { return null }
+                             if (item.clave === "withdraw_accounts") { return null }
                             return (
                                 <ButtonPrincipalMenu 
                                     className={`${item.device} ${item.clave} ${(isLaptopViewport || !props.isExpanded) ? 'laptopView' : ''}`}
@@ -282,8 +290,8 @@ const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
 const UserInfoComponent = props => {
 
-  const { verification_state } = useSelector((state) => state.ui);
-  const { user  } = useSelector((state) => state.modelData);
+    const { verification_state } = useSelector((state) => state.ui);
+    const { user } = props
 
     return(
         <UserInfo>
