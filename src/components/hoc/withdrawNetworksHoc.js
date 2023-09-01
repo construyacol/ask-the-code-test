@@ -2,26 +2,25 @@ import { useState, useEffect } from "react";
 import { useWalletInfo } from 'hooks/useWalletInfo'
 import { isEmpty } from 'lodash'
 import { useSelector } from "react-redux";
-import { wProvsByCurrencyNetwork, selectDepositAccountsByNetwork } from 'selectors'
 import { NETWORK_LABELS } from 'const/const'
+import { 
+  wProvsByCurrencyNetwork, 
+  // selectDepositAccountsByNetwork 
+} from 'selectors'
 
 export default function withdrawNetworksHoc(AsComponent) {
   return function (props) {
 
     const { currentWallet } = useWalletInfo() 
-    const [ networks, setNetworks ] = useState({})
+    const [ networks, setNetworks ] = useState({}) 
     const [ currentNetwork, setCurrentNetwork ] = useState(props.currentNetwork || { provider_type:"" })
     const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
-    const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
-    // console.log('wProvsByCurrencyNetwork', wProvsByNetwork) 
+    // const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
  
     const toggleNetwork = (network) => {
       const { callback } = props
       setCurrentNetwork(networks[network])
       // sessionStorage.setItem(`withdrawNetworkDefault_${currentWallet?.id}`, JSON.stringify({suscriptionDate:new Date(), network}));
-      console.log('toggleNetwork', network, networks)
-      console.log('availableDepositAccounts', availableDepositAccounts)
-      debugger
       callback && callback({providers:networks, current:networks[network]})
     }
 
@@ -41,7 +40,7 @@ export default function withdrawNetworksHoc(AsComponent) {
                   uiName:NETWORK_LABELS[networkProvider?.provider_type]?.uiName, 
                   auxUiName:NETWORK_LABELS[networkProvider?.provider_type]?.auxUiName, 
                   icon:NETWORK_LABELS[networkProvider?.provider_type]?.icon, 
-                  user_friendly:NETWORK_LABELS[networkProvider?.provider_type]?.user_friendly || availableDepositAccounts[providerId]?.user_friendly
+                  user_friendly:NETWORK_LABELS[networkProvider?.provider_type]?.user_friendly || wProvsByNetwork[providerId]?.user_friendly
                 }
             }
         }

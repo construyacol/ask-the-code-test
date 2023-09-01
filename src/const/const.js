@@ -360,5 +360,5 @@ export const DEFAULT_COST_ID = {
   default:WITHDRAW_PRIORITY_FEE.medium.value,
   internal_network:WITHDRAW_PRIORITY_FEE.none.value,
 }
-// export const DEFAULT_COST_ID = WITHDRAW_PRIORITY_FEE.medium.value
+
 export const SUPPORT_EMAIL = "soporte@coinsenda.com"

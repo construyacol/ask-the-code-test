@@ -1,6 +1,5 @@
 import { formatToCurrency } from "utils/convert_currency";
 import { isEmpty } from 'lodash'
-// import { DEFAULT_COST_ID } from 'const/const'
 
 export const getMinAmount = (withdrawProvider) => {
     if(!withdrawProvider || isEmpty(withdrawProvider))return;

@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from "react";
-import { Iframe } from './styles'
+import { useEffect, useState, } from "react";
 import { useSelector } from "react-redux";
 import BitRefillFallBack from './fallBack'
+import { useActions } from 'hooks/useActions'
+import { Iframe } from './styles'
 
 // let uri = `https://embed.bitrefill.com/?showPaymentInfo=true&email=${email}&hl=${lang}&ref=${refCode}&paymentMethods=${paymentMethod}`
 const BITREFILL_REF_CODE = 'wtto2HuC'
@@ -11,17 +12,18 @@ const BITREFILL_BASE_URL = 'https://embed.bitrefill.com'
 export default function BitRefillWebView(props) {
 
   const sandboxConfig = 'allow-scripts allow-same-origin allow-popups allow-forms'
-  const iframeRef = useRef(null);
+  const actions = useActions()
+  // const iframeRef = useRef(null);
   const user = useSelector(({ modelData:{ user } }) => user);
   const [ iframeLoaded, setIframeLoaded ] = useState(false)
   const [ URI, setURI ] = useState('')
   const [ params ] = useState({
-    showPaymentInfo:true,
+    showPaymentInfo:false,
     hl:'es' ,
     ref:BITREFILL_REF_CODE,
     utm_source:UTM_SOURCE,
     email:user?.email,
-    endUserToken:user?.id,
+    // endUserToken:user?.id,
     paymentMethods:['usdt_trc20', 'bitcoin', 'litecoin'],
     refundAddress:'TKtTQX9PSeaRWrnhThttSREMpu4XLnVMv6'
   })
@@ -42,20 +44,29 @@ export default function BitRefillWebView(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const openConfirmation = async(data) => {
+      const Element = await import("./confirmation");
+      if (!Element) return;
+      const ConfirmationTransfer = Element.default
+      actions.renderModal(() => <ConfirmationTransfer data={data}/>);
+  }
+
   // Listening bitrefill events
   useEffect(() => {
     window.onmessage = function(e) {
       if (e.origin !== BITREFILL_BASE_URL) return;
+      if(JSON.parse(e.data)?.event === 'payment_intent')openConfirmation(JSON.parse(e.data));
       console.log('|||||||||  FromBitRefillWebView ==> ', JSON.parse(e.data))
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
 
   return(
     <>
       { !iframeLoaded && <BitRefillFallBack/> }
       <Iframe   
         iframeLoaded={iframeLoaded}
-        ref={iframeRef} 
         src={URI} 
         sandbox={sandboxConfig} 
         title="Bitrefill"
