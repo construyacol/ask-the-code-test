@@ -25,3 +25,11 @@ export const Iframe = styled.iframe`
   border: none;
   display: ${props => props.iframeLoaded ? `initial` : 'none'};
 ` 
+
+export const ConfirmationLayout = styled.section`
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    padding: 50px;
+    border-radius: 6px;
+`

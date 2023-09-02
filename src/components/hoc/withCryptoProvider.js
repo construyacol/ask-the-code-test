@@ -48,13 +48,12 @@ export default function withCryptoProvider(AsComponent) {
       takeFeeFromAmount:DEFAULT_TAKE_FEE_FROM_AMOUNT,
       availableBalance: formatToCurrency(balance?.available, balance?.currency), 
       totalBalance: formatToCurrency(balance?.available, balance?.currency), 
-      withdrawAmount:undefined,
+      withdrawAmount:new BigNumber(0),
       fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
       total:new BigNumber(0), 
       minAmount:getMinAmount(withdrawProviders.current) || new BigNumber(0), 
       isEthereum:!priorityList[currentPriority]?.fixed && isEthValidator(withdrawProviders.current?.address_validator_config?.name)
     })
-
 
     const [ ethers, setEthers ] = useState(ETHERS_INITIAL_STATE)
 
@@ -214,10 +213,7 @@ export default function withCryptoProvider(AsComponent) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawData.minAmount, withdrawData.fixedCost])
 
-    useEffect(() => {
-      calculateTotal()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPriority, withdrawData.fixedCost, withdrawData.amount, withdrawData.baseFee])
+    useEffect(calculateTotal, [currentPriority, withdrawData.fixedCost, withdrawData.amount, withdrawData.baseFee])
  
     return ( 
       <>

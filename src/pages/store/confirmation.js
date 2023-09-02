@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import styled from 'styled-components'
 import { ModalLayout } from 'core/components/layout'
 import { serveModelsByCustomProps } from 'selectors'
 import { useSelector } from "react-redux";
@@ -7,40 +6,19 @@ import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import { WITHDRAW_PRIORITY_FEE } from 'const/const'
 import { Button } from 'core/components/atoms';
 import { createProviderInfoNeeded } from 'utils/withdrawProvider'
+import { INVOICE_PAYMENT_CURRENCY } from 'const/bitrefill'
+import { ConfirmationLayout } from './styles'
 
 
-const PAYMENT_CURRENCY = {
-   USDT:{
-      'currency':'usdt',
-      'method':{
-         'usdt_trc20':'tron'
-      }
-   },
-   BTC:{
-      'currency':'bitcoin',
-      'method':{
-         'bitcoin':'bitcoin'
-      }
-   },
-   LTC:{
-      'currency':'litecoin',
-      'method':{
-         'litecoin':'litecoin'
-      }
-   }
-}
-
-
-function WrapperComponent({ data }){
+function ConfirmationComponent({ data, balances }){
 
     const { paymentCurrency, paymentMethod } = data
     const walletsByCurrency = useSelector(({ modelData:{ wallets }}) => serveModelsByCustomProps(wallets, 'currency'));
-    const balances = useSelector(({ modelData:{ balances } }) => balances);
-    const currentWallet = walletsByCurrency ? walletsByCurrency[PAYMENT_CURRENCY[paymentCurrency]?.currency] : {}
+    const currentWallet = walletsByCurrency ? walletsByCurrency[INVOICE_PAYMENT_CURRENCY[paymentCurrency]?.currency] : {}
     const currentBalance = (currentWallet && balances) && balances[currentWallet?.id]
 
     return(
-        <ModalLayout loading={false}>
+        <ModalLayout loading={true}>
                 {
                   (currentWallet && currentBalance) ?
                      <WithdrawConfirm
@@ -49,8 +27,8 @@ function WrapperComponent({ data }){
                            balance={currentBalance}
                            invoiceData={{
                               ...data,
-                              paymentCurrency:PAYMENT_CURRENCY[paymentCurrency]?.currency,
-                              paymentMethod:PAYMENT_CURRENCY[paymentCurrency]?.method[paymentMethod],
+                              paymentCurrency:INVOICE_PAYMENT_CURRENCY[paymentCurrency]?.currency,
+                              provider:INVOICE_PAYMENT_CURRENCY[paymentCurrency]?.method[paymentMethod]?.provider,
                            }}
                      />
                   :
@@ -60,13 +38,7 @@ function WrapperComponent({ data }){
     )
 }
 
-const ConfirmationLayout = styled.section`
-    width: 500px;
-    height: 500px;
-    background-color: white;
-    padding: 50px;
-    border-radius: 6px;
-`
+
 
 function ConfirmationTransfer(props) {
     const {
@@ -87,7 +59,7 @@ function ConfirmationTransfer(props) {
 
    useEffect(() => {
       let wProviders = withdrawProvidersByName[invoiceData?.paymentCurrency]
-      wProviders && setNetworkProvider(prevState => ({...prevState, current:wProviders[invoiceData?.paymentMethod]}))
+      wProviders && setNetworkProvider(prevState => ({...prevState, current:wProviders[invoiceData?.provider]}))
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
@@ -166,6 +138,6 @@ function ConfirmationTransfer(props) {
    )
 }
 
-export default WrapperComponent
+export default ConfirmationComponent
 
 const WithdrawConfirm = withCryptoProvider(ConfirmationTransfer)

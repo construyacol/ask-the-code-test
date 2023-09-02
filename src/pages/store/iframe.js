@@ -1,55 +1,47 @@
 import { useEffect, useState, } from "react";
+import { serveModelsByCustomProps } from 'selectors'
 import { useSelector } from "react-redux";
 import BitRefillFallBack from './fallBack'
 import { useActions } from 'hooks/useActions'
 import { Iframe } from './styles'
+import { createURI } from 'utils'
+import { getPaymentData } from 'utils/bitrefill'
+import { BITREFILL_BASE_URL, BITREFILL_PARAMS_DEFAULT } from 'const/bitrefill'
 
-// let uri = `https://embed.bitrefill.com/?showPaymentInfo=true&email=${email}&hl=${lang}&ref=${refCode}&paymentMethods=${paymentMethod}`
-const BITREFILL_REF_CODE = 'wtto2HuC'
-const UTM_SOURCE = 'Coinsenda'
-const BITREFILL_BASE_URL = 'https://embed.bitrefill.com'
 
 export default function BitRefillWebView(props) {
 
   const sandboxConfig = 'allow-scripts allow-same-origin allow-popups allow-forms'
   const actions = useActions()
-  // const iframeRef = useRef(null);
   const user = useSelector(({ modelData:{ user } }) => user);
+  const balances = useSelector(({ modelData:{ balances } }) => balances);
+  const balancesByCurrency = serveModelsByCustomProps(balances, 'currency')
+
   const [ iframeLoaded, setIframeLoaded ] = useState(false)
   const [ URI, setURI ] = useState('')
-  const [ params ] = useState({
-    showPaymentInfo:false,
-    hl:'es' ,
-    ref:BITREFILL_REF_CODE,
-    utm_source:UTM_SOURCE,
-    email:user?.email,
-    // endUserToken:user?.id,
-    paymentMethods:['usdt_trc20', 'bitcoin', 'litecoin'],
-    refundAddress:'TKtTQX9PSeaRWrnhThttSREMpu4XLnVMv6'
-  })
- 
-  //Todos los parámetros deben estar codificados en URL
-  const createURI = (base, params) => {
-    let query = Object.keys(params)
-        .map(key => `${key}=${encodeURIComponent(params[key])}`)
-        .join('&');
-    return `${base}?${query}`;
+
+  const openConfirmation = async(data) => {
+    const Element = await import("./confirmation");
+    if (!Element) return;
+    const ConfirmationComponent = Element.default
+    actions.renderModal(() => <ConfirmationComponent data={data} balances={balances}/>);
   }
 
   const handleIframeLoad = () => setIframeLoaded(true);
 
-  useEffect(() => {
-    let uri = createURI(BITREFILL_BASE_URL, params)
-    setURI(uri)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const openConfirmation = async(data) => {
-      const Element = await import("./confirmation");
-      if (!Element) return;
-      const ConfirmationTransfer = Element.default
-      actions.renderModal(() => <ConfirmationTransfer data={data}/>);
+  const initialize = async() => {
+    const paymenData = await getPaymentData(balancesByCurrency)
+    const params = {
+      ...BITREFILL_PARAMS_DEFAULT,
+      ...paymenData,
+      email:user?.email,
+      endUserToken:user?.id,
+    }
+    setURI(createURI(BITREFILL_BASE_URL, params))
   }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => initialize(), [])
 
   // Listening bitrefill events
   useEffect(() => {
