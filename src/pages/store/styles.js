@@ -27,9 +27,17 @@ export const Iframe = styled.iframe`
 ` 
 
 export const ConfirmationLayout = styled.section`
-    width: 500px;
-    height: 500px;
-    background-color: white;
-    padding: 50px;
-    border-radius: 6px;
+  min-height: 200px;
+  min-width: 250px;
+  max-width: 500px;
+  width: auto;
+  height: auto;
+  background-color: white;
+  padding: 50px;
+  border-radius: 6px;
+
+  display: grid;
+    grid-template-rows: 1fr auto;
+    place-content: center;
+    place-items: center;
 `

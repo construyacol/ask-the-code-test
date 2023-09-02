@@ -16,11 +16,13 @@ import { isSafari } from '../../utils'
 import useFreshChat from 'services/FreshChat' 
 import { TopNotification } from "components/atoms";
 import { useAppVersion } from "hooks/useAppVersion";
+import BitRefillFallBack from 'pages/store/fallBack'
+
 
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
 const ReferralComponent = loadable(() => import("pages/referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
-const StorePageView = loadable(() => import("pages/store"), {fallback: <div>CARGANDO TIENDA</div>});
+const StorePageView = loadable(() => import("pages/store"), {fallback: <BitRefillFallBack/>});
 const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <LazyLoaderPage path={"settings"} />});
 
 const HomeContainer = () => {

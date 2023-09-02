@@ -133,7 +133,7 @@ export const ButtonPrincipalMenu = ({
 
   const Wrapper = ["withdraw_accounts"].includes(clave) ? "div" : Link
   const toWithdrawAccounts = ["withdraw_accounts"].includes(clave) ? handleAction : activarItem
-
+  console.log('|||||||||||||||  icon', icon)
 
   return (
         <Wrapper
@@ -152,7 +152,7 @@ export const ButtonPrincipalMenu = ({
                 icon={icon}
                 size={18}
                 color={`${path === clave ? "#14B3F0" : "#d6d6d6"}`}
-              />
+              /> 
               <PopNotification notifier={clave} />
             </div>
             <p className="itemText fuente">{buttonText}</p>

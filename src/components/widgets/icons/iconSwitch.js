@@ -112,7 +112,7 @@ const Accepeted = loadable(() =>
 const SwapCamera = loadable(() => import("./").then(getExportByName("SwapCamera")));
 const Pse = loadable(() => import("./").then(getExportByName("PSE")));
 
-const Handshake = loadable(() => import("./").then(getExportByName("Handshake")));
+const ReferralIcon = loadable(() => import("./").then(getExportByName("ReferralIcon")));
 const Search = loadable(() => import("./").then(getExportByName("Search")));
 const Ethereum = loadable(() => import("./").then(getExportByName("Ethereum")));
 const Usdt = loadable(() => import("./").then(getExportByName("Usdt")));
@@ -188,6 +188,7 @@ const Internals = loadable(() => import("./").then(getExportByName("Internals"))
 const BankAccount = loadable(() => import("./").then(getExportByName("BankAccount")));
 const FacebookMsg = loadable(() => import("./").then(getExportByName("FacebookMsg")));
 const Gmail = loadable(() => import("./").then(getExportByName("Gmail")));
+const Store = loadable(() => import("./").then(getExportByName("Store")));
 const BankName = loadable(() => import("./").then(getExportByName("BankName")));
 
 
@@ -196,6 +197,8 @@ class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     switch (icon) {
+      case "store":
+        return <Store {...props} />; 
       case "bankName":
         return <BankName {...props} />; 
       case "bankAccount":
@@ -395,7 +398,7 @@ class IconSwitch extends Component {
       case "security":
         return <Security2 {...props} />;
       case "referral":
-        return <Handshake {...props} />;
+        return <ReferralIcon {...props} />;
       case "referralPerson":
         return <ReferralPerson {...props} />;
       case "swap":

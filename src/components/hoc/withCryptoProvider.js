@@ -213,6 +213,7 @@ export default function withCryptoProvider(AsComponent) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawData.minAmount, withdrawData.fixedCost])
 
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(calculateTotal, [currentPriority, withdrawData.fixedCost, withdrawData.amount, withdrawData.baseFee])
  
     return ( 
