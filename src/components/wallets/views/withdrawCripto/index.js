@@ -102,14 +102,13 @@ export const CriptoView = (props) => {
     finish_withdraw(payload);
     actions.renderModal(null);
   };
- 
-
 
 
   const finish_withdraw = async (fnProps) => {
     const { twoFaToken = null, cost_information, gas_limit } = fnProps
     actions.isAppLoading(true);
     const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
+    debugger
     if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
       // setShowModal(false)
       setWithdrawConfirmed(false)

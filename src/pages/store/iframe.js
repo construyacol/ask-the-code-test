@@ -9,7 +9,7 @@ import { getPaymentData } from 'utils/bitrefill'
 import { BITREFILL_BASE_URL, BITREFILL_PARAMS_DEFAULT } from 'const/bitrefill'
 
 
-export default function BitRefillWebView(props) {
+export default function BitRefillWebView() {
 
   const sandboxConfig = 'allow-scripts allow-same-origin allow-popups allow-forms'
   const actions = useActions()
@@ -19,17 +19,24 @@ export default function BitRefillWebView(props) {
 
   const [ iframeLoaded, setIframeLoaded ] = useState(false)
   const [ URI, setURI ] = useState('')
+  const [ reset, setReset ] = useState(false)
 
   const openConfirmation = async(data) => {
     const Element = await import("./confirmation");
     if (!Element) return;
     const ConfirmationComponent = Element.default
-    actions.renderModal(() => <ConfirmationComponent data={data} balances={balances}/>);
+    actions.renderModal(() => <ConfirmationComponent 
+      data={data} 
+      setReset={setReset} 
+      balances={balances}
+    />);
   }
 
   const handleIframeLoad = () => setIframeLoaded(true);
 
   const initialize = async() => {
+    setReset(false)
+    setIframeLoaded(false)
     const paymenData = await getPaymentData(balancesByCurrency)
     const params = {
       ...BITREFILL_PARAMS_DEFAULT,
@@ -41,29 +48,38 @@ export default function BitRefillWebView(props) {
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => initialize(), [])
+  useEffect(() => initialize(), [reset])
 
-  // Listening bitrefill events
+  function openBitrefillPayment(e){
+    if (e.origin !== BITREFILL_BASE_URL) return;
+    const invoiceData = JSON.parse(e.data);
+    if(invoiceData?.event === 'payment_intent')openConfirmation(invoiceData);
+  }
+
   useEffect(() => {
-    window.onmessage = function(e) {
-      if (e.origin !== BITREFILL_BASE_URL) return;
-      if(JSON.parse(e.data)?.event === 'payment_intent')openConfirmation(JSON.parse(e.data));
-      console.log('|||||||||  FromBitRefillWebView ==> ', JSON.parse(e.data))
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    window.addEventListener('message', openBitrefillPayment);
+    return () => window.removeEventListener('message', openBitrefillPayment);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
 
 
   return(
     <>
-      { !iframeLoaded && <BitRefillFallBack/> }
-      <Iframe   
-        iframeLoaded={iframeLoaded}
-        src={URI} 
-        sandbox={sandboxConfig} 
-        title="Bitrefill"
-        onLoad={handleIframeLoad}
-      />
+      {
+        !reset &&
+        <>
+          { !iframeLoaded && <BitRefillFallBack/> }
+          <Iframe   
+            iframeLoaded={iframeLoaded}
+            src={URI} 
+            sandbox={sandboxConfig} 
+            title="Bitrefill"
+            onLoad={handleIframeLoad}
+          />
+        </>
+      }
     </>
   )
   // return <BitRefillFallBack/>

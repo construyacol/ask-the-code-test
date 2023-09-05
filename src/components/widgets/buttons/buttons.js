@@ -133,7 +133,6 @@ export const ButtonPrincipalMenu = ({
 
   const Wrapper = ["withdraw_accounts"].includes(clave) ? "div" : Link
   const toWithdrawAccounts = ["withdraw_accounts"].includes(clave) ? handleAction : activarItem
-  console.log('|||||||||||||||  icon', icon)
 
   return (
         <Wrapper

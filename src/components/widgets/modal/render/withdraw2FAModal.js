@@ -11,21 +11,36 @@ import IconSwitch from "../../icons/iconSwitch";
 import { useActions } from "../../../../hooks/useActions";
 import { IconClose } from "../../shared-styles";
 
-const Withdraw2FaModal = ({ callback, isWithdraw2fa, ...props }) => {
+const Withdraw2FaModal = (props) => {
 
   const actions = useActions();
   const cerrar = (e, forcedClose) => {
     actions.renderModal(null);
+    props?.cancelAction && props?.cancelAction()
   };
 
   const handleAction = (twoFaToken) => {
-    return callback({twoFaToken, ...props})
+    return props?.callback && props?.callback({twoFaToken, ...props})
   }
 
   return (
     <OtherModalLayout>
-      <Layout>
-        <IconClose onClick={cerrar} theme="dark" size={20} />
+      <Withdraw2FaComponent
+        closeAction={cerrar}
+        handleAction={handleAction}
+        {...props}
+      />
+    </OtherModalLayout>
+  );
+};
+
+export default Withdraw2FaModal;
+
+
+export const Withdraw2FaComponent = ({ closeAction, isWithdraw2fa, handleAction }) => {
+  return(
+    <Layout>
+        <IconClose onClick={closeAction} theme="dark" size={20} />
         <TopSection>
           <Title className="fuente">Autenticación de retiro</Title>
           <CircleIconContainer>
@@ -46,14 +61,11 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, ...props }) => {
               <AuthReq isWithdraw2fa={isWithdraw2fa} authenticated={handleAction} />
             </AutContainer>
           </Description>
-          <ButtonCont onClick={() => cerrar(false, true)}>Cancelar</ButtonCont>
+          <ButtonCont onClick={() => closeAction(false, true)}>Cancelar</ButtonCont>
         </BottomSection>
       </Layout>
-    </OtherModalLayout>
-  );
-};
-
-export default Withdraw2FaModal;
+  )
+}
 
 const BackTopSection = styled.div`
   opacity: 0.05 !important;

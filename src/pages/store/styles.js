@@ -35,9 +35,9 @@ export const ConfirmationLayout = styled.section`
   background-color: white;
   padding: 50px;
   border-radius: 6px;
-
   display: grid;
-    grid-template-rows: 1fr auto;
-    place-content: center;
-    place-items: center;
+  grid-template-rows: 1fr auto auto;
+  place-content: center;
+  place-items: center;
+  row-gap:1rem;
 `
