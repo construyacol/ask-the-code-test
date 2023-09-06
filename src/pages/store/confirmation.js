@@ -3,18 +3,29 @@ import { ModalLayout } from 'core/components/layout'
 import { serveModelsByCustomProps } from 'selectors'
 import { useSelector } from "react-redux";
 import withCryptoProvider from 'components/hoc/withCryptoProvider'
-import { WITHDRAW_PRIORITY_FEE } from 'const/const'
+import { WITHDRAW_PRIORITY_FEE, history } from 'const/const'
 import { Button } from 'core/components/atoms';
 import { createProviderInfoNeeded } from 'utils/withdrawProvider'
-import { INVOICE_PAYMENT_CURRENCY } from 'const/bitrefill'
 import { ConfirmationLayout } from './styles'
-import { BITREFILL_BASE_URL } from 'const/bitrefill'
 import { useActions } from 'hooks/useActions'
 import sleep from 'utils/sleep';
 import { isEmpty } from 'lodash'
-import { history } from 'const/const'
 import loadable from "@loadable/component";
 import { getExportByName } from 'utils'
+import BigNumber from 'bignumber.js';
+import { invoiceDataComponent } from 'core/components/organisms'
+import { 
+   INVOICE_PAYMENT_CURRENCY, 
+   BITREFILL_STATE, 
+   BITREFILL_BASE_URL,
+   PENDING_FUNDS,
+   INSUFFICIENT_FUNDS,
+   TRANSFERRING_FUNDS,
+   DETECTING_PAYMENT,
+   PAYMENT_DETECTED
+} from 'const/bitrefill'
+
+
 
 
 const Withdraw2FaComponent = loadable(() => import('components/widgets/modal/render/withdraw2FAModal').then(getExportByName('Withdraw2FaComponent')));
@@ -69,7 +80,9 @@ function ConfirmationTransfer(props) {
 
    const [ loading, setLoading ] = useState(false)
    const [ render2fa, setRender2fa ] = useState(false)
-   const [ labelState, setLabelState ] = useState('Preparando envío')
+   // const [ labelState, setLabelState ] = useState('Preparando envío')
+   const [ paymentState, setPaymentState ] = useState(BITREFILL_STATE[PENDING_FUNDS])
+
    const actions = useActions()
 
    const closeAction = () => {
@@ -88,14 +101,12 @@ function ConfirmationTransfer(props) {
    }
 
    const withdrawToBitrefill = async({ twoFaToken }) => {
-      if(withdrawData?.withdrawAmount.isEqualTo(0)) return setLabelState('No tienes fondos suficientes');
       setLoading(true)
       const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
       if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken)return setRender2fa(true)
       let withdrawAccount = withdraw_accounts[invoiceData?.paymentAddress]
+      setPaymentState(BITREFILL_STATE.transferring_funds)
       if (!withdrawAccount) { 
-         setLabelState('Añadiendo cuenta de retiro')
-         await sleep(1500)
          const body = {
             data:{
                country:current_wallet?.country,
@@ -126,15 +137,15 @@ function ConfirmationTransfer(props) {
       //    bodyRequest.data.network_data = network_data
       //    bodyRequest.data.cost_information.gas_limit = gas_limit
       // } 
-      setLabelState('Transfiriendo fondos a Bitrefill')
-      await sleep(1500)
-      const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
-      console.log('coinsendaServices_addWithdrawOrder ====> ', data, error)
-      if(error){
-         setLoading(false)
-         return setLabelState(error.message)
-      }
-      setLabelState('Esperando detección de fondos por bitrefill, esto puede tomar un momento')
+      
+      // const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
+      await sleep(2000)
+      // console.log('coinsendaServices_addWithdrawOrder ====> ', data, error)
+      // if(error){
+      //    setLoading(false)
+      //    return alert(error.message)
+      // }
+      setPaymentState(BITREFILL_STATE.detecting_payment)
    }
 
    function handleBitrefillEvents(e) {
@@ -142,12 +153,12 @@ function ConfirmationTransfer(props) {
       const invoiceData = JSON.parse(e.data);
       if (invoiceData?.event === 'invoice_update') {
          if (invoiceData?.status === 'payment_detected') {
-            setLabelState('Pago detectado por bitrefill. Alcanzando confirmaciones necesarias... esto puede tomar algunos minutos');
+            setPaymentState(BITREFILL_STATE.payment_detected)
          }
       };
       if (invoiceData?.event === 'invoice_complete' || invoiceData?.event === 'payment_confirmed') actions.renderModal(null);
       console.log('|||||||||  FromBitRefillWebView_handleEvent ==> ', invoiceData);
-    }
+   }
 
    // 1. Inicialmente se setea el withdraw provider al hoc - controlador de retiro cripto
    useEffect(() => {
@@ -159,6 +170,12 @@ function ConfirmationTransfer(props) {
    // 2. Una vez el controlador del cripto provider tiene un withdraw provider seteado, seteamos la cantidad de retiro para que el controlador pueda calcular demás criterios necesarios para conllevar el retiro en proceso
    // eslint-disable-next-line react-hooks/exhaustive-deps
    useEffect(() => !isEmpty(withdrawProviders.current) && setWithdrawData(prevState => ({...prevState, amount:invoiceData?.paymentAmount})), [withdrawProviders])
+
+   // 3. Determino si hay fondos suficientes en la cuenta de origen
+   useEffect(() => {
+      if(new BigNumber(withdrawData?.amount).isGreaterThan(0)) withdrawData?.withdrawAmount.isEqualTo(0) && setPaymentState(BITREFILL_STATE[INSUFFICIENT_FUNDS]);
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [withdrawData?.withdrawAmount])
   
    useEffect(() => {
    window.addEventListener('message', handleBitrefillEvents);
@@ -166,7 +183,7 @@ function ConfirmationTransfer(props) {
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
-
+   // console.log('=============== paymentState ====>', withdrawData)
 
    return(
       <ModalLayout loading={true}>
@@ -179,9 +196,9 @@ function ConfirmationTransfer(props) {
             />
             :
             <ConfirmationLayout>
-               <p>{labelState}</p>
-               <Button loading={loading} onClick={labelState.includes('No tienes fondos') ? goToWallet : withdrawToBitrefill} variant="contained" color="primary">
-                  {labelState.includes('No tienes fondos') ? 'Recargar cuenta' : 'Proceder'}
+               <p>{paymentState.title}</p>
+               <Button loading={loading} onClick={paymentState.status === INSUFFICIENT_FUNDS ? goToWallet : withdrawToBitrefill} variant="contained" color="primary">
+                  {paymentState.status === INSUFFICIENT_FUNDS ? 'Recargar cuenta' : 'Proceder'}
                </Button>
                <Button disabled={loading} onClick={closeAction} variant="outlined" color="primary">
                   Cancelar

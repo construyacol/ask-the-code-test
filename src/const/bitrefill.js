@@ -12,6 +12,42 @@ export const BITREFILL_PARAMS_DEFAULT = {
     refundAddress:'TKtTQX9PSeaRWrnhThttSREMpu4XLnVMv6'
 }
 
+export const PENDING_FUNDS = 'pending_funds'
+export const INSUFFICIENT_FUNDS = 'insufficient_funds'
+export const TRANSFERRING_FUNDS = 'transferring_funds'
+export const DETECTING_PAYMENT = 'detecting_payment'
+export const PAYMENT_DETECTED = 'payment_detected'
+
+export const BITREFILL_STATE = {
+   pending_funds:{
+      status:PENDING_FUNDS,
+      title:'Procede con la compra',
+      message:''
+   },
+   insufficient_funds:{
+      status:INSUFFICIENT_FUNDS,
+      title:'Fondos insuficientes',
+      message:'Recarga tu cuenta para proceder con la compra'
+   },
+   transferring_funds:{
+      status:TRANSFERRING_FUNDS,
+      title:'Transferiendo fondos a Bitrefill',
+      message:''
+   },
+   detecting_payment:{
+      status:DETECTING_PAYMENT,
+      title:'Esperando detección del pago por Bitrefill',
+      message:'esto puede tomar un momento'
+   },
+   payment_detected:{
+      status:PAYMENT_DETECTED,
+      title:'Pago detectado por Bitrefill',
+      message:'Alcanzando confirmaciones necesarias en la red. Esto puede tomar algunos minutos'
+   }
+}
+
+
+
 const usdc = {
    'currency':'usdc',
    'method':{

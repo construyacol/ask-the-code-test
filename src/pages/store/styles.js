@@ -41,3 +41,5 @@ export const ConfirmationLayout = styled.section`
   place-items: center;
   row-gap:1rem;
 `
+
+
