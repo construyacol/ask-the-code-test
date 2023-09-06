@@ -3,29 +3,31 @@ import { ModalLayout } from 'core/components/layout'
 import { serveModelsByCustomProps } from 'selectors'
 import { useSelector } from "react-redux";
 import withCryptoProvider from 'components/hoc/withCryptoProvider'
-import { WITHDRAW_PRIORITY_FEE, history } from 'const/const'
-import { Button } from 'core/components/atoms';
+import { WITHDRAW_PRIORITY_FEE } from 'const/const'
+import { Button, H3 } from 'core/components/atoms';
 import { createProviderInfoNeeded } from 'utils/withdrawProvider'
-import { ConfirmationLayout } from './styles'
+import { CrudContainer } from 'core/components/molecules/modalCrud/styles'
+import { Content } from 'components/forms/widgets/success/styles'
+// import { ConfirmationLayout } from './styles'
 import { useActions } from 'hooks/useActions'
 import sleep from 'utils/sleep';
 import { isEmpty } from 'lodash'
 import loadable from "@loadable/component";
 import { getExportByName } from 'utils'
 import BigNumber from 'bignumber.js';
-import { invoiceDataComponent } from 'core/components/organisms'
+import { InvoiceDataComponent, BitrefillPaymentProcess } from 'core/components/organisms'
+import { HeaderContainer, ButtonsContainer } from 'core/components/shared/styles'
+// import IconSwitch from "components/widgets/icons/iconSwitch"
+import { Transfer } from 'components/widgets/icons'
+import { ConfirmationContent } from './styles'
 import { 
    INVOICE_PAYMENT_CURRENCY, 
    BITREFILL_STATE, 
    BITREFILL_BASE_URL,
-   PENDING_FUNDS,
    INSUFFICIENT_FUNDS,
    TRANSFERRING_FUNDS,
-   DETECTING_PAYMENT,
-   PAYMENT_DETECTED
+   PENDING_FUNDS
 } from 'const/bitrefill'
-
-
 
 
 const Withdraw2FaComponent = loadable(() => import('components/widgets/modal/render/withdraw2FAModal').then(getExportByName('Withdraw2FaComponent')));
@@ -81,7 +83,7 @@ function ConfirmationTransfer(props) {
    const [ loading, setLoading ] = useState(false)
    const [ render2fa, setRender2fa ] = useState(false)
    // const [ labelState, setLabelState ] = useState('Preparando envío')
-   const [ paymentState, setPaymentState ] = useState(BITREFILL_STATE[PENDING_FUNDS])
+   const [ paymentState, setPaymentState ] = useState(BITREFILL_STATE.pending_funds)
 
    const actions = useActions()
 
@@ -95,17 +97,18 @@ function ConfirmationTransfer(props) {
       withdrawToBitrefill({ twoFaToken })
    }
 
-   const goToWallet = () => {
+   const goToWallet = async() => {
       actions.renderModal(null);
+      const { history } = await import("const/const")
       return history.push(`/wallets/deposit/${current_wallet.id}`);
    }
 
    const withdrawToBitrefill = async({ twoFaToken }) => {
       setLoading(true)
+      setPaymentState(BITREFILL_STATE.transferring_funds)
       const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
       if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken)return setRender2fa(true)
       let withdrawAccount = withdraw_accounts[invoiceData?.paymentAddress]
-      setPaymentState(BITREFILL_STATE.transferring_funds)
       if (!withdrawAccount) { 
          const body = {
             data:{
@@ -138,13 +141,13 @@ function ConfirmationTransfer(props) {
       //    bodyRequest.data.cost_information.gas_limit = gas_limit
       // } 
       
-      // const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
-      await sleep(2000)
-      // console.log('coinsendaServices_addWithdrawOrder ====> ', data, error)
-      // if(error){
-      //    setLoading(false)
-      //    return alert(error.message)
-      // }
+      const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
+      await sleep(4000)
+      console.log('coinsendaServices_addWithdrawOrder ====> ', data, error)
+      if(error){
+         setLoading(false)
+         return alert(error.message)
+      }
       setPaymentState(BITREFILL_STATE.detecting_payment)
    }
 
@@ -183,7 +186,7 @@ function ConfirmationTransfer(props) {
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
-   // console.log('=============== paymentState ====>', withdrawData)
+   console.log('paymentStateStatus', [TRANSFERRING_FUNDS].includes(paymentState.status))
 
    return(
       <ModalLayout loading={true}>
@@ -195,15 +198,50 @@ function ConfirmationTransfer(props) {
                handleAction={setTowFaTokenAction}
             />
             :
-            <ConfirmationLayout>
-               <p>{paymentState.title}</p>
-               <Button loading={loading} onClick={paymentState.status === INSUFFICIENT_FUNDS ? goToWallet : withdrawToBitrefill} variant="contained" color="primary">
-                  {paymentState.status === INSUFFICIENT_FUNDS ? 'Recargar cuenta' : 'Proceder'}
-               </Button>
-               <Button disabled={loading} onClick={closeAction} variant="outlined" color="primary">
-                  Cancelar
-               </Button>
-            </ConfirmationLayout>
+            <CrudContainer rowGap="10px" maxWidth={600} className={`flex no-padding height-fit-content`}>
+               <Content className="payment--content">
+                  <HeaderContainer>
+                     <Transfer
+                        size={40}
+                        color={'var(--primary)'}
+                     />
+                     <H3> 
+                        {![INSUFFICIENT_FUNDS, PENDING_FUNDS].includes(paymentState.status) ? 'Procesando pago a Bitrefill' : 'Confirmación de pago'}
+                     </H3>
+                  </HeaderContainer>
+
+                  <ConfirmationContent>
+                     <InvoiceDataComponent 
+                        invoiceData={invoiceData} 
+                        withdrawData={withdrawData}
+                        current_wallet={current_wallet}   
+                        status={paymentState.status}
+                        handleAction={goToWallet}
+                     />
+                     <BitrefillPaymentProcess
+                        paymentState={paymentState}
+                        visible={![INSUFFICIENT_FUNDS, PENDING_FUNDS].includes(paymentState.status)}
+                     />
+                  </ConfirmationContent>
+
+                  <ButtonsContainer marginTop={30}>
+                     <Button disabled={loading} onClick={closeAction}  color="primary">
+                        Cancelar
+                     </Button>
+                     <Button 
+                        // loading={loading} 
+                        disabled={loading || [INSUFFICIENT_FUNDS].includes(paymentState.status)} 
+                        onClick={[INSUFFICIENT_FUNDS].includes(paymentState.status) ? goToWallet : withdrawToBitrefill} 
+                        variant="contained" 
+                        color="primary"
+                     >  
+                     {loading ? 'Pagando...' : 'Proceder'}
+                        
+                     </Button>
+                  </ButtonsContainer>
+
+               </Content>
+            </CrudContainer>
          }
       </ModalLayout>
    )
@@ -212,3 +250,5 @@ function ConfirmationTransfer(props) {
 export default ConfirmationComponent
 
 const WithdrawConfirm = withCryptoProvider(ConfirmationTransfer)
+
+

@@ -19,33 +19,35 @@ export const DETECTING_PAYMENT = 'detecting_payment'
 export const PAYMENT_DETECTED = 'payment_detected'
 
 export const BITREFILL_STATE = {
-   pending_funds:{
+   [PENDING_FUNDS]:{
       status:PENDING_FUNDS,
       title:'Procede con la compra',
       message:''
    },
-   insufficient_funds:{
+   [INSUFFICIENT_FUNDS]:{
       status:INSUFFICIENT_FUNDS,
       title:'Fondos insuficientes',
       message:'Recarga tu cuenta para proceder con la compra'
    },
-   transferring_funds:{
+   [TRANSFERRING_FUNDS]:{
       status:TRANSFERRING_FUNDS,
-      title:'Transferiendo fondos a Bitrefill',
+      title:'Transfiriendo fondos a Bitrefill',
       message:''
    },
-   detecting_payment:{
+   [DETECTING_PAYMENT]:{
       status:DETECTING_PAYMENT,
-      title:'Esperando detección del pago por Bitrefill',
-      message:'esto puede tomar un momento'
+      title:'Bitrefill está detectando tu pago',
+      message:'Esto puede tomar un momento'
    },
-   payment_detected:{
+   [PAYMENT_DETECTED]:{
       status:PAYMENT_DETECTED,
       title:'Pago detectado por Bitrefill',
-      message:'Alcanzando confirmaciones necesarias en la red. Esto puede tomar algunos minutos'
+      message:'Estamos esperando que se confirme en la red. Esto puede tomar algunos minutos'
    }
 }
 
+
+// Hemos detectado tu pago de 0.02030416 LTC y estamos esperando que se confirme en la red. Puedes continuar navegando y comprando. Te enviaremos un correo electrónico una vez confirmado el pago.
 
 
 const usdc = {

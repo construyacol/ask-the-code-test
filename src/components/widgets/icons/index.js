@@ -6,7 +6,12 @@ import { getExportByName } from 'utils'
 
 
 
-// AiOutlineWallet
+
+
+export function Transfer(props) {
+  const BiTransferAlt = loadable(() => import("react-icons/bi").then(getExportByName("BiTransferAlt")));
+  return <BiTransferAlt {...props}/>
+}
 
 export function Wallet(props) {
   const BsWallet2 = loadable(() => import("react-icons/bs").then(getExportByName("BsWallet2")));

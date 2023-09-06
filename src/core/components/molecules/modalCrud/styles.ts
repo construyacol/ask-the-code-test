@@ -4,6 +4,7 @@ import { device } from "const/const"
 
 interface CrudContainerProps {
     rowGap?: string;
+    maxWidth?: string | number;
 }
 
 export const Flex = styled.div`
@@ -21,6 +22,8 @@ export const CrudContainer = styled(FlexColumn)<CrudContainerProps>`
     position:relative;
     border-radius: 10px;
     row-gap: ${props => props.rowGap ? `${props.rowGap}` : '0'};
+    max-width: ${props => props.maxWidth ? `${props.maxWidth}px` : '0'};
+    
 
     &.height-fit-content{
         height: fit-content;

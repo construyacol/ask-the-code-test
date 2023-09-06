@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+export const ConfirmationContent = styled.div`
+  position: relative;
+`
+
 export const FallBackLayout = styled.section`
   width: 100%;
   height: 100%;

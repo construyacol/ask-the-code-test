@@ -4,7 +4,8 @@ import { ModalLayout } from 'core/components/layout'
 import { CrudContainer } from 'core/components/molecules/modalCrud/styles'
 import { IconClose } from "components/widgets/shared-styles";
 import IconSwitch from "components/widgets/icons/iconSwitch";
-import { HeaderContainer, ContentContainer } from 'pages/paymentRequest/styles'
+import { ContentContainer } from 'pages/paymentRequest/styles'
+import { HeaderContainer } from 'core/components/shared/styles'
 import { P, H3, Button } from 'core/components/atoms'
 import { getAllUrlParams } from "utils/urlUtils";
 import { PaymentRequestParams } from 'interfaces/paymentRequest';

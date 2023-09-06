@@ -243,6 +243,10 @@ export const Content = styled.div`
     row-gap: 15px;
     position:relative;
 
+    &.payment--content{
+        padding: 35px 2.5rem;
+    }
+
     &.withdrawAccountSuccess{
         position:relative;
         display: grid;

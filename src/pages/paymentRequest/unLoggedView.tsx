@@ -3,7 +3,7 @@ import { loggedViewProps } from 'interfaces/paymentRequest';
 import QrGenerator from 'components/forms/widgets/fiatDeposit/internals/qrGenerator'
 import { UnloggedDisclaimer } from "./styles"
 import { HowToWorkCta } from 'core/components/molecules'
-import { ButtonsContainer } from './styles'
+import { ButtonsContainer } from 'core/components/shared/styles'
 
 const UnLoggedView = ({ currency, paymentRequest, amount, children, rejectRequest }:loggedViewProps) => {
 
