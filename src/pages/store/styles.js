@@ -1,4 +1,11 @@
 import styled from 'styled-components'
+import { CrudContainer } from 'core/components/molecules/modalCrud/styles'
+
+
+export const ModalContainer = styled(CrudContainer)`
+
+`
+
 
 export const ConfirmationContent = styled.div`
   position: relative;

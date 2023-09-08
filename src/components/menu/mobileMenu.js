@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 import loadable from "@loadable/component";
 import { useActions } from 'hooks/useActions'
 import { P } from 'core/components/atoms'
-
+import { AVAILABLE_USER_EMAILS } from 'const/bitrefill'
 
 
 export default function MobileMenuComponent(props) {
@@ -27,6 +27,8 @@ export default function MobileMenuComponent(props) {
 
     // console.log('menuPrincipal', menuPrincipal)
 
+
+
     return(
         <>      
             {
@@ -37,7 +39,7 @@ export default function MobileMenuComponent(props) {
                                 if (item.clave !== "settings" && verification_state !== "accepted") { return null }
                                 if (item.clave === "prices") { return null }
                                 if (item.clave === "withdraw_accounts") { return null }
-                                if (item.clave === "store" && !user?.email?.includes("bitrefill")) { return null }
+                                if (item.clave === "store" && !AVAILABLE_USER_EMAILS.includes(user.email)) { return null }
 
                                 return (
                                     <MenuItem

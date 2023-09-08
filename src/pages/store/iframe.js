@@ -62,9 +62,6 @@ export default function BitRefillWebView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-
-
   return(
     <>
       {
@@ -82,8 +79,6 @@ export default function BitRefillWebView() {
       }
     </>
   )
-  // return <BitRefillFallBack/>
-
 }
 
 // @params

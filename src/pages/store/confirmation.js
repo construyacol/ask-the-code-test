@@ -6,7 +6,6 @@ import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import { WITHDRAW_PRIORITY_FEE } from 'const/const'
 import { Button, H3 } from 'core/components/atoms';
 import { createProviderInfoNeeded } from 'utils/withdrawProvider'
-import { CrudContainer } from 'core/components/molecules/modalCrud/styles'
 import { Content } from 'components/forms/widgets/success/styles'
 // import { ConfirmationLayout } from './styles'
 import { useActions } from 'hooks/useActions'
@@ -19,13 +18,13 @@ import { InvoiceDataComponent, BitrefillPaymentProcess } from 'core/components/o
 import { HeaderContainer, ButtonsContainer } from 'core/components/shared/styles'
 // import IconSwitch from "components/widgets/icons/iconSwitch"
 import { Transfer } from 'components/widgets/icons'
-import { ConfirmationContent } from './styles'
+import { ConfirmationContent, ModalContainer } from './styles'
 import { 
    INVOICE_PAYMENT_CURRENCY, 
    BITREFILL_STATE, 
    BITREFILL_BASE_URL,
    INSUFFICIENT_FUNDS,
-   TRANSFERRING_FUNDS,
+   // TRANSFERRING_FUNDS,
    PENDING_FUNDS
 } from 'const/bitrefill'
 
@@ -140,7 +139,6 @@ function ConfirmationTransfer(props) {
       //    bodyRequest.data.network_data = network_data
       //    bodyRequest.data.cost_information.gas_limit = gas_limit
       // } 
-      
       const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
       await sleep(4000)
       console.log('coinsendaServices_addWithdrawOrder ====> ', data, error)
@@ -160,7 +158,6 @@ function ConfirmationTransfer(props) {
          }
       };
       if (invoiceData?.event === 'invoice_complete' || invoiceData?.event === 'payment_confirmed') actions.renderModal(null);
-      console.log('|||||||||  FromBitRefillWebView_handleEvent ==> ', invoiceData);
    }
 
    // 1. Inicialmente se setea el withdraw provider al hoc - controlador de retiro cripto
@@ -185,8 +182,8 @@ function ConfirmationTransfer(props) {
    return () => window.removeEventListener('message', handleBitrefillEvents);
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
-
-   console.log('paymentStateStatus', [TRANSFERRING_FUNDS].includes(paymentState.status))
+   
+   console.log('invoiceData', invoiceData?.invoiceId)
 
    return(
       <ModalLayout loading={true}>
@@ -198,7 +195,7 @@ function ConfirmationTransfer(props) {
                handleAction={setTowFaTokenAction}
             />
             :
-            <CrudContainer rowGap="10px" maxWidth={600} className={`flex no-padding height-fit-content`}>
+            <ModalContainer rowGap="10px" maxWidth={600} className={`flex no-padding height-fit-content`}>
                <Content className="payment--content">
                   <HeaderContainer>
                      <Transfer
@@ -235,13 +232,11 @@ function ConfirmationTransfer(props) {
                         variant="contained" 
                         color="primary"
                      >  
-                     {loading ? 'Pagando...' : 'Proceder'}
-                        
+                        {loading ? 'Pagando...' : 'Proceder'}
                      </Button>
                   </ButtonsContainer>
-
                </Content>
-            </CrudContainer>
+            </ModalContainer>
          }
       </ModalLayout>
    )

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { device } from 'const/const'
 
 
 export const PaymentProcessContainer = styled.div`
@@ -20,7 +21,7 @@ export const PaymentProcessContainer = styled.div`
       align-items: center;
       padding:0 0.7rem 0 0.8rem;
       border-left: 2px solid var(--primary);
-      font-size: .9rem;
+      font-size: .85rem;
    }
    &.visible{
       opacity: 1;
@@ -29,4 +30,17 @@ export const PaymentProcessContainer = styled.div`
       opacity: 0;
       pointer-events: none;
    }
+`
+
+export const ProcessItemsContainer = styled.div`
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);
+    padding: 1rem;
+    border-radius: 6px;
+    display: grid;
+    row-gap: 1.2rem;
+    @media ${device.mobile} {
+        width: calc(100% - 1rem);
+        padding: .5rem;
+    }
 `

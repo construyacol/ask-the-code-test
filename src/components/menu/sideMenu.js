@@ -23,6 +23,7 @@ import {
     // SideMenuWrapper
 } from './styles'
 import menuItems from "api/ui/menuItems";
+import { AVAILABLE_USER_EMAILS } from 'const/bitrefill'
 
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
@@ -186,7 +187,7 @@ const MenuItemsComponent = props => {
                     {
                         menuPrincipal.map((item) => { 
                              if (item.clave !== "settings" && verification_state !== "accepted") { return false }
-                             if (item.clave === "store" && !user?.email?.includes("bitrefill")) { return null }
+                             if (item.clave === "store" && !AVAILABLE_USER_EMAILS.includes(user?.email)) { return null }
                              if (item.clave === "withdraw_accounts") { return null }
                             return (
                                 <ButtonPrincipalMenu 

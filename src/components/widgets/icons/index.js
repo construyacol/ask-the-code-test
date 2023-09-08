@@ -6,7 +6,10 @@ import { getExportByName } from 'utils'
 
 
 
-
+export function Apps(props) {
+  const AiOutlineAppstore = loadable(() => import("react-icons/ai").then(getExportByName("AiOutlineAppstore")));
+  return <AiOutlineAppstore {...props}/>
+}
 
 export function Transfer(props) {
   const BiTransferAlt = loadable(() => import("react-icons/bi").then(getExportByName("BiTransferAlt")));

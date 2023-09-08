@@ -9,8 +9,15 @@ export const BITREFILL_PARAMS_DEFAULT = {
     email:'',
     endUserToken:'',
     paymentMethods:[],
-    refundAddress:'TKtTQX9PSeaRWrnhThttSREMpu4XLnVMv6'
+   //  refundAddress:''
 }
+
+
+export const AVAILABLE_USER_EMAILS = [
+   "erickospinapuertas@gmail.com",
+   "construyacol+bitrefill@gmail.com",
+   "construyacol@gmail.com"
+]
 
 export const PENDING_FUNDS = 'pending_funds'
 export const INSUFFICIENT_FUNDS = 'insufficient_funds'
@@ -32,17 +39,21 @@ export const BITREFILL_STATE = {
    [TRANSFERRING_FUNDS]:{
       status:TRANSFERRING_FUNDS,
       title:'Transfiriendo fondos a Bitrefill',
+      successTitle:'Fondos transferidos a Bitrefill con éxito',
       message:''
    },
    [DETECTING_PAYMENT]:{
       status:DETECTING_PAYMENT,
       title:'Bitrefill está detectando tu pago',
+      successTitle:'Pago detectado por Bitrefill',
       message:'Esto puede tomar un momento'
    },
    [PAYMENT_DETECTED]:{
       status:PAYMENT_DETECTED,
-      title:'Pago detectado por Bitrefill',
-      message:'Estamos esperando que se confirme en la red. Esto puede tomar algunos minutos'
+      title:'Bitrefill está confirmando tu pago',
+      successTitle:'Pago detectado por Bitrefill',
+      // message:'Estamos esperando las confirmaciones necesarias en la red. Esto puede tomar algunos minutos'
+      message:'Estamos esperando las confirmaciones necesarias en la red. Te pedimos paciencia, ya que en ocasiones este proceso puede llevar algunos minutos.'
    }
 }
 
@@ -72,7 +83,7 @@ const ethereum = {
       'ethereum':{
          'name':'ethereum',
          'provider':'ethereum',
-         'visible':true
+         'visible':false
       }
    }
 }
@@ -83,7 +94,7 @@ const dogecoin = {
       'dogecoin':{
          'name':'dogecoin',
          'provider':'dogecoin',
-         'visible':true
+         'visible':false
       }
    }
 }
@@ -115,7 +126,7 @@ const bitcoin = {
       'bitcoin':{
          'name':'bitcoin',
          'provider':'bitcoin',
-         'visible':true
+         'visible':false
       },
       'lightning':{
          'name':'lightning',
