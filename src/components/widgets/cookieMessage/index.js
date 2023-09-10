@@ -2,10 +2,11 @@ import React, { useRef, useEffect, useState } from 'react'
 import styles from './styles.module.css';
 import styled from 'styled-components'
 import IconSwitch from '../icons/iconSwitch';
-import { device } from 'const/const';
+import { device, CAPACITOR_PLATFORM, CAPACITOR_PLATFORMS } from 'const/const';
+import { getHostName } from 'environment'
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
-
+ 
 export default function CookieMessage(props) {
 
   const [shouldRender, setShouldRender] = useState(false);
@@ -18,9 +19,12 @@ export default function CookieMessage(props) {
 
   useEffect(() => {
     const value = sessionStorage.getItem(COINSENDA_DISCLAIMER_IS_ACCEPTED)
-    if(!value) setShouldRender(true);
+    // if(!value) setShouldRender(true);
+    if(!value && CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.WEB) setShouldRender(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainRef.current])
+
+
 
 
   return shouldRender ? (
@@ -29,14 +33,13 @@ export default function CookieMessage(props) {
     <Content>
       <IconSwitch 
         size={30}
-        icon="eth"
+        icon="coinsenda"
         color="var(--primary)"
       />
       <br/>
       <p className="fuente">
-      
-        Los depósitos de <strong className="fuente2">USDT (ERC20)</strong> en la red Ethereum ahora tienen un costo fijo de 15 dólares debido a las altas tarifas de la red. 
-        Te invitamos a depositar <strong className="fuente2">USDT (TRC20)</strong> en la red TRON o <strong className="fuente2">USDT (BEP20)</strong> en la red de Binance sin ningún costo. ✅☝️
+        Maximiza tu experiencia descargando nuestra Aplicación. Compra y vende Criptos de forma fácil desde tu teléfono. 📱🇨🇴 &nbsp;
+        <a alt="" href={`https://${getHostName()}.com/app-connect`}>Descargar APP</a>
       </p>
       <br/>
       <div className={` cookie-button-container ${styles["cookie-button-container"]}`}>

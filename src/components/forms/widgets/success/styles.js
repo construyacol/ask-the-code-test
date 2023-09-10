@@ -243,6 +243,10 @@ export const Content = styled.div`
     row-gap: 15px;
     position:relative;
 
+    &.payment--content{
+        padding: 35px 2.5rem;
+    }
+
     &.withdrawAccountSuccess{
         position:relative;
         display: grid;
@@ -316,6 +320,10 @@ export const Content = styled.div`
     @media ${device.mobile} {
        padding: 15px 15px;
        width: calc(100vw - 33px);
+        &.payment--content{
+            width: calc(100% - 2rem);
+            padding: 35px 1rem;
+        }
 
         ${ButtonContainer}._sticky{
             display:flex;

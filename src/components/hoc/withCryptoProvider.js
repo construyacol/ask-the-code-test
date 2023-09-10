@@ -31,10 +31,12 @@ const ETHERS_INITIAL_STATE = {
 export default function withCryptoProvider(AsComponent) {
   return function (props) {
     
+    const defaultCostId = props?.defaultCostId || DEFAULT_COST_ID?.default
     const [ withdrawViewStateProps ] = WithdrawViewState();
-    const { current_wallet, balance } = withdrawViewStateProps
+    const current_wallet = withdrawViewStateProps?.current_wallet || props?.current_wallet
+    const balance = withdrawViewStateProps?.balance || props?.balance
     const [ withdrawProviders, setNetworkProvider ] = useState({ current:{}, providers:{} })
-    const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID?.default)
+    const [ currentPriority, setPriority ] = useState(defaultCostId)
     const [ priorityList, setPriorityList ] = useState(withdrawProviders?.current?.provider?.costs || [])
     const [ coinsendaServices ] = useCoinsendaServices();   
 
@@ -42,17 +44,16 @@ export default function withCryptoProvider(AsComponent) {
 
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
-      amount:0,
+      amount:'0',
       takeFeeFromAmount:DEFAULT_TAKE_FEE_FROM_AMOUNT,
-      availableBalance: formatToCurrency(balance.available, balance?.currency), 
-      totalBalance: formatToCurrency(balance.available, balance?.currency), 
-      withdrawAmount:undefined,
+      availableBalance: formatToCurrency(balance?.available, balance?.currency), 
+      totalBalance: formatToCurrency(balance?.available, balance?.currency), 
+      withdrawAmount:new BigNumber(0),
       fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
       total:new BigNumber(0), 
       minAmount:getMinAmount(withdrawProviders.current) || new BigNumber(0), 
       isEthereum:!priorityList[currentPriority]?.fixed && isEthValidator(withdrawProviders.current?.address_validator_config?.name)
     })
-
 
     const [ ethers, setEthers ] = useState(ETHERS_INITIAL_STATE)
 
@@ -135,6 +136,23 @@ export default function withCryptoProvider(AsComponent) {
       }
     }
  
+
+    const calculateTotal = () => {
+      const { amount, takeFeeFromAmount, fixedCost, totalBalance } = withdrawData
+      let parsedAmount = String(amount)?.slice()?.replace(/[,]/g, "")
+      let _amount = BigNumber(parsedAmount)
+      let totalAmount = BigNumber(0)
+      if(takeFeeFromAmount){
+        totalAmount = _amount.minus(fixedCost)
+        return setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
+      }else if(_amount.isGreaterThanOrEqualTo(withdrawProviders.current?.provider?.min_amount) && _amount.isLessThanOrEqualTo(totalBalance)){
+        totalAmount = _amount.plus(fixedCost)
+        return setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:totalAmount })) 
+      }
+      setWithdrawData(prevState => ({ ...prevState, total:BigNumber(0), withdrawAmount:BigNumber(0) }))
+    }
+
+
     useEffect(() => { // Calculo o actualizo el costo fijo segun se cambia de proveedor(red)
       if(!withdrawData?.isEthereum && priorityList[currentPriority]?.fixed){
         setWithdrawData(prevState => ({ ...prevState, fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0) }));
@@ -159,7 +177,7 @@ export default function withCryptoProvider(AsComponent) {
       if(!isEmpty(withdrawProviders?.current)){
         let _priorityList = withdrawProviders?.current?.provider?.costs
         setPriorityList(_priorityList)
-        setPriority(DEFAULT_COST_ID[withdrawProviders?.current?.provider_type] || DEFAULT_COST_ID?.default)
+        setPriority(DEFAULT_COST_ID[withdrawProviders?.current?.provider_type] || defaultCostId) //default cost or internal_network
         setWithdrawData(prevState => ({
           ...prevState, 
           timeLeft:undefined, 
@@ -183,7 +201,7 @@ export default function withCryptoProvider(AsComponent) {
 
     useEffect(() => {//actualizo el monto disponible si se modifica el costo fijo, gas limit o takeFeeFromAmount
       const { totalBalance, fixedCost, minAmount } = withdrawData
-      let finalBalance = formatToCurrency(balance.available, balance?.currency)
+      let finalBalance = formatToCurrency(balance?.available, balance?.currency)
       if(!withdrawData.takeFeeFromAmount){
           if(totalBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
             finalBalance = finalBalance?.minus(fixedCost)
@@ -194,6 +212,9 @@ export default function withCryptoProvider(AsComponent) {
       setWithdrawData(prevState => ({...prevState, availableBalance:finalBalance}))
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawData.minAmount, withdrawData.fixedCost])
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(calculateTotal, [currentPriority, withdrawData.fixedCost, withdrawData.amount, withdrawData.baseFee])
  
     return ( 
       <>

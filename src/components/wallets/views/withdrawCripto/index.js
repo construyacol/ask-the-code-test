@@ -40,14 +40,14 @@ const CriptoSupervisor = (props) => {
   );
 };
 
- 
+  
 export default withCryptoProvider(CriptoSupervisor)
 
 
 export const CriptoView = (props) => {
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
- 
+  
   const {
     current_wallet,
     withdrawProvider,
@@ -91,21 +91,17 @@ export const CriptoView = (props) => {
   const createWithdraw = async() => {
     if(!isMobile && !withdrawConfirmed){
       setWithdrawConfirmed(true)
-      return actions.renderModal(() => (
-        <OtherModalLayout on_click={closeWithdrawConfirmed}>
-        </OtherModalLayout>
-      ));
+      return actions.renderModal(() => <OtherModalLayout on_click={closeWithdrawConfirmed}/>);
     }
     await finish_withdraw({ cost_information:{ cost_id:currentPriority }, gas_limit })
   }
 
   const handleChangeAmount = (name, newValue) => setWithdrawData(prevState => ({...prevState, amount:newValue}))
+
   const setTowFaTokenMethod = async (payload) => {
     finish_withdraw(payload);
     actions.renderModal(null);
   };
- 
-
 
 
   const finish_withdraw = async (fnProps) => {
@@ -122,7 +118,6 @@ export const CriptoView = (props) => {
     } 
 
     let withdraw_account = withdraw_accounts[addressValue];
-
     if (!withdraw_account) { 
       const body = {
         data:{
@@ -132,13 +127,13 @@ export const CriptoView = (props) => {
           internal:withdrawProvider?.internal || false,
           info_needed:createProviderInfoNeeded({ accountLabel:current_wallet.currency, accountAddress:addressValue, provider_type:withdrawProvider?.provider_type })
         }
-      }
+      } 
       const { data } = await coinsendaServices.createWithdrawAccount(body);
       withdraw_account = data
       await coinsendaServices.fetchWithdrawAccounts();
     }
 
-    sessionStorage.setItem(`withdrawInProcessFrom${current_wallet?.id}`, current_wallet.id );
+    sessionStorage.setItem(`withdrawInProcessFrom${current_wallet?.id}`, current_wallet.id);
 
     let bodyRequest = {
       data: { 
@@ -147,7 +142,7 @@ export const CriptoView = (props) => {
         withdraw_provider_id:withdrawProvider.id,
         withdraw_account_id: withdraw_account.id,
         cost_information,
-        country: user.country,
+        country: user.country        
       }
     }
 
@@ -155,7 +150,8 @@ export const CriptoView = (props) => {
       const network_data = await getNetworkData()
       bodyRequest.data.network_data = network_data
       bodyRequest.data.cost_information.gas_limit = gas_limit
-    }
+    } 
+
     const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
     await actions.renderModal(null)
     if (error) {
@@ -177,11 +173,8 @@ export const CriptoView = (props) => {
 
   const handleMaxAvailable = (available) => {
     let amountEl = document.getElementsByName("amount")[0];
-    amountEl.value = available
+    if(Number(available) > 0) amountEl.value = available;
     setWithdrawData(prevState => ({...prevState, amount:available}))
-    if (amountEl.value > 0) {
-      setAmountState("good");
-    }
   };
   
   const handleChangeAddress = (_, value) => {

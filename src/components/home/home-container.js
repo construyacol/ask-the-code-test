@@ -16,10 +16,13 @@ import { isSafari } from '../../utils'
 import useFreshChat from 'services/FreshChat' 
 import { TopNotification } from "components/atoms";
 import { useAppVersion } from "hooks/useAppVersion";
+import BitRefillFallBack from 'pages/store/fallBack'
+
 
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
 const ReferralComponent = loadable(() => import("pages/referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
+const StorePageView = loadable(() => import("pages/store"), {fallback: <BitRefillFallBack/>});
 const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <LazyLoaderPage path={"settings"} />});
 
 const HomeContainer = () => {
@@ -47,6 +50,7 @@ const HomeContainer = () => {
                   <Switch> 
                     <Route path="/wallets" render={renderProps => <WalletsContainerComponent {...renderProps} subMenuRef={subMenuRef}/>} />
                     <Route path={["/referral"]} component={ReferralComponent} />
+                    <Route path={["/store"]} component={StorePageView} />
                     <Route path={["/settings/:settings_path", "/settings"]} component={SettingsComponent} />
                     {/* <Route path={["/settings/:settings_path", "/settings"]} render={() => (<LazyLoaderPage path={"settings"} />)} /> */}
                   </Switch>

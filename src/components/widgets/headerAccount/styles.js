@@ -154,6 +154,9 @@ export const CurrencyLabel = styled(P)`
     }
     @media ${device.mobile} {
       display:none;
+      &.visible{
+        display: initial;
+      }
     }
 `
 

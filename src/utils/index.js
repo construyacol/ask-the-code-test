@@ -114,6 +114,13 @@ export const isSafari = () => {
   }
 }
 
+export const createURI = (base, params) => {
+  let query = Object.keys(params)
+      .map(key => `${key}=${encodeURIComponent(params[key])}`)
+      .join('&');
+  return `${base}?${query}`;
+}
+
 export const parseQueryString = () => {
   const params = new URLSearchParams(window.location.search);
   const values = (Array.from(params.values())); 

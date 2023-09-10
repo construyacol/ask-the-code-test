@@ -8,6 +8,9 @@ export { default as AmountUiView } from './viewAmountPR';
 export { default as WithdrawQrReader } from './qrReader/withdrawQrReader';
 export { default as SubscribeDepositsButton } from './subscribeDepositsButton';
 export { default as LabelFlag } from './labelFlag';
+export { default as PaymentDetail } from './paymentDetail';
+export { default as BitrefillPaymentProcessItem } from './bitrefillPaymentProcessItem';
+export { default as LabelCopy } from './labelCopy';
 
 
 

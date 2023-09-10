@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import InputForm from "../../../widgets/inputs/inputForm";
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
@@ -50,7 +50,6 @@ const WithdrawFormComponent = ({
     withdrawProviders
 }) => {
 
-    // const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
     const switchFixedCost = () => {
         let inputEl = document.querySelector('[name="amount"]')
         if(inputEl?.value) inputEl.value = '';
@@ -58,20 +57,15 @@ const WithdrawFormComponent = ({
     }
 
     const togglePanel = () => setIsOpenPanel(prevState => !prevState)
+    const handleAmountState = useCallback(() => {
+        let _amount = formatToCurrency(amount, current_wallet.currency)
+        if(minAmount?.isLessThanOrEqualTo(0)) return setAmountState('bad');
+        if(_amount?.isGreaterThan(availableBalance)) return setAmountState('bad');
+        if(_amount?.isLessThan(minAmount)) return setAmountState('bad');
+        if(_amount?.isLessThanOrEqualTo(availableBalance) && _amount?.isGreaterThanOrEqualTo(minAmount)) return setAmountState('good')
+    }, [amount, availableBalance, current_wallet.currency, minAmount, setAmountState])
 
-    useEffect(() => {
-        // Handle amount state
-        if(minAmount){
-            let avBalance = takeFeeFromAmount ? totalBalance : totalBalance?.minus(fixedCost)
-            let _amount = formatToCurrency(amount, current_wallet.currency)
-            if(_amount.isGreaterThan(avBalance)) setAmountState('bad')
-            if(!takeFeeFromAmount && _amount.isLessThanOrEqualTo(avBalance) && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
-            if(takeFeeFromAmount && _amount.isLessThan(minAmount)) setAmountState('bad')
-            if(takeFeeFromAmount && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
-            if(minAmount.isLessThanOrEqualTo(0)) setAmountState('bad')
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fixedCost, minAmount])
+    useEffect(() => handleAmountState(), [fixedCost, handleAmountState, minAmount])
 
     return(
         <WithdrawForm

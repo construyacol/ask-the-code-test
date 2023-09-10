@@ -41,7 +41,7 @@ const PanelHelper = props => {
         setIsOpenPanel,
         addressValue,
         priority:{ priorityList, currentPriority, priorityConfig, setPriority },
-        provider:{ withdrawData, setWithdrawData, ethers:{ baseFee } }
+        provider:{ withdrawData, setWithdrawData }
     } = props
 
     const { 
@@ -58,21 +58,6 @@ const PanelHelper = props => {
 
     let controlValidation = total?.isPositive() && total?.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount)
 
-    const calculateTotal = () => {
-      let parsedAmount =  typeof amount === 'string' && amount?.slice()?.replace(/[,]/g, "")
-      let _amount = BigNumber(parsedAmount)
-      // if(_amount.isNaN()) setWithdrawData(prevState => ({ ...prevState, total:BigNumber(0), withdrawAmount:BigNumber(0) })) ;
-      // console.log('|||||| calculateTotal ==> ', _amount.isGreaterThan(availableBalance), _amount.toString(), availableBalance.toString(), withdrawProvider)
-      let totalAmount = BigNumber(0)
-      if(takeFeeFromAmount){
-        totalAmount = _amount.minus(fixedCost)
-        return setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
-      }else if(_amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && _amount.isLessThanOrEqualTo(totalBalance)){
-        totalAmount = _amount.plus(fixedCost)
-        return setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:totalAmount })) 
-      }
-      setWithdrawData(prevState => ({ ...prevState, total:BigNumber(0), withdrawAmount:BigNumber(0) }))
-    }
 
     const renderOrderDetail = () => {
       let _orderDetail = []
@@ -99,14 +84,8 @@ const PanelHelper = props => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [total, timeLeft, fixedCost])
   
-    useEffect(() => {
-      calculateTotal()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPriority, fixedCost, amount, baseFee])
-
     let title = isMobile || (!isMobile && props.withdrawConfirmed) ? 'Confirmación de envío' : 'Velocidad de envío'
     let isReady = addressState === 'good'
-
 
     // let Icon = priority === 'high' ? AiOutlineThunderbolt : priority === 'low' ? GiTurtle : MdSpeed 
     return(

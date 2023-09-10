@@ -330,9 +330,9 @@ withdraw_mangagement = async (withdraw) => {
     await this.props.action.isAppLoading(false);
     this.props.action.add_new_transaction_animation();
     // this.props.coinsendaServices.getWalletsByUser(true)
-    this.props.history.push(
-      `/wallets/activity/${new_withdraw_model.account_id}/withdraws`
-    );
+    
+    if(sessionStorage.getItem(`withdrawToBitrefill${new_withdraw_model?.account_id}`)) return sessionStorage.removeItem(`withdrawToBitrefill${new_withdraw_model?.account_id}`);
+    this.props.history.push(`/wallets/activity/${new_withdraw_model.account_id}/withdraws`);
   }
 
   if (withdraw.state === "accepted" && checkIfFiat(currentWithdraw.currency)) {

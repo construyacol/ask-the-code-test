@@ -1,1 +1,1 @@
-(() => window.appVersion = {"androidVersionCode":"36","iosVersion":"1"})()
+(() => window.appVersion = {"androidVersionCode":"37","iosVersion":"1.0.14"})()

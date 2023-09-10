@@ -58,12 +58,16 @@ export const RightText = styled(Text)`
   padding-left: 15px;
   text-transform: capitalize;
   white-space: nowrap;
-  max-width: 150px; 
+  max-width: 220px; 
   overflow: hidden;
   text-overflow: ellipsis;
   &.fiatDeposit{
     max-width: 200px;
   }
+  @media ${device.mobile} {
+    max-width: 150px; 
+  }
+
 `;
 export const LeftText = styled(Text)`
   text-align: left;
@@ -73,7 +77,8 @@ export const LeftText = styled(Text)`
 
 export const ItemContainer = styled.div`
   width: 100%;
-  height: 20px;
+  height: auto;
+  min-height: 20px;
   display: grid;
   grid-template-columns: auto 1fr auto;
 

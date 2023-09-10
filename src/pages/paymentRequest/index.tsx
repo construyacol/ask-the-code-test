@@ -21,10 +21,11 @@ import BigNumber from 'bignumber.js';
 import { OPERATIONAL_LEVELS } from 'const/levels'
 import { AmountUiView } from 'core/components/molecules'
 
+import { HeaderContainer } from 'core/components/shared/styles'
+
 //styles
 import { 
    PaymentRequestLayout, 
-   HeaderContainer, 
    ContentContainer,
    ViewerContainer
 } from './styles'
@@ -84,7 +85,7 @@ const PaymentRequestView = (props:any) => {
 
    const RenderContentComponent = (isLoading && !isLogged) ? SkeletonView : isLogged ? IsLoggedView : UnLoggedView
    return(
-      <PaymentRequestLayout>
+      <PaymentRequestLayout> 
          <CrudContainer rowGap="10px" className={`large flex no-padding height-fit-content`}>
          {
             paymentRequest.recipient === user?.email && <ViewerContainer>Vista de pagador</ViewerContainer>

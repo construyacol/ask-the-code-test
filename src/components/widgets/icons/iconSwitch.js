@@ -112,7 +112,7 @@ const Accepeted = loadable(() =>
 const SwapCamera = loadable(() => import("./").then(getExportByName("SwapCamera")));
 const Pse = loadable(() => import("./").then(getExportByName("PSE")));
 
-const Handshake = loadable(() => import("./").then(getExportByName("Handshake")));
+const ReferralIcon = loadable(() => import("./").then(getExportByName("ReferralIcon")));
 const Search = loadable(() => import("./").then(getExportByName("Search")));
 const Ethereum = loadable(() => import("./").then(getExportByName("Ethereum")));
 const Usdt = loadable(() => import("./").then(getExportByName("Usdt")));
@@ -188,7 +188,12 @@ const Internals = loadable(() => import("./").then(getExportByName("Internals"))
 const BankAccount = loadable(() => import("./").then(getExportByName("BankAccount")));
 const FacebookMsg = loadable(() => import("./").then(getExportByName("FacebookMsg")));
 const Gmail = loadable(() => import("./").then(getExportByName("Gmail")));
+const Store = loadable(() => import("./").then(getExportByName("Store")));
 const BankName = loadable(() => import("./").then(getExportByName("BankName")));
+const Apps = loadable(() => import("./").then(getExportByName("Apps")));
+const WithdrawIcon = loadable(() => import("./").then(getExportByName("WithdrawIcon")));
+const Bitrefill = loadable(() => import("./").then(getExportByName("Bitrefill")));
+const OrderIcon = loadable(() => import("./").then(getExportByName("OrderIcon")));
 
 
 
@@ -196,6 +201,18 @@ class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     switch (icon) {
+      
+      case "orderIcon":
+        return <OrderIcon {...props} />; 
+      case "withdrawOrder":
+        return <WithdrawIcon {...props} />; 
+      case "is_bitrefill":
+        return <Bitrefill {...props} />; 
+      case "app":
+      case "apps":
+        return <Apps {...props} />; 
+      case "store":
+        return <Store {...props} />; 
       case "bankName":
         return <BankName {...props} />; 
       case "bankAccount":
@@ -206,6 +223,7 @@ class IconSwitch extends Component {
         return <FacebookMsg {...props} />; 
       case "internal_network":
       case "person":
+      case "is_internal":
         return <Internals {...props} />; 
       case "pse":
       case "PSE":
@@ -395,7 +413,7 @@ class IconSwitch extends Component {
       case "security":
         return <Security2 {...props} />;
       case "referral":
-        return <Handshake {...props} />;
+        return <ReferralIcon {...props} />;
       case "referralPerson":
         return <ReferralPerson {...props} />;
       case "swap":

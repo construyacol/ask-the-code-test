@@ -5,7 +5,8 @@ import {
   swing_in_bottom_bck,
   backTopSection,
 } from "../../../animations";
-import { orderStateColors, device, ORDER_TYPE_UI_NAME, TOTAL_ORDER_AMOUNT_COPYS } from "../../../../../const/const";
+import { orderStateColors, device, TOTAL_ORDER_AMOUNT_COPYS } from "../../../../../const/const";
+import { ORDER_TYPES } from 'const/activity/order'
 import IconSwitch from "../../../icons/iconSwitch";
 import useViewport from "../../../../../hooks/useWindowSize";
 import DetailGenerator from "./detailGenerator";
@@ -23,7 +24,7 @@ import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
-
+ 
 
 const OrderSupervisor = () => {
 
@@ -89,8 +90,10 @@ export const getState = (state) => {
 };
 
 
-const orderTypeUiName = (orderType) => {
-  return ORDER_TYPE_UI_NAME[orderType]?.ui_name || orderType
+const orderTypeUiName = (orderType, metaKey) => {
+  // return ORDER_TYPE_UI_NAME[orderType]?.ui_name || orderType
+  return (metaKey ? ORDER_TYPES[orderType][metaKey] : ORDER_TYPES[orderType]?.label) || ORDER_TYPES[orderType]?.label
+
 }
 
 export const OrderDetail = ({ currentOrder, tx_path }) => {
@@ -113,7 +116,9 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
 
   if(!currentOrder) return null;
   const { state } = currentOrder;
-  const TitleText = orderTypeUiName(tx_path)
+  const metaKey = currentOrder?.metadata && Object.keys(currentOrder.metadata)[0]
+
+  const TitleText = orderTypeUiName(tx_path, metaKey)
 
   const textState =
     state === "accepted"
@@ -144,7 +149,13 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
 
       <TopSection state={currentOrder.state}>
         <TitleContainer>
-          <OrderIcon className={`fa ${tx_path}`} />
+          <IconSwitch
+            className={`fa ${tx_path} orderIcon`}
+            size={30}
+            icon={`${metaKey || 'orderIcon'}`}
+            color="white"
+          />
+
           <IconSwitch
             className="TitleIconOrder"
             size={28}
@@ -176,7 +187,7 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
 
       <DetailGenerator
         order={currentOrder}
-        title={`Resumen del ${TitleText}`}
+        title={`Resumen ${TitleText}`}
       />
 
       <BottomSection colorState={colorState} currentOrder={currentOrder} tx_path={tx_path} />
@@ -269,6 +280,10 @@ const TitleContainer = styled.div`
   .TitleIconOrder {
     grid-area: IconSwitch;
   }
+  .orderIcon{
+    grid-area: orderIcon;
+    color:white;
+  }
   align-items: center;
   column-gap: 15px;
   row-gap: 4px;
@@ -277,8 +292,8 @@ const TitleContainer = styled.div`
   left: 30px;
   grid-template-columns: 25px 25px minmax(100px, 200px);
   grid-template-areas:
-    "OrderIcon IconSwitch Title"
-    "OrderIcon IconSwitch DateTitle";
+    "orderIcon IconSwitch Title"
+    "orderIcon IconSwitch DateTitle";
 `;
 
 const DateTitle = styled.p`
@@ -292,26 +307,26 @@ const DateTitle = styled.p`
   margin-left: 4px;
 `;
 
-const Icon = styled.i``;
-const OrderIcon = styled(Icon)`
-    margin-right: 10px;
-    font-size: 22px;
-    grid-area: OrderIcon;
-    color: white;
-    margin: 0;
-    display: grid !important;
-    justify-items: center;
+// const Icon = styled.i``;
+// const OrderIcon = styled(Icon)`
+//     margin-right: 10px;
+//     font-size: 22px;
+//     grid-area: OrderIcon;
+//     color: white;
+//     margin: 0;
+//     display: grid !important;
+//     justify-items: center;
 
-    &.swaps:before{
-       content: "\f079";
-      }
-    &.withdraws:before{
-       content: "\f062";
-      }
-    &.deposits:before{
-       content: "\f063";
-      }
-  `;
+//     &.swaps:before{
+//        content: "\f079";
+//       }
+//     &.withdraws:before{
+//        content: "\f062";
+//       }
+//     &.deposits:before{
+//        content: "\f063";
+//       }
+//   `;
 
 const BackTopSection = styled.div`
   width: 120%;

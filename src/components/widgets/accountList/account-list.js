@@ -17,6 +17,7 @@ import loadable from "@loadable/component";
 import { useCreateWallet } from './cardView'
 // import FilterAccountList from '../filters/filterAccountList'
 import { AccountListViewSkeleton } from "./listView";
+// import BitRefillWebView from "./iframe";
 
 // TODO: Eliminar props.items
 function AccountList(props) {
@@ -51,6 +52,7 @@ function AccountList(props) {
       <TitleSection
         className='sticky main'
       >  
+
       {/* {
         isWalletsView &&
           <FilterAccountList

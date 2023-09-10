@@ -13,7 +13,6 @@ import Layout from "components/forms/widgets/layout"
 import "./2fa.css";
 import {CAPACITOR_PLATFORM} from "const/const";
 
-const OTP_TITLE = "Coinsenda";
 
 const TwoFactorActivate = (props) => {
   const [qr, setQr] = useState();
@@ -23,7 +22,8 @@ const TwoFactorActivate = (props) => {
   const [switch_to_success, setSwitch_to_success] = useState();
   const [loader, setLoader] = useState(true);
   const [coinsendaServices] = useCoinsendaServices();
-
+  const OTP_TITLE = `Coinsenda: ${props.user.email}`;
+  
   const handleFocus = () => {
     if (!private_key) {
       return;

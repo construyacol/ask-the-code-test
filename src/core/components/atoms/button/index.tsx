@@ -43,7 +43,7 @@ function ButtonChild({
     <ButtonStyle 
       className={`${className} ${size || ''} ${variant} ${disabled ? 'disabled' : ''}`}
       color={`${color || ''}`}
-      disabled={disabled}
+      disabled={disabled || loading}
       onClick={onClick}
       {...props}
       > 

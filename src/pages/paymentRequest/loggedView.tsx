@@ -22,9 +22,9 @@ import {
 } from 'components/widgets/headerAccount/styles'
 import IconSwitch from "components/widgets/icons/iconSwitch"
 import { parseSymbolCurrency } from 'core/config/currencies'
-import { IsLoggedLayout } from './styles'
+import { IsLoggedLayout } from './styles' 
 import InputComponent from 'components/forms/widgets/kyc/InputComponent'
-import { ButtonsContainer } from './styles'
+import { ButtonsContainer } from 'core/components/shared/styles'
 import { formatToCurrency } from "utils/convert_currency";
 import { amountValidation, parseToOnlyNumbers } from 'utils/validations'
 import { replaceToCurrency } from 'core/config/currencies'
