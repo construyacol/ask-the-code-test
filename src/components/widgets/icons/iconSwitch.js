@@ -191,6 +191,9 @@ const Gmail = loadable(() => import("./").then(getExportByName("Gmail")));
 const Store = loadable(() => import("./").then(getExportByName("Store")));
 const BankName = loadable(() => import("./").then(getExportByName("BankName")));
 const Apps = loadable(() => import("./").then(getExportByName("Apps")));
+const WithdrawIcon = loadable(() => import("./").then(getExportByName("WithdrawIcon")));
+const Bitrefill = loadable(() => import("./").then(getExportByName("Bitrefill")));
+const OrderIcon = loadable(() => import("./").then(getExportByName("OrderIcon")));
 
 
 
@@ -198,6 +201,13 @@ class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     switch (icon) {
+      
+      case "orderIcon":
+        return <OrderIcon {...props} />; 
+      case "withdrawOrder":
+        return <WithdrawIcon {...props} />; 
+      case "is_bitrefill":
+        return <Bitrefill {...props} />; 
       case "app":
       case "apps":
         return <Apps {...props} />; 
@@ -213,6 +223,7 @@ class IconSwitch extends Component {
         return <FacebookMsg {...props} />; 
       case "internal_network":
       case "person":
+      case "is_internal":
         return <Internals {...props} />; 
       case "pse":
       case "PSE":

@@ -154,7 +154,7 @@ export const useDetailParseData = (order, detailType) => {
   const formatDepositOrder = async(order) => {
     const isPending = order.state === 'pending'
     let parsedOrder = [
-      ["Fecha de creación:", moment(order?.created_at).format("LL")],
+      ["Fecha de creación:", moment(order?.created_at).format('D [de] MMM[.] [de] YYYY H:mm')],
       ["ID del depósito:", order?.id],
       ["Estado:", getState(order?.state)],
       [`Cantidad ${isPending ? 'por depositar' : 'depositada'}:`, `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
@@ -166,19 +166,51 @@ export const useDetailParseData = (order, detailType) => {
 
 
   const formatWithdrawOrder = async(order) => {
-    let parsedOrder = [
-      ["Fecha de creación:", moment(order?.created_at).format("LL")],
+    let parsedOrder = []
+
+    if(!checkIfFiat(order?.currency)){
+      const { truncatedString } = await import('hooks/useTruncatedAddress');
+      const { LabelCopy } = await import('core/components/molecules')
+
+      if(withdraw_accounts[order?.withdraw_account_id]){
+        let truncatedAddress = truncatedString(withdraw_accounts[order?.withdraw_account_id]?.account_address?.value)
+        parsedOrder.push(["Destino:", { Component:() => (
+        <LabelCopy size={25} data={withdraw_accounts[order?.withdraw_account_id]?.account_address?.value}>
+          {truncatedAddress}
+        </LabelCopy>)
+        }])
+      }
+
+      if(order?.metadata){
+        let bitrefill_invoice_id = truncatedString(order?.metadata?.bitrefill_invoice_id || '')
+        if(order?.metadata?.is_bitrefill){
+          parsedOrder.push(["ID factura:", { 
+            Component:() => (
+            <LabelCopy size={25} data={order?.metadata?.bitrefill_invoice_id}>
+              {bitrefill_invoice_id}
+            </LabelCopy>
+            )
+          }]) 
+          return [
+            ["Fecha de creación:", moment(order?.created_at).format('D [de] MMM[.] [de] YYYY H:mm')],
+            ["Estado:", getState(order?.state)],
+            ["Costo por retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+            ["Cantidad de la compra:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
+            ["Total gastado:", `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
+            ...parsedOrder,
+          ]
+        }
+      }
+    }
+
+    parsedOrder = [
+      ["Fecha de creación:", moment(order?.created_at).format('D [de] MMM[.] [de] YYYY H:mm')],
       ["ID del retiro:", order?.id],
       ["Estado:", getState(order?.state)],
       ["Total del retiro:", `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
       ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
       ["Cantidad recibida:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
     ]
-    if(!checkIfFiat(order?.currency) && withdraw_accounts[order?.withdraw_account_id]){
-      parsedOrder.push(
-        ["Destino:", withdraw_accounts[order?.withdraw_account_id]?.account_address?.value],
-      )
-    }
     return parsedOrder 
   }
 
@@ -342,7 +374,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
           </DataOrderHeader>
          
       }
-
+ 
       <DetailTemplateComponent
         items={orders}
         tx_path={tx_path}
@@ -463,7 +495,7 @@ const Container = styled.section`
   &.withTitle {
     height: calc(100% - 95px);
     padding-top: 70px;
-    grid-template-rows: 70px repeat(auto-fill, 20px);
+    grid-template-rows: 70px repeat(auto-fill, minmax(20px, auto));
   }
 
   &.withTitle.withPendingDeposit{

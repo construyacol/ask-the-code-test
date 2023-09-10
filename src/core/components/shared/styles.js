@@ -1,6 +1,24 @@
 import styled from 'styled-components'
 import { device } from 'const/const'
 
+
+export const Icon = styled.i`
+`;
+export const OrderIcon = styled(Icon)`
+  font-size: 22px;
+  grid-area: orderIcon;
+
+  &.swaps:before{
+       content: "\f079";
+   }
+   &.withdraws:before{
+      content: "\f062";
+   }
+   &.deposits:before{
+      content: "\f063";
+   }
+`;
+
 export const ButtonsContainer = styled.div`
    display: flex;
    bottom:0;
@@ -26,6 +44,9 @@ export const ButtonsContainer = styled.div`
       flex-direction: column-reverse;
       row-gap: 15px;
       background: white;
+      &.flex_column{
+         flex-direction: column;
+      }
    }
 `
 

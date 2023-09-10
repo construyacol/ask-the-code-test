@@ -1,4 +1,4 @@
-import BigNumber from "bignumber.js";
+// import BigNumber from "bignumber.js";
 import { PAYMENT_METHODS } from 'const/bitrefill'
 import { isEmpty } from "lodash";
 
@@ -9,10 +9,11 @@ import { isEmpty } from "lodash";
 const getPaymentMethodsAvailable = async(balancesByCurrency) => new Promise((resolve) => {
     let paymentMethods = []
     for (const paymentCurrency in PAYMENT_METHODS) {
-        const walletCurrencyBalance = balancesByCurrency[paymentCurrency]
+        // const walletCurrencyBalance = balancesByCurrency[paymentCurrency]
         const paymentMethod = PAYMENT_METHODS[paymentCurrency]
-        const availableBalance = new BigNumber(walletCurrencyBalance?.available || 0)
-        if(availableBalance.isGreaterThan(0) && paymentMethod.method){
+        // const availableBalance = new BigNumber(walletCurrencyBalance?.available || 0)
+        // if(availableBalance.isGreaterThan(0) && paymentMethod.method){
+        if(paymentMethod.method){
           for (const methodKey in paymentMethod.method) {
             paymentMethod.method[methodKey].visible && paymentMethods.push(methodKey)
           }

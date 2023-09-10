@@ -3,8 +3,23 @@ import Icon from "./iconLayout";
 import loadable from "@loadable/component"
 import "./icons.css";
 import { getExportByName } from 'utils'
+import { _getCdnPath } from 'environment'
+import { CDN_MAIN_ASSETS } from 'const/const'
 
 
+
+export function Bitrefill(props){
+  return <img src={`${_getCdnPath(CDN_MAIN_ASSETS)}icons/bitrefill.png`} height={props.size || 22} loading="lazy" alt="" />
+}
+
+export function OrderIcon(props) {
+  const OrderIcon = loadable(() => import("core/components/shared/styles").then(getExportByName("OrderIcon")));
+  return <OrderIcon {...props}/>
+}
+
+export function WithdrawIcon(){
+  return <OrderIcon className="fas fa-arrow-up"/>
+}
 
 export function Apps(props) {
   const AiOutlineAppstore = loadable(() => import("react-icons/ai").then(getExportByName("AiOutlineAppstore")));
@@ -38,7 +53,7 @@ export function BankAccount(props) {
 
 export function Internals(props) {
   const BsPerson = loadable(() => import("react-icons/bs").then(getExportByName("BsPerson")));
-  return <BsPerson {...props}/>
+  return <BsPerson {...props} color={props.color || "var(--primary)"}/>
 }
 
 export function Store(props) {

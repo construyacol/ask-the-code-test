@@ -1,4 +1,4 @@
-import { CDN_PATH_ASSETS } from '../const/const'
+import { CDN_PATH_ASSETS, CDN_MAIN_PATH } from '../const/const'
 let Environment;
 
 export const getHostName = () => {
@@ -20,6 +20,13 @@ export const getCdnPath = (target) => {
   }
 
   return `https://app.${getHostName()}.com/${nodeList[target]}`
+}
+
+export const _getCdnPath = (target) => {
+  const nodeList = {
+    ...CDN_PATH_ASSETS 
+  } 
+  return `${CDN_MAIN_PATH}${nodeList[target]}`
 }
 
 // export const getBaseUrl = (prefix) => {

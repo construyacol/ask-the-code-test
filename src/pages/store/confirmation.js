@@ -28,7 +28,6 @@ import {
    PENDING_FUNDS
 } from 'const/bitrefill'
 
-
 const Withdraw2FaComponent = loadable(() => import('components/widgets/modal/render/withdraw2FAModal').then(getExportByName('Withdraw2FaComponent')));
 
 function ConfirmationComponent(props){
@@ -130,9 +129,12 @@ function ConfirmationTransfer(props) {
          withdraw_account_id: withdrawAccount?.id,
          cost_information:{ cost_id:currentPriority },
          country: user.country,
+         metadata:{
+               is_bitrefill:true,
+               bitrefill_invoice_id:invoiceData?.invoiceId
+            }
          }
       }
-      console.log('bodyRequest ====> ', bodyRequest)
       sessionStorage.setItem(`withdrawToBitrefill${current_wallet?.id}`, current_wallet.id);
       // if(withdrawData?.isEthereum) {
       //    const network_data = await getNetworkData()  
@@ -144,6 +146,7 @@ function ConfirmationTransfer(props) {
       console.log('coinsendaServices_addWithdrawOrder ====> ', data, error)
       if(error){
          setLoading(false)
+         closeAction()
          return alert(error.message)
       }
       setPaymentState(BITREFILL_STATE.detecting_payment)
@@ -171,9 +174,10 @@ function ConfirmationTransfer(props) {
    // eslint-disable-next-line react-hooks/exhaustive-deps
    useEffect(() => !isEmpty(withdrawProviders.current) && setWithdrawData(prevState => ({...prevState, amount:invoiceData?.paymentAmount})), [withdrawProviders])
 
-   // 3. Determino si hay fondos suficientes en la cuenta de origen
+   // 3. Determino si hay fondos suficientes en la cuenta de origen 
    useEffect(() => {
-      if(new BigNumber(withdrawData?.amount).isGreaterThan(0)) withdrawData?.withdrawAmount.isEqualTo(0) && setPaymentState(BITREFILL_STATE[INSUFFICIENT_FUNDS]);
+      if((new BigNumber(withdrawData?.amount).isGreaterThan(0) && withdrawData?.withdrawAmount.isEqualTo(0)) || withdrawData?.withdrawAmount.isGreaterThan(withdrawData?.totalBalance)) setPaymentState(BITREFILL_STATE[INSUFFICIENT_FUNDS]);
+      
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [withdrawData?.withdrawAmount])
   
@@ -221,18 +225,18 @@ function ConfirmationTransfer(props) {
                      />
                   </ConfirmationContent>
 
-                  <ButtonsContainer marginTop={30}>
+                  <ButtonsContainer marginTop={30} className='flex_column'>
                      <Button disabled={loading} onClick={closeAction}  color="primary">
                         Cancelar
                      </Button>
                      <Button 
                         // loading={loading} 
-                        disabled={loading || [INSUFFICIENT_FUNDS].includes(paymentState.status)} 
+                        disabled={loading} 
                         onClick={[INSUFFICIENT_FUNDS].includes(paymentState.status) ? goToWallet : withdrawToBitrefill} 
                         variant="contained" 
                         color="primary"
                      >  
-                        {loading ? 'Pagando...' : 'Proceder'}
+                        {loading ? 'Pagando...' : [INSUFFICIENT_FUNDS].includes(paymentState.status) ? 'Recargar cuenta' : 'Proceder'}
                      </Button>
                   </ButtonsContainer>
                </Content>

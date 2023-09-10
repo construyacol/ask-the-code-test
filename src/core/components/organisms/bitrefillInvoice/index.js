@@ -1,7 +1,7 @@
 import { InvoiceLayout, PaymentDetailContainer } from './styles'
 import { 
     ItemAccountContainer,
-    MobileBalanceComponent,
+    // MobileBalanceComponent,
     // RightSection,
     // AccountItemSkeleton
 } from 'components/widgets/accountList/listView'
@@ -16,9 +16,9 @@ import {
 import { replaceToCurrency } from 'core/config/currencies'
 import IconSwitch from "components/widgets/icons/iconSwitch"
 import useViewport from 'hooks/useViewport'
-import { ButtonsContainer } from 'core/components/shared/styles'
-import { HR } from 'components/widgets/headerAccount/styles'
-import { Button, P } from 'core/components/atoms'
+// import { ButtonsContainer } from 'core/components/shared/styles'
+// import { HR } from 'components/widgets/headerAccount/styles'
+import { P } from 'core/components/atoms'
 import { PaymentDetail } from 'core/components/molecules'
 
 
@@ -27,6 +27,8 @@ export default function InvoiceDataComponent({ current_wallet, withdrawData, inv
    const accountName = replaceToCurrency({ currency:current_wallet?.currency, sourceName:current_wallet?.name })
    const uiCurrencyName = replaceToCurrency({ currency:current_wallet?.currency })
    const { isMobile } = useViewport()
+
+    console.log('status', status, INSUFFICIENT_FUNDS)
 
     return(
         <InvoiceLayout>
@@ -42,19 +44,23 @@ export default function InvoiceDataComponent({ current_wallet, withdrawData, inv
                     </IconAccount>
                     <LabelContainer className="_header__labelContainer">
                         <AccountLabel className="wallet accountLabel">{accountName || 'Mi billetera'}</AccountLabel>
-                        { 
+                        {/* { 
                             isMobile ?
                             <MobileBalanceComponent
                                 account={current_wallet}
                             />
                             :
                             <CurrencyLabel className={status}>
-                            {status === INSUFFICIENT_FUNDS ? "Fondos insuficientes" : (uiCurrencyName || '-')}
+                                {status === INSUFFICIENT_FUNDS ? "Fondos insuficientes" : (uiCurrencyName || '-')}
                             </CurrencyLabel>
-                        }
+                        } */}
+
+                        <CurrencyLabel className={`${status} visible`}>
+                            {status === INSUFFICIENT_FUNDS ? "Fondos insuficientes" : (uiCurrencyName || '-')}
+                        </CurrencyLabel>
                     </LabelContainer> 
                 </HeaderMainContainer>
-                {
+                {/* {
                     status === INSUFFICIENT_FUNDS ?
                     <ButtonsContainer className="insufficient __buttonsContainer--insufficient">
                         <HR/>
@@ -64,7 +70,7 @@ export default function InvoiceDataComponent({ current_wallet, withdrawData, inv
                     </ButtonsContainer>
                     :
                     <></>
-                }
+                } */}
             </ItemAccountContainer>
             <PaymentDetailContainer>
                 <PaymentDetail 

@@ -108,7 +108,6 @@ export const CriptoView = (props) => {
     const { twoFaToken = null, cost_information, gas_limit } = fnProps
     actions.isAppLoading(true);
     const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
-    debugger
     if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
       // setShowModal(false)
       setWithdrawConfirmed(false)
@@ -128,7 +127,7 @@ export const CriptoView = (props) => {
           internal:withdrawProvider?.internal || false,
           info_needed:createProviderInfoNeeded({ accountLabel:current_wallet.currency, accountAddress:addressValue, provider_type:withdrawProvider?.provider_type })
         }
-      }
+      } 
       const { data } = await coinsendaServices.createWithdrawAccount(body);
       withdraw_account = data
       await coinsendaServices.fetchWithdrawAccounts();
@@ -143,14 +142,16 @@ export const CriptoView = (props) => {
         withdraw_provider_id:withdrawProvider.id,
         withdraw_account_id: withdraw_account.id,
         cost_information,
-        country: user.country,
+        country: user.country        
       }
     }
+
     if(withdrawData?.isEthereum) {
       const network_data = await getNetworkData()
       bodyRequest.data.network_data = network_data
       bodyRequest.data.cost_information.gas_limit = gas_limit
     } 
+
     const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
     await actions.renderModal(null)
     if (error) {

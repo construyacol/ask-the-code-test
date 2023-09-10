@@ -15,6 +15,9 @@ const {
 } = Enviroment;
 
 
+export const CDN_MAIN_PATH = "https://s3.amazonaws.com/v2-coinsenda.cdn/"
+
+
 export const NETWORK_LABELS = {
   internal_network:{
     user_friendly:{
@@ -306,15 +309,28 @@ export const chartOptions = {
 
 export const ACCEPT_FILE_TYPE = ["image/jpeg", "image/png", ".pdf"];
 export const ACCEPT_FILE_TYPE_ADVANCE_KYC = ["image/jpeg", "image/png"];
+ 
+export const CDN_MAIN_ASSETS = 'mainAssets' 
 
 export const CDN_PATH_ASSETS = {
   highstock:'cdn/libs/highstock.js',
   d3:'cdn/libs/d3.js',
   faceApi:"cdn/libs/faceApi.js",
   assets:'cdn/assets/',
+  [CDN_MAIN_ASSETS]:'assets/',
   tensor:'cdn/tensor/models',
   appVersion:'version.js'
 }
+
+// export const CDN_PATH_ASSETS = {
+//   highstock:'cdn/libs/highstock.js',
+//   three:'cdn/libs/three.min.js',
+//   vanta:'cdn/libs/vanta.waves.min.js',
+//   vantaTrunk:'cdn/libs/vanta.trunk.min.js',
+//   d3:'cdn/libs/d3.js',
+//   assetsRoot:'cdn/assets/',
+//   assets:'assets',
+// }
 
 export const COLOR_FEES = {
   low:{

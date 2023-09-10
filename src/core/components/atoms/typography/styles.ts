@@ -7,7 +7,7 @@ export interface typoGraphyProps {
     skeleton?:boolean,
     size?:number,
     lineHeight?:number,
-    maxWidth?:number,
+    maxWidth?:number
 }
 
 const skeletonStyles = css`
@@ -22,6 +22,8 @@ export const textBaseStyles = css<typoGraphyProps>`
     font-family: "Raleway", sans-serif;
     font-size: ${props => props.size && `${props.size}px !important`};
     line-height: ${props => props.lineHeight && `${props.lineHeight}px`};
+
+
     &.text-center{
       text-align:center;
     }

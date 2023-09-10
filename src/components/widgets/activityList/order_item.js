@@ -18,7 +18,7 @@ import useToastMessage from "../../../hooks/useToastMessage";
 import { checkIfFiat } from 'core/config/currencies';
 import { useSelector } from "react-redux";
 import { selectDepositAccountsByNetwork } from 'selectors'
-
+import { ORDER_TYPES } from 'const/activity/order'
 import {
   gotoTx,
   containerDepositAnim,
@@ -30,8 +30,8 @@ import "moment/locale/es";
 moment.locale("es");
 
 const confirmPayment = async () => {
-  // const TFileUpload = document.getElementById("TFileUpload");
-  // TFileUpload && TFileUpload.click();
+  const TFileUpload = document.getElementById("TFileUpload");
+  TFileUpload && TFileUpload.click();
 };
 
 const OrderItem = ({ order }) => {
@@ -41,21 +41,15 @@ const OrderItem = ({ order }) => {
 
   const orderDetail = async (e) => {
     e.preventDefault();
-
     if(!order) return;
-
     const target = e.target;
     if (target.dataset && target?.dataset?.is_deletion_action) return;
-
     const { tx_path, account_id, primary_path, path } = txState;
-
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`);
     actions.cleanNotificationItem("wallets", "order_id");
-
     const Element = await import("../modal/render/orderDetail/index.js");
     const OrderSupervisor = Element.default
     await actions.renderModal(() => <OrderSupervisor/>);
-    
     if (target.dataset && target.dataset.is_confirm_deposit) {
       confirmPayment();
     }
@@ -146,7 +140,6 @@ export const DepositOrder = ({ order }) => {
     <Order
       className={`${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'} ${new_order_style ? "newOrderStyle" : ""} ${orderState || ''}`}
     >
-
       { 
         (order?.info?.is_referral) &&
             <RibbonContDeposit className="tooltip">
@@ -154,17 +147,15 @@ export const DepositOrder = ({ order }) => {
               <span className="tooltiptext">Referido</span>
             </RibbonContDeposit>
       }
-
       <DataContainer className={`align_first ${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'} ${tx_path}`}>
         {
           state === 'pending' &&
             <DeleteButton {...order} setOrderState={setOrderState} deleteAction="addUpdateDeposit" />
         }
-
         <PanelLeft {...order} depositAccount={depositAccount} />
         <OrderIcon className="fas fa-arrow-down" />
         <TypeOrderText className="fuente">
-          {getTypeOrder(tx_path)}
+          {ORDER_TYPES[tx_path]?.label}
         </TypeOrderText>
         <MobileDate className="fuente2">
           {moment(created_at).format("l")}
@@ -368,11 +359,13 @@ const LoaderViewItem = styled.div`
   justify-items: center;
 `
 
+
 const WithdrawOrder = ({ order }) => {
+
   const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
-
   const { state, created_at, id, currency } = order;
-
+  const metaKey = order?.metadata && Object.keys(order.metadata)[0]
+  console.log('WithdrawOrderMetaKey', metaKey)
   return (
     <Order
       className={`${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'} ${
@@ -381,9 +374,13 @@ const WithdrawOrder = ({ order }) => {
     >
       <DataContainer className={`align_first ${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'}`}>
         <PanelLeft {...order} />
-        <OrderIcon className="fas fa-arrow-up" />
+        <IconSwitch 
+          icon={`${metaKey || 'withdrawOrder'}`}
+          size={25}
+          className="orderIcon__icon"
+        /> 
         <TypeOrderText className="fuente">
-          {getTypeOrder(tx_path)}
+          {(metaKey ? ORDER_TYPES[tx_path][metaKey] : ORDER_TYPES[tx_path]?.label) || ORDER_TYPES[tx_path]?.label}
         </TypeOrderText>
         <MobileDate className="fuente2">
           {moment(created_at).format("l")}
@@ -451,7 +448,7 @@ const PanelLeft = (order) => {
           </p>
         </Confrimations>
       ) : (
-        <DateCont>
+        <DateCont> 
           <Day className="fuente2">{moment(order.created_at).format("DD")}</Day>
           <Month className="fuente">
             {moment(order.created_at).format("MMM").toUpperCase()}
@@ -462,13 +459,8 @@ const PanelLeft = (order) => {
   );
 };
 
-const getTypeOrder = (tx_path) => {
-  return tx_path === "deposits"
-    ? "Depósito"
-    : tx_path === "withdraws"
-    ? "Envío"
-    : tx_path === "swaps" && "Intercambio";
-};
+
+
 
 const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
 
@@ -655,7 +647,7 @@ const Confrimations = styled.div`
 `;
 
 const Icon = styled.i`
-  margin-right: 10px;
+  /* margin-right: 10px; */
 `;
 const StatusIcon = styled(Icon)`
   margin-right: 5px;
@@ -715,7 +707,7 @@ const AmountText = styled(Text)`
 `;
 
 const DateCont = styled.div`
-  margin-right: 20px;
+  margin-right: 10px;
   justify-items: center;
   display: grid;
   p {
@@ -820,7 +812,7 @@ export const Order = styled.div`
   &.pending,
   &.confirmed {
     border: 1px solid #ff8660 !important;
-    ${Day}, ${Month}, ${OrderIcon}, ${Text}, ${AmountIcon} {
+    ${Day}, ${Month}, ${OrderIcon}, i, ${Text}, ${AmountIcon} {
       color: #ff8660;
     }
     ${StatusIcon} {
@@ -853,7 +845,7 @@ export const Order = styled.div`
     :hover .canceled {
       opacity: 0.8 !important;
     }
-    ${Day}, ${Month}, ${OrderIcon}, ${Text}, ${AmountIcon} {
+    ${Day}, ${Month}, ${OrderIcon}, i, ${Text}, ${AmountIcon} {
       color: #f44336;
     }
     ${OrderStatus} {
@@ -867,7 +859,7 @@ export const Order = styled.div`
 
   &.accepted,
   &.confirmed.crypto {
-    ${Day}, ${Month}, ${OrderIcon}, ${Text}, ${AmountIcon} {
+    ${Day}, ${Month}, ${OrderIcon},i, ${Text}, ${AmountIcon} {
       color: rgb(28, 177, 121);
     }
     ${OrderStatusCont} {
@@ -917,6 +909,11 @@ export const DataContainer = styled.div`
   align-self: center;
   display: flex;
   align-items: center;
+  column-gap: 10px;
+
+  .orderIcon__icon{
+    grid-area: orderIcon;
+  }
 
   .acceptedIcon {
     transform: scale(0.4);
