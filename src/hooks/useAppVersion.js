@@ -5,7 +5,7 @@ import { initAppVersion } from "services/CoinsendaAppVersion";
 
 export function useAppVersion() {
   const [isAppOutdated, setIsAppOutdated] = React.useState(false);
-
+ 
   async function checkAppVersion() {
     try {
       await initAppVersion();
