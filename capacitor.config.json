@@ -12,7 +12,9 @@
   },
   "server": {
     "androidScheme": "sendapp",
-    "iosScheme": "sendapp"
+    "iosScheme": "sendapp",
+    "url":  "http://192.168.1.6:2998",
+    "cleartext":  true
   },
   "cordova": { 
     "preferences": {

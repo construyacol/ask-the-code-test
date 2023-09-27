@@ -11,6 +11,5 @@ export { default as LabelFlag } from './labelFlag';
 export { default as PaymentDetail } from './paymentDetail';
 export { default as BitrefillPaymentProcessItem } from './bitrefillPaymentProcessItem';
 export { default as LabelCopy } from './labelCopy';
-
-
+export { default as AppstoreButtom } from './appStoreButtom';
 

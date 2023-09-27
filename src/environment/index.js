@@ -1,6 +1,9 @@
 import { CDN_PATH_ASSETS, CDN_MAIN_PATH } from '../const/const'
 let Environment;
 
+export const environment = process.env.REACT_APP_LOCAL_CONFIG || process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+
+
 export const getHostName = () => {
   const hostId = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
   const nodeList = {
@@ -9,8 +12,8 @@ export const getHostName = () => {
     pre_prod:'cryptosenda',
     production:'coinsenda'
   }
-  // return nodeList[hostId]
-  return "coinsenda"
+  return nodeList[hostId]
+  // return "coinsenda"
 }
  
 export const getCdnPath = (target) => {

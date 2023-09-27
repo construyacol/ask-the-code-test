@@ -77,7 +77,7 @@ export const reOrderedList = (list, criterialOrdered) => {
   return orderedRes
 }
  
-
+ 
 export const checkCameraPermission = async () => {
   const { Camera } = await import("@capacitor/camera");
   try {
