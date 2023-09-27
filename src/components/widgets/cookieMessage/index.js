@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import IconSwitch from '../icons/iconSwitch';
 import { device, CAPACITOR_PLATFORM, CAPACITOR_PLATFORMS } from 'const/const';
 import { getHostName } from 'environment'
+import { P } from 'core/components/atoms';
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
  
@@ -37,10 +38,10 @@ export default function CookieMessage(props) {
         color="var(--primary)"
       />
       <br/>
-      <p className="fuente">
-        Maximiza tu experiencia descargando nuestra Aplicación. Compra y vende Criptos de forma fácil desde tu teléfono. 📱🇨🇴 &nbsp;
-        <a alt="" href={`https://${getHostName()}.com/app-connect`}>Descargar APP</a>
-      </p>
+      <P color="var(--paragraph_color)">
+        Descarga nuestra APP en IOS y Android. Hazlo todo fácil desde tu teléfono. 📱🇨🇴 &nbsp;
+        <a alt="" href={`https://${getHostName()}.com/app-connect`}>Descargar la APP</a>
+      </P>
       <br/>
       <div className={` cookie-button-container ${styles["cookie-button-container"]}`}>
         <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Entendido</span>

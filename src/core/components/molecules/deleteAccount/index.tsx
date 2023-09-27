@@ -3,9 +3,9 @@ import { P } from 'core/components/atoms'
 // import { useSelector } from "react-redux";
 import { ButtonContainer } from './styles'
 import { useActions } from 'hooks/useActions'
+import { CAPACITOR_PLATFORM, CAPACITOR_PLATFORMS } from 'const/const'
   
 function DeleteAccount(){
-
     const actions = useActions()
     const sendEmail = async() => {
         const ModalDisclaimer = await import('./modalDisclaimer')
@@ -18,11 +18,18 @@ function DeleteAccount(){
     }
 
     return(
-        <ButtonContainer onClick={sendEmail}>
-            <P className="deleteAccount__p--paragraph">
-                Eliminar cuenta
-            </P>
-        </ButtonContainer>
+        <>
+            {
+                CAPACITOR_PLATFORM === CAPACITOR_PLATFORMS.IOS ?
+                <ButtonContainer onClick={sendEmail}>
+                    <P className="deleteAccount__p--paragraph">
+                        Eliminar cuenta
+                    </P>
+                </ButtonContainer>
+                :
+                <></>
+            }
+        </>
     )
 }
 

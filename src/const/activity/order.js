@@ -5,7 +5,7 @@ export const ORDER_TYPES = {
     withdraws: {
       label:'Envío',
       is_bitrefill:'Compra Bitrefill',
-      is_internal:'Transferencia'
+      is_internal:'Envío interno'
     },
     swaps: {
       label:'Intercambio'

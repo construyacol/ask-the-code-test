@@ -4,13 +4,15 @@ import {
     ItemMenu,
     SettingsContent
 } from 'components/settings/styles'
-
+import { DeleteAccount } from 'core/components/molecules'
 import { settingsMenu } from 'api/ui/menuItems'
 import getIcon from './icons'
 import { BiRightArrowAlt } from 'react-icons/bi';
-import { DeleteAccount } from 'core/components/molecules'
+// import loadable from "@loadable/component";
+// import { getExportByName } from 'utils'
 
 
+// const DeleteAccount = loadable(() => import("core/components/molecules").then(getExportByName("DeleteAccount")));
 
 const SideMenuComponent = (props:any) => {
 
