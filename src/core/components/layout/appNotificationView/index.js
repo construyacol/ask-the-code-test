@@ -17,6 +17,7 @@ export default function AppNotificationView() {
   if(isAppOutdated) return <AppDisclaimerView 
     isMobile={isMobile} 
     uiLabel='Actualizar'
+    title=''
     uiMessage='Una nueva version de la aplicación esta disponible'
     platform={CAPACITOR_PLATFORM}
   />

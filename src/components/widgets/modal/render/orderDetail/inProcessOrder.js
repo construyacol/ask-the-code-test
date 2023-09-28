@@ -163,9 +163,9 @@ const FiatOrder = (props) => {
   };
 
   const goFileLoader = async (e) => {
-      setOnDrag(false);
+      setOnDrag(false); 
       let dataBase64
-      if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
+      if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission(['camera', 'photos'])) {
         try {
           const { Camera, CameraResultType } = await import("@capacitor/camera");
           const image = await Camera.getPhoto({
@@ -179,6 +179,7 @@ const FiatOrder = (props) => {
           dataBase64 = `data:image/png;base64, ${image?.base64String}`
         }catch (error) {
           return console.log('getCameraPhoto err => ', error?.message)
+          // return goFileLoader(e)
         }  
       }else{
         if (isEmpty(e.target.files)) return; 
