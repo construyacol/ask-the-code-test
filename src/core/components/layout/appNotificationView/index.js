@@ -1,45 +1,34 @@
-import { CAPACITOR_PLATFORM } from 'const/const';
+import { CAPACITOR_PLATFORM, IS_NATIVE_PLATFORM } from 'const/const';
+import { OS } from 'const/device';
 import { useAppVersion } from "hooks/useAppVersion";
-import { Layout, ContentContainer } from './styles';
-import { AppstoreButtom } from 'core/components/molecules'
-import { P } from 'core/components/atoms'
-import { APP_STORE_DATA, DEFAULT_STORE_BY_OS } from 'const/appStore'
+import useDeviceDetails from 'hooks/useDeviceDetails';
 import useViewport from 'hooks/useViewport'
-import logo from 'assets/logo.png'
+import loadable from "@loadable/component";
 
+const APP_SCHEME = 'sendapp://'
+const AppDisclaimerView = loadable(() => import(/* webpackPrefetch: true */ "./view"));
 
 export default function AppNotificationView() {
+
   const isAppOutdated = useAppVersion();
-  if(isAppOutdated) return <IsAppOutDatedView/>
+  const { os } = useDeviceDetails()
+  const { isMobile } = useViewport();
+
+  if(isAppOutdated) return <AppDisclaimerView 
+    isMobile={isMobile} 
+    uiLabel='Actualizar'
+    uiMessage='Una nueva version de la aplicación esta disponible'
+    platform={CAPACITOR_PLATFORM}
+  />
+  if((isMobile && !IS_NATIVE_PLATFORM) && os === OS.IOS)return <AppDisclaimerView 
+    isMobile={isMobile} 
+    uiMessage='Descarga la aplicación para continuar operando'
+    title='DESCARGAR EN'
+    platform={os}
+    callback={() => window.location.href = APP_SCHEME} 
+  />
   return <></>
 }
 
 
-
-
-
-const IsAppOutDatedView = () => {
-
-  const { isMobile } = useViewport();
-  const handleClick = (e) => {
-    // if(!isMobile || (isMobile && e?.target?.dataset?.store_app === OS.ANDROID)) return openModal(MODAL_ID);
-    if(isMobile && APP_STORE_DATA[DEFAULT_STORE_BY_OS[CAPACITOR_PLATFORM]])return window.location.href = APP_STORE_DATA[DEFAULT_STORE_BY_OS[CAPACITOR_PLATFORM]]?.link
-  }
-
-  return(
-    <Layout>
-      <ContentContainer>
-        <img src={logo} alt="" height={50} />
-        <P className={'text-center'}>Una nueva version de la aplicación esta disponible</P>
-        <AppstoreButtom  
-            defaultStore={(isMobile && DEFAULT_STORE_BY_OS[CAPACITOR_PLATFORM]) ? DEFAULT_STORE_BY_OS[CAPACITOR_PLATFORM] : ''} 
-            uiLabel='Actualizar'
-            title=''
-            handleClick={handleClick} 
-        />
-      </ContentContainer>
-    </Layout>
-  )
-
-}
 

@@ -1,18 +1,11 @@
-import { environment } from 'environment'
 import googlePlay from 'assets/appstore/googlePlay.png'
 import appleStore from 'assets/appstore/appleStore.png'
 import android from 'assets/appstore/android.png'
 import huaweiAppGallery from 'assets/appstore/huaweiAppGallery.png'
 import amazonAppStore from 'assets/appstore/amazon.png'
-import { _getCdnPath } from 'environment';
+import { _getCdnPath, environment } from 'environment';
+import { OS } from './device'
 
-export const OS = {
-    ANDROID:"android",
-    IOS:"ios",
-    MAC_OS:"macOs",
-    LINUX:"linux",
-    WINDOWS:"windows"
-}
 
 export const APP_STORES = {
     GOOGLE:"googlePlay",
