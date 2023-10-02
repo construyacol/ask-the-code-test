@@ -30,6 +30,7 @@ export const NETWORK_LABELS = {
 } 
 
 export const CAPACITOR_PLATFORM = Capacitor.getPlatform();
+export const IS_NATIVE_PLATFORM = Capacitor.isNativePlatform();
 export const CAPACITOR_PLATFORMS = {
   WEB: 'web',
   IOS: 'ios',

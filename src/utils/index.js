@@ -7,9 +7,9 @@ import imageType from 'image-type'
 import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES, CAPACITOR_PLATFORM } from '../const/const'
 import * as Sentry from "@sentry/react";
 import { isUndefined } from 'lodash'
+import { PERMISSIONS_TYPES, DENIED_PERMISSIONS_LABELS } from 'const/capacitor'
 // import { kyc } from "../components/api/ui/api.json";
 const { normalizeUser } = normalizr_services;
-
 
 export const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
@@ -76,33 +76,64 @@ export const reOrderedList = (list, criterialOrdered) => {
   }
   return orderedRes
 }
- 
 
-export const checkCameraPermission = async () => {
+
+   
+const getUiDeniedPermissionLabels = (deniedPermissions) => {
+  let labelPermissions = ""
+  for (const key in deniedPermissions) {
+    let labelKey = DENIED_PERMISSIONS_LABELS[key]
+    labelPermissions = labelPermissions ? `${labelPermissions}, ${labelKey}` : labelKey
+  }
+  return labelPermissions
+}
+
+ 
+export const checkCameraPermission = async (permissionsTypes = PERMISSIONS_TYPES) => {
   const { Camera } = await import("@capacitor/camera");
+  const { pickBy, isEmpty, pick } = await import("lodash");
   try {
-    let result = await Camera.checkPermissions()
-    if (result.camera === 'granted') {
-      return true;
-    }
-    if (result.camera === 'denied') {
+    // Determino los permisos de forma explícita con el parametro: permissionsTypes[] de la función
+    let permissions = pick(await Camera.checkPermissions(), permissionsTypes); 
+    let deniedPermissions = pickBy(permissions, value => value === 'denied');
+    if(!isEmpty(deniedPermissions)){
       const { NativeSettings, IOSSettings, AndroidSettings } = await import("capacitor-native-settings");
       NativeSettings.open({
         optionAndroid: AndroidSettings.ApplicationDetails, 
         optionIOS: IOSSettings.App
       })
-      result = await Camera.requestPermissions(['camera']);
-    } else {
-      result = await Camera.requestPermissions(['camera']);
+      permissions = pick(await Camera.requestPermissions(Object.keys(deniedPermissions)), permissionsTypes);
+      deniedPermissions = pickBy(permissions, value => value === 'denied');
+      if(!isEmpty(deniedPermissions)) throw new Error(`Debes otorgar permisos a: ${getUiDeniedPermissionLabels(deniedPermissions)}`);
     }
-    if (result.camera === 'denied') {
-      throw new Error("Camera permissions no granted")
-    }
-    return result.camera === 'granted';
+    return true
   } catch (e) {
-    console.log('ERROR => ', JSON.stringify(e.message))
+    alert(`${JSON.stringify(e.message)}`)
     return false;
   }
+
+  // try {
+  //   let result = await Camera.checkPermissions()
+  //   console.log('checkCameraPermission', result)
+  //   // if (result.camera === 'granted')return true;
+  //   // if (result.camera === 'denied') {
+  //   //   const { NativeSettings, IOSSettings, AndroidSettings } = await import("capacitor-native-settings");
+  //   //   NativeSettings.open({
+  //   //     optionAndroid: AndroidSettings.ApplicationDetails, 
+  //   //     optionIOS: IOSSettings.App
+  //   //   })
+  //   //   result = await Camera.requestPermissions(['camera']);
+  //   // } else {
+  //   //   result = await Camera.requestPermissions(['camera']);
+  //   // }
+  //   if (result.camera === 'denied') {
+  //     throw new Error("Camera permissions no granted")
+  //   }
+  //   return result.camera === 'granted';
+  // } catch (e) {
+  //   console.log('ERROR => ', JSON.stringify(e.message))
+  //   return false;
+  // }
 };
 
 

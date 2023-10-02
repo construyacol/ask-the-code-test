@@ -96,10 +96,10 @@ const IdentityKycComponent = ({ handleDataForm, handleState, title, ...props }) 
     }
   };
 
-
+ 
   const getCameraPhoto = async() => { 
     // Runs only on native app
-    if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
+    if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission(['camera', 'photos'])) {
       try {
         const { Camera, CameraResultType } = await import("@capacitor/camera");
         setLoading(true)

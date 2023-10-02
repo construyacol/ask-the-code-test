@@ -30,7 +30,7 @@ const QrReader = ({ callback  }:qrReaderProps) => {
    // 
    const readQr = async() => {
       setLoading(true)
-      if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
+      if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission(['camera'])) {
          const { BarcodeScanner } = await import('@awesome-cordova-plugins/barcode-scanner');
          const { text, cancelled } = await BarcodeScanner.scan();
          if(!!!cancelled)handleScan(text);   

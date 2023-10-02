@@ -34,14 +34,16 @@ const OrderStatus = ({ order, movil, depositProvider }) => {
   const currencyType = (depositProvider?.currency_type === 'fiat' || (checkIfFiat(order?.currency) && order?.info?.is_internal)) ? 'fiat' : 'crypto'
   // const currencyType = (checkIfFiat(order?.currency) && depositProvider?.currency_type === 'fiat') ? 'fiat' : 'crypto'
 
+  // let titleStatus = orderStatus[tx_path][order.state] && orderStatus[tx_path][order.state][currencyType]?.title
+
   return (
     <OrderStatusContainer>
       <TopSectionStatus>
         <Text className="fuente">
-          {orderStatus[tx_path][order.state][currencyType].title}
+          {orderStatus[tx_path][order.state][currencyType]?.title}
         </Text>
         <SubTitle className="fuente">
-          {orderStatus[tx_path][order.state][currencyType].description}
+          {orderStatus[tx_path][order.state][currencyType]?.description}
         </SubTitle>
       </TopSectionStatus>
       {!movil && (

@@ -14,8 +14,7 @@ import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { parseQueryString } from '../../utils'
 import { isSafari } from '../../utils'
 import useFreshChat from 'services/FreshChat' 
-import { TopNotification } from "components/atoms";
-import { useAppVersion } from "hooks/useAppVersion";
+import { AppNotificationView } from "core/components/layout";
 import BitRefillFallBack from 'pages/store/fallBack'
 
 
@@ -29,19 +28,18 @@ const HomeContainer = () => {
   
   const subMenuRef = useRef()
   useFreshChat();
-  const isAppOutdated = useAppVersion();
 
   return (
     <Route
         path={["/:primary_path/:path", "/:primary_path"]}
         render={(renderProps) => (
-          <HomeLayout>
+          <HomeLayout> 
+            <AppNotificationView/>
             <SideMenuComponent {...renderProps}/>
             <AppContainerLayout 
               className={`appContainer ${renderProps?.match?.params?.path ? 'secondLayer' : ''}`}
               id="scrollElement"
               >
-              {isAppOutdated && <TopNotification />}
               <MainMenuComponent {...renderProps}/>
               <MobileMenuComponent/>
               

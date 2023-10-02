@@ -1,7 +1,6 @@
 import BigNumber from "bignumber.js";
 import { isEmpty } from 'lodash'
 
-const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
 
 type replaceToProps = {
     match?:string,
@@ -75,15 +74,16 @@ export const parseSymbolCurrency = (symbolCurrency:string):string => {
    return symbolCurrency.replace(regex, replaceFor);
 }
 
-// export const DEFAULT_CURRENCY = {
-//     currency: env !== 'production' ? 'bitcoin_testnet' : 'bitcoin',
-//     symbol:env !== 'production' ? 'btct' : 'btc',
-// }
-
+const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
 export const DEFAULT_CURRENCY = {
-    currency: 'bitcoin',
-    symbol:'btc'
+  currency: env !== 'production' ? 'bitcoin_testnet' : 'bitcoin',
+  symbol:env !== 'production' ? 'btct' : 'btc'
 }
+
+// export const DEFAULT_CURRENCY = {
+//     currency: 'bitcoin',
+//     symbol:'btc'
+// }
 
 
 export const FIAT_PROVIDER_TYPES = {
